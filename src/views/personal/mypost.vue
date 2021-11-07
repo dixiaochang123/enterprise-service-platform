@@ -5,16 +5,33 @@
     <div class="box">
       <van-search v-model="value1" shape="round" background="#ffffff" input-align="center" placeholder="请输入搜索关键词" />
       <div class="box-main">
-        <p class="p1"><span class="s-1">寻求口罩机零配件供应商</span><span class="s-2">2020.03.18</span></p>
         <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>虹新技术有限公司</p>
-        <div class="img">
-          <van-image height="260" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
-        </div>
+        <p class="p1"><span class="s-1">寻求口罩机零配件供应商</span></p>
+        <van-icon class="edit" name="edit" />
       </div>
       <div style="height:20px;"></div>
       <div class="box-main">
-        <p class="p1"><span class="s-1">寻求口罩机零配件供应商</span><span class="s-2">2020.03.18</span></p>
         <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>虹新技术有限公司</p>
+        <p class="p1"><span class="s-1">寻求口罩机零配件供应商</span></p>
+        <van-icon class="edit" name="edit" />
+      </div>
+      <div style="height:20px;"></div>
+      <div class="box-main">
+        <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>虹新技术有限公司</p>
+        <p class="p1"><span class="s-1">寻求口罩机零配件供应商</span></p>
+        <van-icon class="edit" name="edit" />
+      </div>
+      <div style="height:20px;"></div>
+      <div class="box-main">
+        <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>虹新技术有限公司</p>
+        <p class="p1"><span class="s-1">寻求口罩机零配件供应商</span></p>
+        <van-icon class="edit" name="edit" />
+      </div>
+      <div style="height:20px;"></div>
+      <div class="box-main">
+        <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>虹新技术有限公司</p>
+        <p class="p1"><span class="s-1">寻求口罩机零配件供应商</span></p>
+        <van-icon class="edit" name="edit" />
       </div>
 
     </div>
@@ -76,6 +93,7 @@ export default {
   font-family: PingFang SC;
   font-weight: 500;
   color: #000000;
+  position: relative;
   p {
     line-height: 50px;
   }
@@ -110,6 +128,13 @@ export default {
       height: 260px;
       border-radius: 20px;
       overflow: hidden;
+  }
+  .edit {
+    position: absolute;
+    right: 27px;
+    top: 50%;
+    bottom: 50%;
+    margin:auto;
   }
 }
 </style>

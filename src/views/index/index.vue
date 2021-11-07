@@ -367,6 +367,7 @@ export default {
       font-weight: bold;
       color: #FFFFFF;
       line-height: 27px;
+          white-space: nowrap;
     }
     .vsilast {
       margin-right: 0;

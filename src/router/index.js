@@ -356,11 +356,51 @@ const routes = [
       showTab: false
     }
   },
+  // 企业查询 Enterprise 
+  {
+    path: '/enterprisequery',
+    name: 'Enterprisequery',
+    component: () => import('@/views/personal/enterprisequery'),
+    meta: {
+      title: '企业查询',
+      showTab: false
+    }
+  },
+  // 企业信息 Enterprise 
+  {
+    path: '/enterpriseinfo',
+    name: 'Enterpriseinfo',
+    component: () => import('@/views/personal/enterpriseinfo'),
+    meta: {
+      title: '企业信息',
+      showTab: false
+    }
+  },
+  // 企业网络信息 Enterprise 
+  {
+    path: '/enterprisenetworkinfo',
+    name: 'Enterprisenetworkinfo',
+    component: () => import('@/views/personal/enterprisenetworkinfo'),
+    meta: {
+      title: '企业网络信息',
+      showTab: false
+    }
+  },
+  // 通知公告 notice  
+  {
+    path: '/notice1',
+    name: 'Notice1',
+    component: () => import('@/views/personal/notice1'),
+    meta: {
+      title: '通知公告',
+      showTab: false
+    }
+  },
   // 系统通知
   {
-    path: '/notice',
-    name: 'Notice',
-    component: () => import('@/views/personal/notice'),
+    path: '/notice1',
+    name: 'Notice1',
+    component: () => import('@/views/personal/notice1'),
     meta: {
       title: '系统通知',
       showTab: false

@@ -1,22 +1,17 @@
 <template>
   <div class="shopdetails">
-    <van-nav-bar title="查看" left-text="" left-arrow fixed @click-left="onClickLeft" />
+    <van-nav-bar title="企业信息" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <van-form @submit="onSubmit">
-      <van-field v-model="addressInfo.realname" name="标题" label="标题" readonly />
       <van-field v-model="addressInfo.realname" name="企业名称" label="企业名称" readonly />
-      <van-field v-model="addressInfo.realname" name="上报人" label="上报人" readonly />
+      <van-field v-model="addressInfo.realname" name="所用网络" label="所用网络" readonly />
+      <van-field v-model="addressInfo.realname" name="企业类型" label="企业类型" readonly />
+      <van-field v-model="addressInfo.realname" name="企业法人" label="企业法人" readonly />
       <van-field v-model="addressInfo.phone" name="联系方式" label="联系方式" readonly />
+      <van-field v-model="addressInfo.phone" name="注册地址" label="注册地址" readonly />
+      <van-field  name="生产服务内容" label="生产服务内容" readonly />
       <van-field v-model="addressInfo.textarea" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
-      <van-uploader v-model="fileList" :max-size="50000 * 1024" multiple :max-count="5" :after-read="onRead" :before-delete="onDelete" @oversize="onOversize">
-        <div class="upload">
-          <img src="../../assets/personal/矩形 846 拷贝.png" alt="">
-        </div>
-      </van-uploader>
-      <div style="margin: 16px" class="btns">
-        <van-button class="see" size="normal" round block type="info" native-type="submit">编辑</van-button>
-        <van-button class="see see1" size="normal" round block type="info" native-type="submit">删除</van-button>
-      </div>
+      
     </van-form>
 
     <!-- <van-popup v-model="showArea" position="bottom">
@@ -250,6 +245,7 @@ export default {
   }
   ::v-deep .van-field__label {
     width: 4.2em;
+    white-space: nowrap;
   }
   ::v-deep .van-field--error .van-field__control::placeholder {
     color: #969799 !important;

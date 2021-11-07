@@ -1,22 +1,14 @@
 <template>
   <div class="shopdetails">
-    <van-nav-bar title="查看" left-text="" left-arrow fixed @click-left="onClickLeft" />
+    <van-nav-bar title="企业网络信息" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <van-form @submit="onSubmit">
-      <van-field v-model="addressInfo.realname" name="标题" label="标题" readonly />
       <van-field v-model="addressInfo.realname" name="企业名称" label="企业名称" readonly />
-      <van-field v-model="addressInfo.realname" name="上报人" label="上报人" readonly />
-      <van-field v-model="addressInfo.phone" name="联系方式" label="联系方式" readonly />
-      <van-field v-model="addressInfo.textarea" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
-      <van-uploader v-model="fileList" :max-size="50000 * 1024" multiple :max-count="5" :after-read="onRead" :before-delete="onDelete" @oversize="onOversize">
-        <div class="upload">
-          <img src="../../assets/personal/矩形 846 拷贝.png" alt="">
-        </div>
-      </van-uploader>
-      <div style="margin: 16px" class="btns">
-        <van-button class="see" size="normal" round block type="info" native-type="submit">编辑</van-button>
-        <van-button class="see see1" size="normal" round block type="info" native-type="submit">删除</van-button>
-      </div>
+      <van-field v-model="addressInfo.realname" name="所用网络" label="所用网络" readonly />
+      <van-field v-model="addressInfo.realname" name="网格长" label="网格长" readonly />
+      <!-- <van-field  name="网络员" label="网络员" readonly /> -->
+      <van-field label="网络员" v-model="addressInfo.textarea" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
+      
     </van-form>
 
     <!-- <van-popup v-model="showArea" position="bottom">
@@ -59,7 +51,7 @@ export default {
         cityID: "",
         areaID: "",
         utype: "kuhu",
-        textarea:'对我葛先正而言，寻求口罩机零配件供应商不仅仅是一个重大的事件，还可能会改变我的人生。 在这种困难的抉择下，本人思来想去，寝食难'
+        textarea:'葛后正  1891892222'
       },
       columns: ["杭州", "宁波", "温州", "绍兴", "湖州", "嘉兴", "金华", "衢州"],
       fileList: [
@@ -250,6 +242,7 @@ export default {
   }
   ::v-deep .van-field__label {
     width: 4.2em;
+    white-space: nowrap;
   }
   ::v-deep .van-field--error .van-field__control::placeholder {
     color: #969799 !important;
@@ -323,7 +316,7 @@ export default {
 }
 .hhhhh {
   ::v-deep .van-field__control {
-    text-align: left;
+    // text-align: left;
   }
 }
 </style>
