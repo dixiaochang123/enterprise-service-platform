@@ -1,16 +1,16 @@
 <template>
   <div class="login-container">
-    <van-nav-bar
+    <!-- <van-nav-bar
       title=""
       left-text=""
       right-text=""
       left-arrow
       @click-left="onClickLeft"
       @click-right="onClickRight"
-    />
+    /> -->
     <div class="header">
-      <h3>登陆</h3>
-      <p>注册登录看即代表你已同意<span>《用户协议》</span></p>
+      <h3 style="text-align: center;"><span style="color:#566BFF;">“一企来”</span>一起来~</h3>
+      <p style="text-align: center;">“为企业开通一键直达的服务快速通道”</p>
     </div>
 
     <van-form
@@ -19,6 +19,9 @@
       :show-error="false"
       @submit="onSubmit"
     >
+    <p class="p1">手机快捷登录</p>
+    <p class="p2" style="visibility: hidden;"></p>
+    <p class="p2"></p>
       <van-field
       class="phone"
       style="background:none;"
@@ -26,7 +29,6 @@
         type="text"
         clearable
         name="手机号码"
-        label="+86"
         placeholder="请输入手机号码"
         :rules="[
           {
@@ -63,7 +65,7 @@
         </template>
       </van-field>
 
-      <div style="margin: 36px">
+      <div style="margin: 30px">
         <van-button
           round
           block
@@ -72,7 +74,6 @@
           loading-text="登录中..."
           native-type="submit"
         >登录</van-button>
-        <p class="noregister">未注册手机验证后自动登陆</p>
 
       </div>
     </van-form>
@@ -198,8 +199,13 @@ export default {
 <style lang="scss" scoped>
 .login-container {
   height: 100vh;
-  background: url(../../assets/login/bg.png) no-repeat  center;
-  background-size: cover;
+  // background: url(../../assets/login/bg.png) no-repeat  center;
+  // background-size: cover;
+  background-color: #F4F7F9;
+  display:flex;
+  justify-content: space-between;
+  flex-direction: column;
+  // align-items: center;
   .van-nav-bar {
     background-color: rgba(255,255,255,-0.2);
     ::v-deep .van-icon {
@@ -231,8 +237,22 @@ export default {
 
   .form {
     // background: red;
-    padding: 24px;
+    padding: 24px 45px;
     margin-top: 50px;
+    .p1 {
+      font-size: 43px;
+      font-family: PingFangSC;
+      font-weight: 800;
+      color: #000000;
+      line-height: 48px;
+    }
+    .p2 {
+      width: 69px;
+      height: 7px;
+      background: #567AFF;
+      border-radius: 3px;
+      line-height: 48px;
+    }
     .van-cell.van-field {
       background-color: none !important;
     }
@@ -253,13 +273,14 @@ export default {
     .van-button--primary {
       border: none !important;
       background: none !important;
-      color: #0084FF;
+      color: #313A52;
     }
     .van-button--info {
       // width: 600px;
       // height: 80px;
-      background: #FF5959;
+      background: #ffffff;
       border:none;
+      color: #313A52;
     }
     input:-internal-autofill-selected {
         box-shadow: inset 0 0 0 1000px #281840 !important; // 改变了背景色

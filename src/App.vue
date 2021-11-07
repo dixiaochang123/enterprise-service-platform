@@ -5,7 +5,7 @@
     </keep-alive>
     <router-view v-if="!$route.meta.keepAlive" :key="key" />
 
-    <tabbar v-if="$route.meta.showTab" />
+    <!-- <tabbar v-if="$route.meta.showTab" /> -->
   </div>
 </template>
 

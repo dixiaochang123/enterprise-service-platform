@@ -1,36 +1,42 @@
 <template>
   <div class="personal">
-    <van-nav-bar title="个人信息" left-text="" left-arrow fixed @click-left="onClickLeft" />
+    <van-nav-bar title="政策解读" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <div class="box">
-      <van-cell style="display: flex;align-items: center;" class="hhh" title="头像" is-link>
-        <template #right-icon>
-          <van-image
-            round
-            width="40"
-            height="40"
-            :src="info.avatar_thumb"
-          />
-          <!-- <van-icon style="font-size: 16px;color: #969799;" name="arrow" /> -->
+       <van-dropdown-menu>
+        <van-dropdown-item v-model="value1" :options="option1" />
+        </van-dropdown-menu>
+      <van-cell style="display: flex;align-items: center;" class="hhh" title="加大授企稳岗力度">
+        <template #title>
+          <span> 加大授企稳岗力度</span>
+          <p class="p1">常周市财政部</p>
         </template>
       </van-cell>
-      <van-field right-icon="edit" v-model="Nickname" label="姓名" />
-      <van-field v-model="sex" readonly="readonly"   label="企业" right-icon="arrow" @click="showname = true" />
-      <van-field v-model="age" maxlength="11" type="number"  label="手机号码" right-icon="arrow"  />
+      <van-cell style="display: flex;align-items: center;" class="hhh" title="加大授企稳岗力度">
+        <template #title>
+          <span> 加大授企稳岗力度</span>
+          <p class="p1">常周市财政部</p>
+        </template>
+      </van-cell>
+      <van-cell style="display: flex;align-items: center;" class="hhh" title="加大授企稳岗力度">
+        <template #title>
+          <span> 加大授企稳岗力度</span>
+          <p class="p1">常周市财政部</p>
+        </template>
+      </van-cell>
+      <van-cell style="display: flex;align-items: center;" class="hhh" title="加大授企稳岗力度">
+        <template #title>
+          <span><span style="color:#5683FF">●</span> 加大授企稳岗力度</span>
+          <p class="p1">常周市财政部</p>
+        </template>
+      </van-cell>
+      <van-cell style="display: flex;align-items: center;" class="hhh" title="加大授企稳岗力度">
+        <template #title>
+          <span><span style="color:#5683FF">●</span> 加大授企稳岗力度</span>
+          <p class="p1">常周市财政部</p>
+        </template>
+      </van-cell>
     </div>
-    <div style="margin: 16px">
-        <van-button class="see" round block type="info" native-type="submit" @click="loginout">退出登录</van-button>
-      </div>
-    <van-popup v-model="showname" position="bottom">
-      <van-picker
-        title=""
-        show-toolbar
-        :columns="columns"
-        @confirm="onConfirm1"
-         @cancel="showname = false"
-        @change="onChange"
-      />
-    </van-popup>
   </div>
 </template>
 
@@ -43,6 +49,12 @@ export default {
   components: {},
   data() {
     return {
+        value1: 0,
+         option1: [
+        { text: '全部商品', value: 0 },
+        { text: '新款商品', value: 1 },
+        { text: '活动商品', value: 2 },
+      ],
       info:{},
       NicknameShow: false,
       Nickname: "",
@@ -302,5 +314,23 @@ export default {
   left: 0;
   right: 0;
   margin: auto;
+}
+.p1 {
+    font-size: 24px;
+font-family: PingFang SC;
+font-weight: 500;
+color: #CCCCCC;
+}
+::v-deep .van-dropdown-menu__bar {
+    width: 90%;
+    height: 47px;
+    margin:0 auto;
+    background: #5683FF;
+    border-radius: 33px;
+    margin-top: 20px;
+    .van-dropdown-menu__title {
+        
+        color: #ffffff;
+    }
 }
 </style>

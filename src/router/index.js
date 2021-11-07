@@ -31,7 +31,7 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/auth/login'),
+    component: () => import('@/views/auth/loginphone'),
     meta: {
       title: '登录'
     }
@@ -176,13 +176,13 @@ const routes = [
       showTab: false
     }
   },
-  // 收货详情
+  // 身份认证
   {
     path: '/orderinfo',
     name: 'Orderinfo',
     component: () => import('@/views/shop/orderinfo'),
     meta: {
-      title: '收货详情',
+      title: '身份认证',
       showTab: false
     }
   },
@@ -236,13 +236,123 @@ const routes = [
       showTab: false
     }
   },
-  // 消息中心
+  //我的诉求
+  {
+    path: '/myappeal',
+    name: 'Myappeal',
+    component: () => import('@/views/personal/myappeal'),
+    meta: {
+      title: '我的诉求',
+      showTab: false
+    }
+  },
+  //企业诉求
+  {
+    path: '/enterpriseappeal',
+    name: 'nterpriseappeal',
+    component: () => import('@/views/personal/enterpriseappeal'),
+    meta: {
+      title: '企业诉求',
+      showTab: false
+    }
+  },
+  //诉求详情 Appeal details
+  {
+    path: '/appealdetails',
+    name: 'Appealdetails',
+    component: () => import('@/views/personal/appealdetails'),
+    meta: {
+      title: '诉求详情',
+      showTab: false
+    }
+  },
+  //政策解读 Policy  interpretation
+  {
+    path: '/policyint',
+    name: 'Policyint',
+    component: () => import('@/views/personal/policyint'),
+    meta: {
+      title: '诉求详情',
+      showTab: false
+    }
+  },
+  //政策解读item Policy  interpretation
+  {
+    path: '/policyintitem',
+    name: 'Policyintitem',
+    component: () => import('@/views/personal/policyintitem'),
+    meta: {
+      title: '诉求详情',
+      showTab: false
+    }
+  },
+  //猜你想问
+  {
+    path: '/want',
+    name: 'Want',
+    component: () => import('@/views/personal/want'),
+    meta: {
+      title: '猜你想问',
+      showTab: false
+    }
+  },
+  //问答详情
+  {
+    path: '/wantdetails',
+    name: 'Wantdetails',
+    component: () => import('@/views/personal/wantdetails'),
+    meta: {
+      title: '问答详情',
+      showTab: false
+    }
+  },
+  // 系统消息
   {
     path: '/message',
     name: 'Message',
     component: () => import('@/views/personal/message'),
     meta: {
-      title: '消息中心',
+      title: '系统消息',
+      showTab: false
+    }
+  },
+  // 交流园地
+  {
+    path: '/communication',
+    name: 'Communication',
+    component: () => import('@/views/personal/communication'),
+    meta: {
+      title: '交流园地',
+      showTab: false
+    }
+  },
+  // 查看帖子 View Post
+  {
+    path: '/viewpost',
+    name: 'Viewpost',
+    component: () => import('@/views/personal/viewpost'),
+    meta: {
+      title: '查看帖子',
+      showTab: false
+    }
+  },
+  // 发布帖子 release
+  {
+    path: '/releasepost',
+    name: 'Releasepost',
+    component: () => import('@/views/personal/releasepost'),
+    meta: {
+      title: '发布帖子',
+      showTab: false
+    }
+  },
+  // 我的帖子
+  {
+    path: '/mypost',
+    name: 'Mypost',
+    component: () => import('@/views/personal/mypost'),
+    meta: {
+      title: '我的帖子',
       showTab: false
     }
   },

@@ -1,36 +1,42 @@
 <template>
   <div class="personal">
-    <van-nav-bar title="个人信息" left-text="" left-arrow fixed @click-left="onClickLeft" />
+    <van-nav-bar title="猜你想问" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <div class="box">
-      <van-cell style="display: flex;align-items: center;" class="hhh" title="头像" is-link>
-        <template #right-icon>
-          <van-image
-            round
-            width="40"
-            height="40"
-            :src="info.avatar_thumb"
-          />
-          <!-- <van-icon style="font-size: 16px;color: #969799;" name="arrow" /> -->
+        <van-search
+            v-model="value"
+            shape="round"
+            background="#ffffff"
+            input-align="center"
+            placeholder="请输入搜索关键词"
+            />
+      <van-cell style="display: flex;align-items: center;" class="hhh" title="企业申报贷款">
+        <template #title>
+          <span><span style="color:#FF8686"><van-icon name="question" class="question" /></span> 这是个问题</span>
         </template>
       </van-cell>
-      <van-field right-icon="edit" v-model="Nickname" label="姓名" />
-      <van-field v-model="sex" readonly="readonly"   label="企业" right-icon="arrow" @click="showname = true" />
-      <van-field v-model="age" maxlength="11" type="number"  label="手机号码" right-icon="arrow"  />
+      <van-cell style="display: flex;align-items: center;" class="hhh" title="企业申报贷款">
+        <template #title>
+          <span><span style="color:#FF8686"><van-icon name="question" class="question" /></span> 这是个问题</span>
+        </template>
+      </van-cell>
+      <van-cell style="display: flex;align-items: center;" class="hhh" title="企业申报贷款">
+        <template #title>
+          <span><span style="color:#FF8686"><van-icon name="question" class="question" /></span> 这是个问题</span>
+        </template>
+      </van-cell>
+      <van-cell style="display: flex;align-items: center;" class="hhh" title="企业申报贷款">
+        <template #title>
+          <span><span style="color:#FF8686"><van-icon name="question" class="question" /></span> 这是个问题</span>
+        </template>
+      </van-cell>
+      <van-cell style="display: flex;align-items: center;" class="hhh" title="企业申报贷款">
+        <template #title>
+          <span><span style="color:#FF8686"><van-icon name="question" class="question" /></span> 这是个问题</span>
+        </template>
+      </van-cell>
+      
     </div>
-    <div style="margin: 16px">
-        <van-button class="see" round block type="info" native-type="submit" @click="loginout">退出登录</van-button>
-      </div>
-    <van-popup v-model="showname" position="bottom">
-      <van-picker
-        title=""
-        show-toolbar
-        :columns="columns"
-        @confirm="onConfirm1"
-         @cancel="showname = false"
-        @change="onChange"
-      />
-    </van-popup>
   </div>
 </template>
 
@@ -43,6 +49,7 @@ export default {
   components: {},
   data() {
     return {
+        value:'',
       info:{},
       NicknameShow: false,
       Nickname: "",
@@ -287,7 +294,7 @@ export default {
   }
 }
 ::v-deep .van-field__control {
-  text-align: right;
+//   text-align: right;
 }
 .see {
   width: 80%;
@@ -302,5 +309,11 @@ export default {
   left: 0;
   right: 0;
   margin: auto;
+}
+.p1 {
+    font-size: 24px;
+font-family: PingFang SC;
+font-weight: 500;
+color: #CCCCCC;
 }
 </style>

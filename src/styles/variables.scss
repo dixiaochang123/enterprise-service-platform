@@ -46,3 +46,11 @@ $mini: 20px;
   green: $green;
   bgGradient: $bg-gradient;
 }
+::v-deep .van-nav-bar--fixed {
+  color: #ffffff;
+  background: rgba(86, 131, 255, 1);
+}
+::v-deep .van-nav-bar__content {
+  color: #ffffff;
+  background: rgba(86, 131, 255, 1);
+}

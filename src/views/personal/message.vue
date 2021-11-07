@@ -1,9 +1,20 @@
 <template>
   <div class="personal">
-    <van-nav-bar title="消息中心" left-text="" left-arrow fixed @click-left="onClickLeft" />
+    <van-nav-bar title="系统消息" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <div class="box">
-      <van-cell to="/notice" is-link>
+      <van-cell to="/notice">
+        <div class="imgbox">
+            <img src="../../assets/personal/通知.png" alt="">
+        </div>
+        <div class="text">
+          <h3>您的诉求“申报企业贷款”已完成办理</h3>
+          <p>
+            <span>2020-3-18  15:00</span>
+          </p>
+        </div>
+      </van-cell>
+      <van-cell to="/notice">
         <template #right-icon>
           <span style="line-height:5;color: #999999;">2020/03/27</span>
         </template>
@@ -20,7 +31,6 @@
       </van-cell>
       
     </div>
-    <Nodata />
 
   </div>
 </template>
@@ -83,7 +93,7 @@ export default {
     display: flex;
     justify-content: flex-start;
     align-content: center;
-    padding: 20px;
+    padding: 10px;
   }
   .imgbox {
       width: 90px;
@@ -115,8 +125,8 @@ export default {
     }
   }
   img {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     padding-top: 25px;
   }
 }

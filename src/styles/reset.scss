@@ -127,3 +127,14 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
+.van-nav-bar__content {
+  background: rgba(86, 131, 255, 1);
+  .van-nav-bar__title.van-ellipsis {
+    color: #ffffff !important;
+  }
+  .van-icon {
+    color: #ffffff !important;
+  }
+}
+

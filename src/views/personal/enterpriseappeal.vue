@@ -1,12 +1,10 @@
 <template>
   <div class="shopdetails">
-    <van-nav-bar title="身份认证" left-text="" left-arrow fixed @click-left="onClickLeft" />
+    <van-nav-bar title="企业诉求" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <van-form @submit="onSubmit">
-      <van-field v-model="addressInfo.realname" readonly="readonly"   label="我是" right-icon="arrow" @click="showname = true" />
-      <van-field v-model="addressInfo.realname" readonly="readonly"   label="所属板块" right-icon="arrow" @click="showname = true" />
       <van-field v-model="addressInfo.realname" name="企业名称" label="企业名称" placeholder="请输入您所在的企业" :rules="[{ required: true, message: '请填写收件人' }]" />
-      <van-field v-model="addressInfo.realname" name="姓名" label="姓名" placeholder="请输入真实姓名" :rules="[{ required: true, message: '请填写收件人' }]" />
+      <van-field v-model="addressInfo.realname" name="上报人" label="上报人" placeholder="请输入上报人" :rules="[{ required: true, message: '请填写收件人' }]" />
       <van-field class="mobile" v-model="addressInfo.phone" maxlength="11" type="number" name="联系方式" label="联系方式" placeholder="请输入手机号码" :rules="[
           {
             validator: checkMobile,
@@ -14,8 +12,14 @@
             message: '请输入正确的手机号码!',
           },
         ]" />
-      <!-- <van-field right-icon="arrow" v-model="area" name="所在地区" label="所在地区" :value="area" readonly="readonly" placeholder="省市区县、乡镇等" @click="showArea = true" /> -->
-      <!-- <van-field v-model="addressInfo.address" name="详细地址" label="详细地址" placeholder="街道、楼牌号等" :rules="[{ required: true, message: '请填写详细地址' }]" /> -->
+      <van-field v-model="addressInfo.realname" name="诉求目的" label="诉求目的" placeholder="请输入诉求目的" :rules="[{ required: true, message: '请填写收件人' }]" />
+      <van-field v-model="addressInfo.realname" readonly="readonly"   label="服务类型" right-icon="arrow" @click="showname = true" />
+     <van-field v-model="addressInfo.realname" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
+      <van-uploader v-model="fileList" :max-size="50000 * 1024" multiple :max-count="5" :after-read="onRead" :before-delete="onDelete" @oversize="onOversize">
+        <div class="upload">
+          <img src="../../assets/personal/矩形 846 拷贝.png" alt="">
+        </div>
+      </van-uploader>
       <div style="margin: 16px">
         <van-button class="see" round block type="info" native-type="submit">提交</van-button>
       </div>
@@ -69,6 +73,8 @@ export default {
         utype:"kuhu"
       },
       columns: ['杭州', '宁波', '温州', '绍兴', '湖州', '嘉兴', '金华', '衢州'],
+      fileList: [],
+      uploadImages:[]
 
       // uid: 999845591,
       // utype: kuhu,
@@ -139,6 +145,34 @@ export default {
     change(picker, value, index) {
       // console.log('索引',picker, value, index)
       // this.GetCity(value[0].code);
+    },
+    onRead(file) {
+      var formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
+  　　formData.append('file', file.file); //接口需要传的参数
+      let _this = this
+      var xhr = new XMLHttpRequest()
+      xhr.open('post', 'http://cj.pydoton.com/?s=App.Examples_Upload.GoFtp')
+      xhr.send(formData) 
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          let {data} = JSON.parse(xhr.response)
+          _this.uploadImages.push(data.url)
+          console.log(_this.fileList,_this.uploadImages)
+          
+        }
+      }
+      // console.log(file);
+    },
+    onDelete(file,{index}) {
+      this.uploadImages.splice(index, 1);
+      console.log(this.fileList,this.uploadImages)
+      return true;
+
+    },
+    onOversize(file) {
+      // Toast("正在上传");
+      // console.log(file);
+      // Toast("文件大小不能超过 500kb");
     },
     onSubmit(values) {
       // &utype=kuhu&provinceID=110000&cityID=&areaID=&address=%E5%A4%A7V%E5%8F%91%E5%9C%B0%E5%9D%80&realname=%E5%91%B5%E5%91%B5%E5%91%B5&phone=13611366910
@@ -231,6 +265,24 @@ export default {
     }
   }
 }
+.van-uploader {
+    position: relative;
+    display: inline-block;
+    padding: 20px;
+}
+.upload {
+    width: 146px;
+    height: 146px;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 53px;
+      width: 52px;
+    }
+  }
 
 .see {
   width: 80%;
@@ -245,5 +297,14 @@ export default {
   left: 0;
   right: 0;
   margin: auto;
+}
+::v-deep .van-field__control {
+  text-align: right;
+}
+.hhhhh  {
+    ::v-deep .van-field__control {
+        
+        text-align: left;
+        }
 }
 </style>
