@@ -1,5 +1,5 @@
 import { login, getInfo } from '@/api/user'
-import { Login,CodeLoginRong,ResetPassword } from '@/api/login'
+import { Login,CodeLoginRong,ResetPassword,Login1 } from '@/api/login'
 import Cookies from 'js-cookie'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
@@ -47,16 +47,17 @@ const actions = {
   // 验证码登录
   logincode({ commit }, loginInfo) {
     return new Promise((resolve, reject) => {
-      CodeLoginRong(loginInfo)
+      Login1(loginInfo)
         .then(res => {
-          if(res.data.code==1) {
+          console.log(res)
+          if(res.code==0) {
 
-            const { token } = res.data.info;
+            // const { token } = res.data.info;
             console.log(res.data.info)
-            commit('SET_TOKEN', token)
-            commit('SET_USER_INFO', res.data.info)
-            setToken(token)
-            Cookies.set('userInfo', res.data.info, { expires: 15 })
+            // commit('SET_TOKEN', token)
+            commit('SET_USER_INFO', res.data.userMap)
+            // setToken(token)
+            Cookies.set('userInfo', res.data.userMap, { expires: 15 })
             resolve(res)
           } else {
             reject(res)

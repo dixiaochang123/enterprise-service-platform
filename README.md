@@ -10,10 +10,15 @@ $ npm install
 $ npm run dev
 ```
 ## 注意事项
-- 接口域名 http://khht.gasgyw.cn
-- 分发字段/api
-- [后端接口文档](https://shimo.im/sheets/XkYcXgv8WKJKw98Y/MODOC/)
-- [接口请求示例](khht.gasgyw.cn/api/public/?service=PcLive.GetLive&page=1)
+- 接口域名 http://182.92.2.167:8200/wjyql
+- 分发字段/wjyql
+- [后端接口文档](http://182.92.2.167:8200/wjyql)
+- [接口请求示例](http://182.92.2.167:8200/wjyql)
 
+## 账号密码
+```
+18862631752/123456
+18006246117/111111
+```
 
 

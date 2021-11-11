@@ -8,7 +8,7 @@ function resolve(dir) {
 }
 
 const { mockUrl,mockUrl_new } = config[process.env.NODE_ENV]
-
+console.log('mockUrl',mockUrl)
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
   publicPath: '/',
@@ -26,18 +26,26 @@ module.exports = {
       errors: true
     },
     proxy: {
-      '/api': {
-        target: mockUrl_new,
-        pathRewrite: {
-          '^/api': ''
-        },
-        secure: false,
-        changeOrigin: true
-      },
-      '/dev-api': {
+      // '/api': {
+      //   target: mockUrl_new,
+      //   pathRewrite: {
+      //     '^/api': ''
+      //   },
+      //   secure: false,
+      //   changeOrigin: true
+      // },
+      // '/dev-api': {
+      //   target: mockUrl,
+      //   pathRewrite: {
+      //     '^/dev-api': '/'
+      //   },
+      //   secure: false,
+      //   changeOrigin: true
+      // },
+      '/wjyql': {
         target: mockUrl,
         pathRewrite: {
-          '^/dev-api': '/'
+          '^/wjyql': '/'
         },
         secure: false,
         changeOrigin: true

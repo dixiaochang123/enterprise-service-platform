@@ -6,14 +6,15 @@
       <div class="home">
         <div class="header">
           <div class="admin-info">
-            <van-image round width="5rem" height="5rem" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
-            <div v-if="isLogin" class="admin-info-text">
+            <van-image v-if="userInfo.REAL_NAME" @click="login" round width="5rem" height="5rem" :src="userInfo.photo" />
+            <van-image v-if="!userInfo.REAL_NAME" @click="login" round width="5rem" height="5rem" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
+            <div v-if="userInfo.REAL_NAME" class="admin-info-text">
               <div class="t-1">
-                <p>GAFFES</p>
+                <p>{{userInfo.REAL_NAME}}</p>
                 <p class="t-1-2"></p>
               </div>
               <div class="t-2">
-                <p>常州江南化工公司</p>
+                <p>{{userInfo.ORG_PLATE}}</p>
                 <p class="t-2-2">常州新区大港街道XXX网格</p>
               </div>
             </div>
@@ -26,26 +27,30 @@
           </div>
           <div class="info-flex">
             <div class="info-flex-img">
-              <div class="flex-item">
-                <van-image width="4rem" height="4rem" fit="cover" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
+              <div class="flex-item" @click="handleclickgetinto('Myappeal')">
+                <!-- <van-image width="4rem" height="4rem" fit="cover" src="../../assets/yiqilai/index/诉求提供@3x.png" /> -->
+                <img width="4rem" height="4rem" src="../../assets/yiqilai/index/诉求提供@3x.png" alt="">
                 <p>诉求提供</p>
               </div>
-              <div class="flex-item">
-                <van-image width="4rem" height="4rem" fit="cover" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
+              <div class="flex-item" @click="handleclickgetinto('Myappeal')">
+                <!-- <van-image width="4rem" height="4rem" fit="cover" src="../../assets/yiqilai/index/未登录头像.png" /> -->
+                <img width="4rem" height="4rem" src="../../assets/yiqilai/index/政策解读@3x.png" alt="">
                 <p>我的诉求</p>
               </div>
-              <div class="flex-item">
-                <van-image width="4rem" height="4rem" fit="cover" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
+              <div class="flex-item" @click="handleclickgetinto('Policyint')">
+                <!-- <van-image width="4rem" height="4rem" fit="cover" src="../../assets/yiqilai/index/我的诉求@3x.png" /> -->
+                <img width="4rem" height="4rem" src="../../assets/yiqilai/index/我的诉求@3x.png" alt="">
                 <p>政策解读</p>
               </div>
-              <div class="flex-item">
-                <van-image width="4rem" height="4rem" fit="cover" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
+              <div class="flex-item" @click="handleclickgetinto('Want')">
+                <!-- <van-image width="4rem" height="4rem" fit="cover" src="../../assets/yiqilai/index/猜您想问@3x.png" /> -->
+                <img width="4rem" height="4rem" src="../../assets/yiqilai/index/猜您想问@3x.png" alt="">
                 <p>猜您想问</p>
               </div>
             </div>
             <div class="right-top">
-              <div></div>
-              <div></div>
+              <div><img width="4rem" height="4rem" src="../../assets/yiqilai/index/搜索@3x.png" alt=""></div>
+              <div><img width="4rem" height="4rem" src="../../assets/yiqilai/index/系统消息@3x.png" alt=""></div>
 
             </div>
 
@@ -179,16 +184,20 @@
 </template>
 
 <script>
-import { getBanner, getCategory, getSession, getList } from "@/api/home";
-import { getBanner1, getRank, GetAllMatch, GetRecommend } from "@/api/home1";
 
+import { mapGetters } from "vuex";
 export default {
   name: "Index",
   components: {},
   data() {
     return {
       isLogin: false,
+      refreshing:false,
+      loading:false
     };
+  },
+  computed: {
+    ...mapGetters(["userInfo"]),
   },
   mounted() {},
   methods: {
@@ -196,10 +205,18 @@ export default {
     onRefresh() {
       if (!this.loading) {
         this.refreshing = true;
-        this.pageNo = 1;
-        this.GetRecommend();
       }
     },
+    login() {
+      this.$router.push({
+        name:'Login'
+      })
+    },
+    handleclickgetinto(val) {
+      this.$router.push({
+        name:val
+      })
+    }
   },
 };
 </script>
@@ -268,6 +285,22 @@ export default {
       justify-content: space-around;
       align-items: center;
     }
+    .flex-item {
+      text-align: center;
+      img {
+        width: 75px;
+        height: 73px;
+
+      }
+      p {
+        padding-top: 20px;
+        font-size: 24px;
+        font-family: PingFangSC;
+        font-weight: 500;
+        color: #000000;
+        opacity: 0.7;
+      }
+    }
   }
   .right-top {
     position: absolute;
@@ -282,6 +315,13 @@ export default {
       border-radius: 50%;
       margin: 0 13px;
       box-shadow: 0px 9px 13px 1px rgba(102, 139, 255, 0.17);
+      text-align: center;
+      img {
+        box-sizing: border-box;
+        margin-top: 15px;
+        width: 60%;
+        height: 60%;
+      }
     }
   }
 }

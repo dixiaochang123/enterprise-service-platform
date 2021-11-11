@@ -12,6 +12,9 @@ Vue.use(Uploader).use(Picker).use(DatetimePicker).use(Area).use(Step).use(Steps)
 import 'swiper/dist/css/swiper.min.css'
 import 'swiper/dist/js/swiper.min'
 
+import md5 from 'js-md5';
+Vue.prototype.$md5 = md5;
+
 import Videojs from 'video.js'
 import 'video.js/dist/video-js.css'
 Vue.prototype.$video = Videojs

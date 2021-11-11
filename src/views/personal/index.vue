@@ -67,9 +67,6 @@ export default {
   },
   computed: {
     ...mapGetters(["userInfo"]),
-    key() {
-      return this.$route.fullPath;
-    },
   },
   mounted() {
     this.GetUserInfo()

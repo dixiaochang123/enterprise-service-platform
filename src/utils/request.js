@@ -44,11 +44,10 @@ service.interceptors.response.use(
     // 取消请求
     const key = response.config.url + '&' + response.config.method
     pendingReq[key] && delete pendingReq[key]
-
+    return res
     // 与后端约定的错误码
     if (res.code !== 200) {
-      Toast(res.message)
-      // 现约定 50001:无效token 50002:token过期
+      Toast('111111111111111')
       if (res.code === 50001 || res.code === 50002) {
         Dialog.alert({
           title: '提示',

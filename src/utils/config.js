@@ -7,22 +7,12 @@ module.exports = {
     baseUrl: '/dev-api',
     mockUrl: 'http://localhost:3210'
   },
-  // 'development': {
-  //   baseUrl: '/dev-api',
-  //   mockUrl: 'https://api.xwhx.top',
-  // },
-  // 'development': {
-  //   baseUrl: '/api',
-  //   mockUrl: 'http://khht.gasgyw.cn'
-  // },
   'development': {
-    baseUrl_new: '/api',
-    mockUrl_new: 'http://khht.gasgyw.cn/',
-    baseUrl: '/dev-api',
-    mockUrl: 'https://api.xwhx.top',
+    baseUrl: '/wjyql',
+    mockUrl: 'http://182.92.2.167:8200',
   },
   'production': {
-    baseUrl: 'https://api.xwhx.top',
-    mockUrl: 'https://api.xwhx.top'
+    baseUrl: 'http://182.92.2.167:8200',
+    mockUrl: 'http://182.92.2.167:8200'
   }
 }

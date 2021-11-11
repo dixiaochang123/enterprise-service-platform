@@ -1,4 +1,5 @@
 import request1 from '@/utils/request1'
+import request from '@/utils/request'
 
 //登录
 export function Login(data) {
@@ -47,5 +48,13 @@ export function ResetPassword(data) {
   return request1({
     url: `/api/public/?service=User.ResetPassword&mobile=${data.mobile}&newPassword=${data.newPassword}&mobileCode=${data.mobileCode}`,
     method: 'get',
+  })
+}
+//登录
+export function Login1(data) {
+  return request({
+    url: `/wjyql/mobile/doLogin`,
+    method: 'post',
+    data
   })
 }

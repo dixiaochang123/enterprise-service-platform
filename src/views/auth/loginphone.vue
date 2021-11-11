@@ -8,9 +8,21 @@
       @click-left="onClickLeft"
       @click-right="onClickRight"
     /> -->
+    <div style="height:30px;"></div>
     <div class="header">
+      <!-- <van-image
+        width="156"
+        height="156"
+        src="../../assets/yiqilai/login/logo@3x.png"
+      /> -->
+      <div class="imags">
+        <img  src="../../assets/yiqilai/login/logo@3x.png" alt="">
+      </div>
       <h3 style="text-align: center;"><span style="color:#566BFF;">“一企来”</span>一起来~</h3>
       <p style="text-align: center;">“为企业开通一键直达的服务快速通道”</p>
+      <div class="imags1">
+        <img  src="../../assets/yiqilai/login/插画@3x.png" alt="">
+      </div>
     </div>
 
     <van-form
@@ -56,13 +68,12 @@
         center
         clearable
         label=""
-        placeholder="请输入验证码"
-        :rules="[{ required: true, message: '请输入验证码！' }]"
+        placeholder="请输入验密码"
+        :rules="[{ required: true, message: '请输入验密码！' }]"
       >
-        <template #button>
-          <!-- <van-button size="small" type="primary" @click="GetCode">获取验证码</van-button> -->
+        <!-- <template #button>
           <van-button size="small" :disabled="safety.state" type="primary" @click="GetCode">{{safety.text}}</van-button>
-        </template>
+        </template> -->
       </van-field>
 
       <div style="margin: 30px">
@@ -83,14 +94,14 @@
 <script>
 import {GetLoginCode} from '@/api/login'
 import { Toast } from 'vant';
-
+import md5 from 'js-md5';
 export default {
   name: 'LoginPhone',
   data() {
     return {
       form: {
-        mobile: '',
-        code:''
+        mobile: '18862631752',
+        code:'123456'
       },
       // 验证码
       safety: {
@@ -168,8 +179,13 @@ export default {
     // 提交
     onSubmit() {
       this.loading = true
+      let {mobile ,code} = this.form
+      let data = {
+        USER_NAME:mobile,
+        PASSWORD: md5(code),
+      }
       this.$store
-        .dispatch('user/logincode', this.form)
+        .dispatch('user/logincode', data)
         .then((res) => {
           console.log(res)
           this.$notify({
@@ -184,7 +200,7 @@ export default {
         })
         .catch((error) => {
           console.log(error)
-          let {msg} = error.data;
+          let {msg} = error;
           Toast({
             message: msg,
             position: 'top',
@@ -215,6 +231,35 @@ export default {
   .header {
     padding-left: 30px;
     padding-right: 25px;
+    text-align: center;
+    box-sizing: border-box;
+    .imags {
+      width: 156px;
+      height: 156px;
+      background: #FFFFFF;
+      box-shadow: 0px 9px 43px 2px rgba(0, 18, 148, 0.05);
+      border-radius: 33px;
+      padding:40px 26px;
+      box-sizing: border-box;
+      margin: 0 auto;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .imags1 {
+      width: 527px;
+      height: 362px;
+      margin: 0 auto;
+      background:url("../../assets/yiqilai/login/模糊背景.png") no-repeat center center;
+      background-size: contain;
+      padding:40px 26px;
+      box-sizing: border-box;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
     h3 {
       padding-top: 62px;
       font-size: 60px;
@@ -223,8 +268,8 @@ export default {
       color: #3A3A3A;
     }
     p {
-      height: 17px;
-      font-size: 18px;
+      // height: 17px;
+      font-size: 32px;
       font-family: PingFang SC;
       font-weight: 400;
       color: #999999;
@@ -233,6 +278,9 @@ export default {
         color: #FF5959;
       }
     }
+    // ::v-deep .van-image {
+    //   margin: 0 auto;
+    // }
   }
 
   .form {
