@@ -1,4 +1,5 @@
 import request1 from '@/utils/request1'
+import request from '@/utils/request'
 
 //个人信息
 export function GetUserInfo(data) {
@@ -98,6 +99,66 @@ export function GetIntegral(mobile) {
     return request1({
         url: `/api/public/?service=App.User_User.GetIntegral&mobile=${mobile}`,
         method: 'get'
+    })
+}
+//政策解读
+export function getOrganList(data) {
+    return request({
+        url: `/wjyql/mobile/getOrganList`,
+        method: 'post',
+        data
+    })
+}
+//政策解读列表
+export function getPolicyList(data) {
+    return request({
+        url: `/wjyql/mobile/getPolicyList`,
+        method: 'post',
+        data
+    })
+}
+//政策解读详情
+export function getPolicyMap(data) {
+    return request({
+        url: `/wjyql/mobile/getPolicyMap`,
+        method: 'post',
+        data
+    })
+}
+
+//政策解读详情附件下载
+export function uploadFile(id) {
+    return request({
+        url: `/wjyql/uploadFile/downloadFile?attachId=${id}`,
+        method: 'get',
+    })
+}
+
+
+//获取问题列表
+export function getProblemList(data) {
+    return request({
+        url: `/wjyql/mobile/getProblemList`,
+        method: 'post',
+        data
+    })
+}
+
+//获取问题详情
+export function getProblemMap(data) {
+    return request({
+        url: `/wjyql/mobile/getProblemMap`,
+        method: 'post',
+        data
+    })
+}
+
+//获取帖子列表
+export function getPostList(data) {
+    return request({
+        url: `/wjyql/mobile/getPostList`,
+        method: 'post',
+        data
     })
 }
 

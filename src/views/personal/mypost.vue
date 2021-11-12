@@ -4,61 +4,56 @@
     <div style="height: 46px"></div>
     <div class="box">
       <van-search v-model="value1" shape="round" background="#ffffff" input-align="center" placeholder="请输入搜索关键词" />
-      <div class="box-main">
-        <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>虹新技术有限公司</p>
-        <p class="p1"><span class="s-1">寻求口罩机零配件供应商</span></p>
+      <div @click="handleclickgetinto(item)" v-for="item in list" :key="item.ID" class="box-main">
+        <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>{{item.TITLE}}</p>
+        <p class="p1"><span class="s-1">{{item.CONTENT}}</span></p>
         <van-icon class="edit" name="edit" />
       </div>
-      <div style="height:20px;"></div>
-      <div class="box-main">
-        <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>虹新技术有限公司</p>
-        <p class="p1"><span class="s-1">寻求口罩机零配件供应商</span></p>
-        <van-icon class="edit" name="edit" />
-      </div>
-      <div style="height:20px;"></div>
-      <div class="box-main">
-        <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>虹新技术有限公司</p>
-        <p class="p1"><span class="s-1">寻求口罩机零配件供应商</span></p>
-        <van-icon class="edit" name="edit" />
-      </div>
-      <div style="height:20px;"></div>
-      <div class="box-main">
-        <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>虹新技术有限公司</p>
-        <p class="p1"><span class="s-1">寻求口罩机零配件供应商</span></p>
-        <van-icon class="edit" name="edit" />
-      </div>
-      <div style="height:20px;"></div>
-      <div class="box-main">
-        <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>虹新技术有限公司</p>
-        <p class="p1"><span class="s-1">寻求口罩机零配件供应商</span></p>
-        <van-icon class="edit" name="edit" />
-      </div>
+      
 
     </div>
   </div>
 </template>
 
 <script>
-// import { mapGetters } from "vuex";
+import { mapGetters } from "vuex";
+import { getPostList } from "@/api/personal";
 export default {
   //   name: "Userinfo",
   components: {},
   data() {
     return {
-      value1: 0,
+      value1: '',
+      list:[]
     };
   },
   computed: {
-    // ...mapGetters(["userInfo"]),
+    ...mapGetters(["userInfo"]),
   },
   mounted() {
-    // this.GetUserInfo();
+    this.getPostList();
   },
   methods: {
-    loginout() {
+    getPostList() {
+
+      getPostList({
+        SEARCH:'测试'
+      }).then((res) => {
+          let {code,data} = res;
+        if(code==0) {
+          console.log(data)
+          this.list = data.list;
+        }
+        })
+        .catch((error) => console.log(error));
+    },
+    handleclickgetinto(data){
       this.$router.push({
-        name: "Login",
-      });
+        name:"Viewpost",
+        query:{
+          id:data.ID
+        }
+      })
     },
     onClickLeft() {
       this.$router.go(-1); //返回上一层
@@ -79,8 +74,8 @@ export default {
 
 .box {
   width: 100%;
-  padding: 0 20px;
-  padding-top: 20px;
+  padding: 0 30px;
+  padding-top: 30px;
   box-sizing: border-box;
 }
 .box-main {
@@ -94,6 +89,7 @@ export default {
   font-weight: 500;
   color: #000000;
   position: relative;
+  margin-bottom: 30px;
   p {
     line-height: 50px;
   }
