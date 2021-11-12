@@ -3,29 +3,14 @@
     <van-nav-bar title="系统消息" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <div class="box">
-      <van-cell to="/notice">
+      <van-cell @click="handleclickgetinto(item)" v-for="item in list" :key="item.ID">
         <div class="imgbox">
             <img src="../../assets/personal/通知.png" alt="">
         </div>
         <div class="text">
-          <h3>您的诉求“申报企业贷款”已完成办理</h3>
+          <h3>{{item.TITLE}}</h3>
           <p>
-            <span>2020-3-18  15:00</span>
-          </p>
-        </div>
-      </van-cell>
-      <van-cell to="/notice">
-        <template #right-icon>
-          <span style="line-height:5;color: #999999;">2020/03/27</span>
-        </template>
-        <!-- <van-image round width="45" height="45" src="https://img01.yzcdn.cn/vant/cat.jpeg" /> -->
-        <div class="imgbox">
-            <img src="../../assets/personal/通知.png" alt="">
-        </div>
-        <div class="text">
-          <h3>系统通知</h3>
-          <p>
-            <span>恭喜你获得一等奖</span>
+            <span>{{item.CREATETIME}}</span>
           </p>
         </div>
       </van-cell>
@@ -37,7 +22,7 @@
 
 <script>
 import Nodata from "../like/modules/Nodata"
-import {GetUserNotice} from "@/api/personal";
+import {getNoticeList} from "@/api/personal";
 import { mapGetters } from "vuex";
 export default {
   name: "Message",
@@ -46,7 +31,8 @@ export default {
   },
   data() {
     return {
-      page:1
+      page:1,
+      list:[]
     };
   },
   computed: {
@@ -56,20 +42,28 @@ export default {
     },
   },
   mounted() {
-    this.GetUserNotice()
+    this.getNoticeList()
   },
   methods: {
-    GetUserNotice() {
-      let params = {
-        uid:this.userInfo.id,
-        token:this.userInfo.token,
-        page:this.page
-      }
-      GetUserNotice(params).then(res=>{
-        let { info } = res.data
-        console.log(info)
+    getNoticeList() {
+      getNoticeList({
+        SEARCH: "",
+      }).then(res=>{
+       let {code,data} = res;
+        if(code==0) {
+          console.log(data)
+          this.list = data.list;
+        }
       }).catch(error=>console.log(error))
 
+    },
+    handleclickgetinto(data){
+      this.$router.push({
+        name:"Notice1",
+        query:{
+          id:data.ID
+        }
+      })
     },
     onClickLeft() {
       this.$router.go(-1); //返回上一层

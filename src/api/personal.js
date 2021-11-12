@@ -161,4 +161,38 @@ export function getPostList(data) {
         data
     })
 }
+//获取帖子详情
+export function getPostMap(data) {
+    return request({
+        url: `/wjyql/mobile/getPostMap`,
+        method: 'post',
+        data
+    })
+}
+//	帖子保存或修改
+export function postSave(data) {
+    return request({
+        url: `/wjyql/mobile/postSave`,
+        method: 'post',
+        data
+    })
+}
+
+//	获取通知列表
+export function getNoticeList(data) {
+    return request({
+        url: `/wjyql/mobile/getNoticeList`,
+        method: 'post',
+        data
+    })
+}
+
+//	获取通知列表
+export function messagegetProblemMap(data) {
+    return request({
+        url: `/wjyql/mobile/getProblemMap`,
+        method: 'post',
+        data
+    })
+}
 

@@ -3,30 +3,14 @@
     <van-nav-bar title="问答详情" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <div class="box">
-      <div class="box-main">
-        <p class="p1"><span>问</span><span class="s-2"></span>P***h 提问于 2021-08-19</p>
-        <p class="p2">我来问个复杂的问题，所以我需要凑够 两行字。</p>
-        <van-image
-        style="padding-left:25px;"
-            width="100"
-            height="100"
-            src="https://img01.yzcdn.cn/vant/cat.jpeg"
-            />
-        <p class="p1"><span>答</span><span class="s-2"></span>P***h 提问于 2021-08-19</p>
-        <p class="p2">我来问个复杂的问题，所以我需要凑够 两行字。</p>
-        <van-image
-        style="padding-left:25px;"
-            width="100"
-            height="100"
-            src="https://img01.yzcdn.cn/vant/cat.jpeg"
-            />
+      <div class="box-main box-main1">
+        <p class="p1"><span>问</span></p>
+        <p class="p2">{{content.TITLE}}</p>
       </div>
       <div style="height:20px;"></div>
       <div class="box-main">
-        <p class="p1"><span>问</span><span class="s-2"></span>P***h 提问于 2021-08-19</p>
-        <p class="p2">我来问个复杂的问题，所以我需要凑够 两行字。</p>
-        <p class="p1"><span>答</span><span class="s-2"></span>P***h 提问于 2021-08-19</p>
-        <p class="p2">我来问个复杂的问题，所以我需要凑够 两行字。</p>
+        <p class="p1"><span>答</span></p>
+        <p class="p2" v-html="content.ANSWER"></p>
       </div>
 
     </div>
@@ -99,6 +83,8 @@ export default {
   font-family: PingFang SC;
   font-weight: 500;
   color: #000000;
+  position: relative;
+  padding-left: 40px;
   p {
       line-height: 50px;
   }
@@ -109,6 +95,9 @@ export default {
     color: #000000;
     display: flex;
     align-items: center;
+    position: absolute;
+    left: 20px;
+    top: 15px;
     span {
       display: inline-block;
       width: 50px;
@@ -145,5 +134,8 @@ background: #5683FF;
   .p5 {
 
   }
+}
+.box-main1 {
+  background-color: #fff;
 }
 </style>

@@ -116,10 +116,7 @@ export default {
       }).catch(error=>console.log(error))
     },
     onClickLeft() {
-      this.$router.push({
-        name: "Shopdetails",
-        query:{...this.$route.query}
-      });
+      this.$router.go(-1); //返回上一层
     },
     onConfirm1(value, index) {
       Toast(`当前值：${value}, 当前索引：${index}`);
@@ -208,7 +205,7 @@ export default {
           if(msg=="保存成功!") {
 
             this.$router.push({
-              name: "Confirmorder",
+              name: "Myappeal",
               query:{...this.$route.query}
             });
           }

@@ -4,7 +4,6 @@
     <div style="height: 46px"></div>
     <van-form @submit="onSubmit">
       <van-field v-model="addressInfo.realname" name="标题" label="标题" placeholder="请输入标题" :rules="[{ required: true, message: '请填写收件人' }]" />
-      <van-field v-model="addressInfo.realname" name="诉求目的" label="诉求目的" placeholder="请输入诉求目的" :rules="[{ required: true, message: '请填写收件人' }]" />
       <van-field v-model="addressInfo.realname" name="企业名称" label="企业名称" placeholder="请输入您所在的企业" :rules="[{ required: true, message: '请填写收件人' }]" />
       <van-field v-model="addressInfo.realname" name="上报人" label="上报人" placeholder="请输入上报人" :rules="[{ required: true, message: '请填写收件人' }]" />
       <van-field v-model="addressInfo.phone" name="联系方式" label="联系方式" placeholder="请输入手机号码"  />
@@ -123,10 +122,7 @@ export default {
         .catch((error) => console.log(error));
     },
     onClickLeft() {
-      this.$router.push({
-        name: "Shopdetails",
-        query: { ...this.$route.query },
-      });
+      this.$router.go(-1); //返回上一层
     },
     onConfirm1(value, index) {
       Toast(`当前值：${value}, 当前索引：${index}`);

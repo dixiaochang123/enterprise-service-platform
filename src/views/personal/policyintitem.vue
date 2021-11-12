@@ -31,8 +31,7 @@
 import { mapGetters } from "vuex";
 const config = require('../../utils/config')
 import {
-  getPolicyMap,
-  uploadFile
+  getPolicyMap
 } from "@/api/personal";
 export default {
   name: "Userinfo",

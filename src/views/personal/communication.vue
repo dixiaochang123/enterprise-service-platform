@@ -4,6 +4,17 @@
     <div style="height: 46px"></div>
     <div class="box">
       <van-search v-model="value1" shape="round" background="#ffffff" input-align="center" placeholder="请输入搜索关键词" />
+      <div class="tbs">
+        <van-cell to="/releasepost">
+          <img src="" alt="">
+          <p>发布帖子</p>
+        </van-cell>
+        <van-cell to="/mypost">
+          <img src="" alt="">
+          <p>我的帖子</p>
+        </van-cell>
+
+      </div>
       <div class="box-main">
         <p class="p1"><span class="s-1">寻求口罩机零配件供应商</span><span class="s-2">2020.03.18</span></p>
         <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>虹新技术有限公司</p>
@@ -62,9 +73,45 @@ export default {
 
 .box {
   width: 100%;
-  padding: 0 20px;
-  padding-top: 20px;
+  padding: 0 30px;
+  padding-top: 30px;
   box-sizing: border-box;
+}
+.tbs {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  padding: 30px 0;
+  > div {
+    width: 320px;
+    height: 100px;
+    background: linear-gradient(0deg, #557EFF, #91ACFF);
+    border-radius: 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 20px;
+    font-size: 32px;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #FFFFFF;
+    box-sizing: border-box;
+    > div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: #FFFFFF;
+    }
+    img {
+      width: 55px;
+      height: 55px;
+      // vertical-align: middle;
+    }
+    p {
+      padding-left: 13px;
+    }
+  }
 }
 .box-main {
   width: 100%;

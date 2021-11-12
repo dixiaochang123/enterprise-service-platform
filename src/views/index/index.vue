@@ -11,7 +11,9 @@
             <div v-if="userInfo.REAL_NAME" class="admin-info-text">
               <div class="t-1">
                 <p>{{userInfo.REAL_NAME}}</p>
+                <p class="t-1-2" style="visibility: hidden;"></p>
                 <p class="t-1-2"></p>
+                <p class="t-1-2" style="visibility: hidden;"></p>
               </div>
               <div class="t-2">
                 <p>{{userInfo.ORG_PLATE}}</p>
@@ -27,7 +29,7 @@
           </div>
           <div class="info-flex">
             <div class="info-flex-img">
-              <div class="flex-item" @click="handleclickgetinto('Myappeal')">
+              <div class="flex-item" @click="handleclickgetinto('Enterpriseappeal')">
                 <!-- <van-image width="4rem" height="4rem" fit="cover" src="../../assets/yiqilai/index/诉求提供@3x.png" /> -->
                 <img width="4rem" height="4rem" src="../../assets/yiqilai/index/诉求提供@3x.png" alt="">
                 <p>诉求提供</p>
@@ -50,7 +52,7 @@
             </div>
             <div class="right-top">
               <div><img width="4rem" height="4rem" src="../../assets/yiqilai/index/搜索@3x.png" alt=""></div>
-              <div><img width="4rem" height="4rem" src="../../assets/yiqilai/index/系统消息@3x.png" alt=""></div>
+              <div @click="handletomessage"><img width="4rem" height="4rem" src="../../assets/yiqilai/index/系统消息@3x.png" alt=""></div>
 
             </div>
 
@@ -103,7 +105,7 @@
               <p class="p2" style="visibility: hidden;"></p>
               <p class="p2"></p>
             </div>
-            <div class="myswipe">
+            <div class="myswipe" @click="handleclickcommunication">
               <van-swipe :loop="false" height="100%" :width="320">
                 <van-swipe-item>
                   <div class="vsi">
@@ -215,6 +217,16 @@ export default {
     handleclickgetinto(val) {
       this.$router.push({
         name:val
+      })
+    },
+    handletomessage() {
+      this.$router.push({
+        name:'Message'
+      })
+    },
+    handleclickcommunication() {
+      this.$router.push({
+        name:'Communication'
       })
     }
   },

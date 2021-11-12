@@ -249,7 +249,7 @@ const routes = [
   //企业诉求
   {
     path: '/enterpriseappeal',
-    name: 'nterpriseappeal',
+    name: 'Enterpriseappeal',
     component: () => import('@/views/personal/enterpriseappeal'),
     meta: {
       title: '企业诉求',
