@@ -7,7 +7,7 @@
         <div class="header">
           <div class="admin-info">
             <!-- <van-image v-if="userInfo.REAL_NAME" @click="login" round width="5rem" height="5rem" :src="photo" /> -->
-            <img v-if="userInfo.REAL_NAME" class="photo" :src="photo" alt="">
+            <img @click="gotogrzx" v-if="userInfo.REAL_NAME" class="photo" :src="photo" alt="">
             <van-image v-if="!userInfo.REAL_NAME" @click="login" round width="5rem" height="5rem" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
             <div v-if="userInfo.REAL_NAME" class="admin-info-text">
               <div class="t-1">
@@ -66,10 +66,10 @@
             </div>
             <div class="myswipe">
               <van-swipe :loop="false" height="100%" :width="320">
-                <van-swipe-item v-for="item in indexData.policyList" :key="item.ID">
+                <van-swipe-item :class="'vanswipeitem'+index" v-for="(item,index) in indexData.policyList" :key="item.ID">
                   <div class="vsi">
                     <!-- <img class="vsiimg" v-if="item.ATTACHS" :src="url+item.ATTACHS" alt=""> -->
-                    <img class="vsiimg" src="https://img01.yzcdn.cn/vant/cat.jpeg" alt="">
+                    <!-- <img class="vsiimg" src="https://img01.yzcdn.cn/vant/cat.jpeg" alt=""> -->
                     <div class="vsi-1">
                       <p class="p1" style="vertical-align: bottom;"><span></span><span style="visibility: hidden;"></span> 政策类别</p>
                       <p class="p2">{{item.NAME}}</p>
@@ -92,11 +92,11 @@
               <p class="p2" style="visibility: hidden;"></p>
               <p class="p2"></p>
             </div>
-            <div class="myswipe" @click="handleclickcommunication">
-              <van-swipe :loop="false" height="100%" :width="320">
-                <van-swipe-item v-for="item in indexData.postList" :key="item.ID">
+            <div class="myswipe myswipe10" @click="handleclickcommunication">
+              <van-swipe :loop="false" height="100%">
+                <van-swipe-item :class="'vanswipeitem1'+index" v-for="(item,index) in indexData.postList" :key="item.ID">
                   <div class="vsi">
-                    <img class="vsiimg" src="https://img01.yzcdn.cn/vant/cat.jpeg" alt="">
+                    <!-- <img class="vsiimg" src="https://img01.yzcdn.cn/vant/cat.jpeg" alt=""> -->
                     <div class="vsi-1">
                       <p class="p1" style="vertical-align: bottom;"><span></span><span style="visibility: hidden;"></span> {{item.TITLE}}&nbsp;&nbsp;&nbsp;&nbsp;{{item.CREATETIME}}</p>
                       <p class="p2">{{item.CONTENT}}</p>
@@ -122,7 +122,7 @@
             <div class="myswipe myswipe11">
               <div class="myswipe1">
 
-                  <div class="vsi">
+                  <div class="vsi vsi-1-1">
                     <div class="vsi-1">
                       <p class="p1" style="vertical-align: bottom;"><span></span></p>
                       <p class="p2">审批服务</p>
@@ -131,7 +131,7 @@
                     </div>
                     <van-button class="vsi-2" round type="info">更多</van-button>
                   </div>
-                  <div class="vsi vsi2">
+                  <div class="vsi vsi2 vsi-1-2">
                     <div class="vsi-1">
                       <p class="p1" style="vertical-align: bottom;"><span></span></p>
                       <p class="p2">人才申报</p>
@@ -140,8 +140,8 @@
                     </div>
                     <van-button class="vsi-2" round type="info">更多</van-button>
                   </div>
-                  <div class="vsi">
-                    <div class="vsi-1">
+                  <div class="vsi vsi-1-3">
+                    <div class="vsi-1 ">
                       <p class="p1" style="vertical-align: bottom;"><span></span></p>
                       <p class="p2">金融服务</p>
                       <p class="p3"></p>
@@ -186,6 +186,12 @@ export default {
     this.getHomeList()
   },
   methods: {
+    gotogrzx() {
+
+    this.$router.push({
+        name:'Userinfo'
+      })
+    },
     getHomeList() {
       getHomeList({
         USER_ID:this.userInfo.ID
@@ -397,7 +403,7 @@ export default {
       height: 100%;
       width: 94%;
       border-radius: 20px;
-      background: linear-gradient(0deg, #557EFF, #91ACFF);
+      // background: linear-gradient(0deg, #557EFF, #91ACFF);
       // margin-right: 80px;
       padding:40px 0 26px 26px;
       display: flex;
@@ -480,5 +486,39 @@ export default {
     color: #fff;
     background-color: #1989fa;
     border: 1px solid transparent;
+}
+.vsi-1-1 {
+  background: url('../../assets/index/11/5.png') no-repeat center center;
+  background-size: 100% 100%;
+}
+.vsi-1-2 {
+  background: url('../../assets/index/11/1.png') no-repeat center center;
+  background-size: 100% 100%;
+}
+.vsi-1-3 {
+  background: url('../../assets/index/11/3.png') no-repeat center center;
+  background-size: 100% 100%;
+}
+.vanswipeitem0 {
+  background: url('../../assets/index/11/2.png') no-repeat center center;
+  background-size: 95% 100%;
+}
+.vanswipeitem1 {
+  background: url('../../assets/index/11/9.png') no-repeat center center;
+  background-size: 95% 100%;
+}
+.vanswipeitem2 {
+  background: url('../../assets/index/11/9.png') no-repeat center center;
+  background-size: 95% 100%;
+}
+.vanswipeitem10,.vanswipeitem1undefined {
+  background: url('../../assets/index/11/6.png') no-repeat center center;
+  background-size: 100% 100%;
+  width: 100%;
+}
+.myswipe10 {
+  width: 100%;
+  padding-right: 33px;
+  box-sizing: border-box;
 }
 </style>

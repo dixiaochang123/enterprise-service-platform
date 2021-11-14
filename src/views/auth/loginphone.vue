@@ -35,18 +35,19 @@
     <p class="p2" style="visibility: hidden;"></p>
     <p class="p2"></p>
       <van-field
+       left-icon="friends-o"
       class="phone"
       style="background:none;"
         v-model="form.mobile"
         type="text"
         clearable
         name="手机号码"
-        placeholder="请输入手机号码"
+        placeholder="请输入您的账号"
         :rules="[
           {
             validator: checkEmail,
             required: true,
-            message: '请输入正确的手机号码!',
+            message: '请输入正确的您的账号!',
           },
         ]"
       />
@@ -63,13 +64,14 @@
         :rules="[{ required: true, message: '请输入正确的密码！' }]"
       /> -->
       <van-field
+       left-icon="bag-o"
       style="background:none;"
         v-model="form.code"
         center
         clearable
         label=""
-        placeholder="请输入验密码"
-        :rules="[{ required: true, message: '请输入验密码！' }]"
+        placeholder="请输入您的密码"
+        :rules="[{ required: true, message: '请输入您的密码！' }]"
       >
         <!-- <template #button>
           <van-button size="small" :disabled="safety.state" type="primary" @click="GetCode">{{safety.text}}</van-button>
@@ -354,6 +356,9 @@ export default {
     padding-right: 34px;
     padding-top: 20px;
   }
+}
+::v-deep .van-field {
+  border-bottom: solid 1px rgba(0,0, 0, 0.05);
 }
 
 </style>
