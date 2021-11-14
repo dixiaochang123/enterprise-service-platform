@@ -6,7 +6,8 @@
       <div class="home">
         <div class="header">
           <div class="admin-info">
-            <van-image v-if="userInfo.REAL_NAME" @click="login" round width="5rem" height="5rem" :src="userInfo.photo" />
+            <!-- <van-image v-if="userInfo.REAL_NAME" @click="login" round width="5rem" height="5rem" :src="photo" /> -->
+            <img v-if="userInfo.REAL_NAME" class="photo" :src="photo" alt="">
             <van-image v-if="!userInfo.REAL_NAME" @click="login" round width="5rem" height="5rem" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
             <div v-if="userInfo.REAL_NAME" class="admin-info-text">
               <div class="t-1">
@@ -30,22 +31,18 @@
           <div class="info-flex">
             <div class="info-flex-img">
               <div class="flex-item" @click="handleclickgetinto('Enterpriseappeal')">
-                <!-- <van-image width="4rem" height="4rem" fit="cover" src="../../assets/yiqilai/index/诉求提供@3x.png" /> -->
                 <img width="4rem" height="4rem" src="../../assets/yiqilai/index/诉求提供@3x.png" alt="">
                 <p>诉求提供</p>
               </div>
               <div class="flex-item" @click="handleclickgetinto('Myappeal')">
-                <!-- <van-image width="4rem" height="4rem" fit="cover" src="../../assets/yiqilai/index/未登录头像.png" /> -->
                 <img width="4rem" height="4rem" src="../../assets/yiqilai/index/政策解读@3x.png" alt="">
                 <p>我的诉求</p>
               </div>
               <div class="flex-item" @click="handleclickgetinto('Policyint')">
-                <!-- <van-image width="4rem" height="4rem" fit="cover" src="../../assets/yiqilai/index/我的诉求@3x.png" /> -->
                 <img width="4rem" height="4rem" src="../../assets/yiqilai/index/我的诉求@3x.png" alt="">
                 <p>政策解读</p>
               </div>
               <div class="flex-item" @click="handleclickgetinto('Want')">
-                <!-- <van-image width="4rem" height="4rem" fit="cover" src="../../assets/yiqilai/index/猜您想问@3x.png" /> -->
                 <img width="4rem" height="4rem" src="../../assets/yiqilai/index/猜您想问@3x.png" alt="">
                 <p>猜您想问</p>
               </div>
@@ -69,28 +66,18 @@
             </div>
             <div class="myswipe">
               <van-swipe :loop="false" height="100%" :width="320">
-                <van-swipe-item>
+                <van-swipe-item v-for="item in indexData.policyList" :key="item.ID">
                   <div class="vsi">
+                    <!-- <img class="vsiimg" v-if="item.ATTACHS" :src="url+item.ATTACHS" alt=""> -->
+                    <img class="vsiimg" src="https://img01.yzcdn.cn/vant/cat.jpeg" alt="">
                     <div class="vsi-1">
                       <p class="p1" style="vertical-align: bottom;"><span></span><span style="visibility: hidden;"></span> 政策类别</p>
-                      <p class="p2">防疫抗疫补贴申请</p>
+                      <p class="p2">{{item.NAME}}</p>
                       <p class="p3"></p>
                       <p class="p3" style="visibility: hidden;"></p>
-                      <p class="p1">常州市财政部 拷贝</p>
+                      <p class="p1">{{item.ORG_ID_}}</p>
                     </div>
-                    <van-button class="vsi-2" round type="info">立即申请</van-button>
-                  </div>
-                </van-swipe-item>
-                <van-swipe-item>
-                  <div class="vsi">
-                    <div class="vsi-1">
-                      <p class="p1" style="vertical-align: bottom;"><span></span><span style="visibility: hidden;"></span> 政策类别</p>
-                      <p class="p2">防疫抗疫补贴申请</p>
-                      <p class="p3"></p>
-                      <p class="p3" style="visibility: hidden;"></p>
-                      <p class="p1">常州市财政部 拷贝</p>
-                    </div>
-                    <van-button class="vsi-2" round type="info">立即申请</van-button>
+                    <van-button class="vsi-2" round type="info" @click="zcsdhandleclick(item)">立即申请</van-button>
                   </div>
                 </van-swipe-item>
               </van-swipe>
@@ -107,28 +94,17 @@
             </div>
             <div class="myswipe" @click="handleclickcommunication">
               <van-swipe :loop="false" height="100%" :width="320">
-                <van-swipe-item>
+                <van-swipe-item v-for="item in indexData.postList" :key="item.ID">
                   <div class="vsi">
+                    <img class="vsiimg" src="https://img01.yzcdn.cn/vant/cat.jpeg" alt="">
                     <div class="vsi-1">
-                      <p class="p1" style="vertical-align: bottom;"><span></span><span style="visibility: hidden;"></span> 政策类别</p>
-                      <p class="p2">防疫抗疫补贴申请</p>
-                      <p class="p3"></p>
+                      <p class="p1" style="vertical-align: bottom;"><span></span><span style="visibility: hidden;"></span> {{item.TITLE}}&nbsp;&nbsp;&nbsp;&nbsp;{{item.CREATETIME}}</p>
+                      <p class="p2">{{item.CONTENT}}</p>
+                      <!-- <p class="p3"></p>
                       <p class="p3" style="visibility: hidden;"></p>
-                      <p class="p1">常州市财政部 拷贝</p>
+                      <p class="p1">常州市财政部 拷贝</p> -->
                     </div>
-                    <van-button class="vsi-2" round type="info">立即申请</van-button>
-                  </div>
-                </van-swipe-item>
-                <van-swipe-item>
-                  <div class="vsi">
-                    <div class="vsi-1">
-                      <p class="p1" style="vertical-align: bottom;"><span></span><span style="visibility: hidden;"></span> 政策类别</p>
-                      <p class="p2">防疫抗疫补贴申请</p>
-                      <p class="p3"></p>
-                      <p class="p3" style="visibility: hidden;"></p>
-                      <p class="p1">常州市财政部 拷贝</p>
-                    </div>
-                    <van-button class="vsi-2" round type="info">立即申请</van-button>
+                    <!-- <van-button class="vsi-2" round type="info">立即申请</van-button> -->
                   </div>
                 </van-swipe-item>
               </van-swipe>
@@ -186,8 +162,9 @@
 </template>
 
 <script>
-
+import { getHomeList } from "@/api/personal";
 import { mapGetters } from "vuex";
+const config = require('../../utils/config')
 export default {
   name: "Index",
   components: {},
@@ -195,15 +172,54 @@ export default {
     return {
       isLogin: false,
       refreshing:false,
-      loading:false
+      loading:false,
+      photo:config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId=',
+      url:config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId=',
+      indexData:{}
     };
   },
   computed: {
     ...mapGetters(["userInfo"]),
   },
-  mounted() {},
+  mounted() {
+    this.photo +=''+this.userInfo.PHOTO ||12067;
+    this.getHomeList()
+  },
   methods: {
-    // pull-refresh
+    getHomeList() {
+      getHomeList({
+        USER_ID:this.userInfo.ID
+      }).then(res=>{
+ let {code,data} = res;
+        if(code==0) {
+          data.policyList.map(item=>{
+            console.log(item.ATTACHS)
+            if(item.ATTACHS) {
+
+              item.ATTACHS = item.ATTACHS.split(",")[0]
+            }
+          })
+          data.postList.map(item=>{
+
+            if(item.ATTACHS) {
+
+              item.ATTACHS = item.ATTACHS.split(",")[0]
+            }
+          })
+          this.indexData = data;
+          console.log(this.indexData)
+        }
+
+      }).catch(error=>console.log(error))
+    },
+    zcsdhandleclick(data){
+      this.$router.push({
+        name:'Policyintitem',
+        query:{
+          id:data.ID
+        }
+      })
+    },
     onRefresh() {
       if (!this.loading) {
         this.refreshing = true;
@@ -252,6 +268,11 @@ export default {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    .photo {
+      width: 127px;
+      height: 127px;
+      border-radius: 50%;
+    }
     .admin-info-text {
       padding-left: 13px;
       display: flex;
@@ -385,6 +406,15 @@ export default {
       font-size: 17px;
       color: #FFFFFF;
       box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+      .vsiimg {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
       .p1 {
         span {
           display: inline-block;
@@ -392,6 +422,8 @@ export default {
           height: 17px;
           border: 3px solid #5CF1E7;;
         }
+        position: relative;
+        z-index: 1;
       }
       .p2 {
         font-size: 30px;

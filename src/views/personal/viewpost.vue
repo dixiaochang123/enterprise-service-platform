@@ -59,19 +59,13 @@ export default {
       areaList,
       hotcities: [],
       addressInfo: {
-        TITLE: "寻求口罩机零配件供应商",
+        TITLE: "",
         ORG_ID_:'',
         USER_ID_:'',
         PHONE: "",
         CONTENT:'',
         ATTACHS:'',
 
-        address: "",
-        provinceID: "",
-        cityID: "",
-        areaID: "",
-        utype: "kuhu",
-        textarea:'对我葛先正而言，寻求口罩机零配件供应商不仅仅是一个重大的事件，还可能会改变我的人生。 在这种困难的抉择下，本人思来想去，寝食难'
       },
       columns: ["杭州", "宁波", "温州", "绍兴", "湖州", "嘉兴", "金华", "衢州"],
       fileList: [
@@ -214,25 +208,6 @@ export default {
       // Toast("文件大小不能超过 500kb");
     },
     onSubmit(values) {
-      // &utype=kuhu&provinceID=110000&cityID=&areaID=&address=%E5%A4%A7V%E5%8F%91%E5%9C%B0%E5%9D%80&TITLE=%E5%91%B5%E5%91%B5%E5%91%B5&PHONE=13611366910
-      let params = {
-        uid: this.userInfo.id,
-        token: this.userInfo.token,
-        provinceID: this.area1[0],
-        cityID: this.area1[1],
-        areaID: this.area1[2],
-        address: this.addressInfo.address,
-        TITLE: this.addressInfo.TITLE,
-        PHONE: this.addressInfo.PHONE,
-        utype: "kuhu",
-      };
-      let paramsstr = "";
-      for (const key in params) {
-        if (Object.hasOwnProperty.call(params, key)) {
-          paramsstr += `&${key}=${params[key]}`;
-        }
-      }
-      console.log("submit", values);
       postSave({...this.addressInfo}).then(res=>{
 
       }).catch(error=>console.log(error))

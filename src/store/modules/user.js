@@ -96,9 +96,10 @@ const actions = {
   // 登出
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      commit('SET_TOKEN', '')
+      console.log('退出')
+      // commit('SET_TOKEN', '')
       commit('SET_USER_INFO', {})
-      removeToken()
+      // removeToken()
       Cookies.remove('userInfo', { path: '' })
       // setTimeout(()=>{
       //   window.location = "#/login"

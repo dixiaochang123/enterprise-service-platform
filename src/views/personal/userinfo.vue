@@ -5,39 +5,33 @@
     <div class="box">
       <van-cell style="display: flex;align-items: center;" class="hhh" title="头像" is-link>
         <template #right-icon>
-          <van-image
+          <!-- <van-image
             round
             width="40"
             height="40"
             :src="info.avatar_thumb"
-          />
+          /> -->
+          <img class="photo" :src="photo" alt="">
+          <input class="uploaderinput" type="file" name="" accept="image/gif,image/jpeg,image/jpg,image/png" @change="fileChange">
           <!-- <van-icon style="font-size: 16px;color: #969799;" name="arrow" /> -->
         </template>
       </van-cell>
-      <van-field right-icon="edit" v-model="Nickname" label="姓名" />
-      <van-field v-model="sex" readonly="readonly"   label="企业" right-icon="arrow" @click="showname = true" />
-      <van-field v-model="age" maxlength="11" type="number"  label="手机号码" right-icon="arrow"  />
+      <van-field right-icon="edit" v-model="userInfo.USER_NAME" readonly label="姓名" />
+      <van-field v-model="userInfo.ORG_ID_" readonly="readonly"   label="企业" right-icon="arrow" />
+      <van-field v-model="userInfo.PHONE" maxlength="11" type="number"  label="手机号码" right-icon="arrow" readonly  />
+      <van-field @blur="update" v-model="userInfo.PASSWORD" maxlength="11" type="password"  label="密码" right-icon="arrow"  />
     </div>
     <div style="margin: 16px">
         <van-button class="see" round block type="info" native-type="submit" @click="loginout">退出登录</van-button>
       </div>
-    <van-popup v-model="showname" position="bottom">
-      <van-picker
-        title=""
-        show-toolbar
-        :columns="columns"
-        @confirm="onConfirm1"
-         @cancel="showname = false"
-        @change="onChange"
-      />
-    </van-popup>
   </div>
 </template>
 
 <script>
 import { Toast } from 'vant';
-import { mapGetters } from "vuex";
-import {GetUserInfo,UpdateNickname,UpdateSex,UpdateBirthday} from "@/api/personal";
+import { mapGetters,mapActions } from "vuex";
+import {doUpdate} from "@/api/personal";
+const config = require('../../utils/config')
 export default {
   name: "Userinfo",
   components: {},
@@ -57,6 +51,9 @@ export default {
       minDate: new Date(1800, 0, 1),
       maxDate: new Date(2020, 1, 1),
       currentDate: new Date(),
+      photo:config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId=',
+      adatar:'',
+      PHOTOID:''
     };
   },
   computed: {
@@ -66,189 +63,65 @@ export default {
     },
   },
   mounted() {
-    this.GetUserInfo()
+    this.photo +=''+this.userInfo.PHOTO ||12067;
+    console.log(this.photo,this.userInfo)
+    // this.doUpdate()
   },
   methods: {
     loginout() {
+       this.$store.dispatch('user/logout')
         this.$router.push({
-            name: "Login"
-          });
+            name: "Login",
+        });
     },
-    GetUserInfo() {
-      let params = {
-        uid:this.userInfo.id,
-        token:this.userInfo.token,
-      }
-      GetUserInfo(params).then(res=>{
-        let {info} = res.data;
-        this.info = info;
-        this.info.avatar_thumb = (!!info.avatar_thumb && info.avatar_thumb!="/default_thumb.jpg") ? info.avatar_thumb : require("../../assets/index/已登陆默认头像.png")
-        this.Nickname = info.user_nicename;
-        this.sex = this.actions[info.sex].name;
-        this.age = this.info.birthday;
-        console.log(info)
-      }).catch(error=>console.log(error))
+    uploader() {
+      console.log('上传')
+    },
+    //头像选择
+    fileChange(e) {
+        var that = this;
+        var file = e.target.files[0];
+        var reader = new FileReader();
+        reader.onload = function(e){
+          console.log(e)
+            that.adatar  = e.target.result;
+        }
+        reader.readAsDataURL(file);
+            that.onRead(file)
+    },
+    onRead(file) {
+      var formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
+      formData.append("file", file); //接口需要传的参数
+      let _this = this;
+      var xhr = new XMLHttpRequest();
+      const url = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/saveFile'
+      xhr.open("post", url);
+      xhr.send(formData);
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          let { data } = JSON.parse(xhr.response);
+          // _this.addressInfo.ATTACHS = _this.addressInfo.ATTACHS+data.att_map.ID+',';
+          // _this.uploadImages.push(data.url);
+          _this.PHOTOID = data.att_map.ID;
+          console.log(data);
+        }
+      };
+      // console.log(file);
     },
     onClickLeft() {
       this.$router.go(-1); //返回上一层
     },
-    onBeforeClose(action, done) {
-      if (action == "confirm") {
-        if (this.newNickname == "") {
-          done(false);
-        } else {
-          done();
-        }
-      } else {
-        done();
-      }
-    },
-    onConfirm1(value, index) {
-      Toast(`当前值：${value}, 当前索引：${index}`);
-      this.showname = false
-      this.sex = value
-    },
-    onChange(picker, value, index) {
-      Toast(`当前值：${value}, 当前索引：${index}`);
-      this.sex = value
-    },
-    onCancel() {
-      Toast('取消');
-    },
-    onConfirm() {
-      let params = {
-        uid:this.userInfo.id,
-        token:this.userInfo.token,
-        nickname:this.newNickname
-      }
-      UpdateNickname(params).then(res=>{
-        let {code} = res.data;
-        if(code==1) {
-          this.Nickname = this.newNickname
-        }
-      }).catch(error=>console.log(error))
-      this.NicknameShow = false
-    },
-    select(action, index) {
-      console.log(action, index);
-      // this.sex = action.name;
-      let params = {
-        uid:this.userInfo.id,
-        token:this.userInfo.token,
-        sex:index
-      }
-      UpdateSex(params).then(res=>{
-        let {code} = res.data;
-        if(code==1) {
-          this.sex = action.name;
-        }
-      }).catch(error=>console.log(error))
-    },
-    confirm(value) {
-      var yearNow = value.getFullYear();
-        var monthNow = value.getMonth() + 1;
-        var dayNow = value.getDate();
-        let str = yearNow+'-'+monthNow+'-'+dayNow
-        let age = this.getAge(str)
-        if(typeof age == "number") {
-          // this.age = age
-          let params = {
-            uid:this.userInfo.id,
-            token:this.userInfo.token,
-            birthday:age
-          }
-          UpdateBirthday(params).then(res=>{
-            let {code} = res.data;
-            if(code==1) {
-              this.age = age
-            }
-          }).catch(error=>console.log(error))
-
-
-
-        } else {
-          Toast('年龄有误，请重新选择');
-        }
-        console.log(typeof age)
-      
-
-      this.ageShow = false;
-    },
-    getAge(str) {
-      var r = str.match(/^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})/);
-      if (r == null) return false;
-
-      var d = new Date(r[1], r[3] - 1, r[4]);
-      var returnStr = "输入的日期格式错误！";
-
-      if (
-        d.getFullYear() == r[1] &&
-        d.getMonth() + 1 == r[3] &&
-        d.getDate() == r[4]
-      ) {
-        var date = new Date();
-        var yearNow = date.getFullYear();
-        var monthNow = date.getMonth() + 1;
-        var dayNow = date.getDate();
-
-        var largeMonths = [1, 3, 5, 7, 8, 10, 12], //大月， 用于计算天，只在年月都为零时，天数有效
-          lastMonth = monthNow - 1 > 0 ? monthNow - 1 : 12, // 上一个月的月份
-          isLeapYear = false, // 是否是闰年
-          daysOFMonth = 0; // 当前日期的上一个月多少天
-
-        if ((yearNow % 4 === 0 && yearNow % 100 !== 0) || yearNow % 400 === 0) {
-          // 是否闰年， 用于计算天，只在年月都为零时，天数有效
-          isLeapYear = true;
-        }
-
-        if (largeMonths.indexOf(lastMonth) > -1) {
-          daysOFMonth = 31;
-        } else if (lastMonth === 2) {
-          if (isLeapYear) {
-            daysOFMonth = 29;
-          } else {
-            daysOFMonth = 28;
-          }
-        } else {
-          daysOFMonth = 30;
-        }
-
-        var Y = yearNow - parseInt(r[1]);
-        var M = monthNow - parseInt(r[3]);
-        var D = dayNow - parseInt(r[4]);
-        if (D < 0) {
-          D = D + daysOFMonth; //借一个月
-          M--;
-        }
-        if (M < 0) {
-          // 借一年 12个月
-          Y--;
-          M = M + 12; //
-        }
-
-        if (Y < 0) {
-          returnStr = "出生日期有误！";
-        } else if (Y === 0) {
-          if (M === 0) {
-            // returnStr = D + "D";
-            returnStr = D;
-          } else {
-            // returnStr = M + "M";
-            returnStr = M;
-          }
-        } else {
-          if (M === 0) {
-            // returnStr = Y + "Y";
-            returnStr = Y;
-          } else {
-            // returnStr = Y + "Y" + M + "M";
-            returnStr = Y;
-          }
-        }
-      }
-
-      return returnStr;
-    },
+    update() {
+      doUpdate({
+        USER_ID:this.userInfo.ID,
+        PHOTO:this.PHOTOID,
+        PASSWORD:this.userInfo.PASSWORD,
+      }).then(res=>{
+        let {code} = res;
+        console.log(code)
+      })
+    }
+    
   },
 };
 </script>
@@ -302,5 +175,26 @@ export default {
   left: 0;
   right: 0;
   margin: auto;
+}
+.photo {
+  width: 72px !important;
+  height: 72px !important;
+  border-radius: 50%;
+}
+.hhh {
+  position: relative;
+  .uploaderinput {
+    width: 132px !important;
+  height: 72px !important;
+  position: absolute;
+  right: 0;
+  border:solid;
+  outline: none;
+            opacity: 0;
+            cursor: pointer;
+            &:focus {
+                box-shadow: none;
+            }
+  }
 }
 </style>

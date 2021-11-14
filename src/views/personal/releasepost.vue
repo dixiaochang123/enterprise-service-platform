@@ -3,11 +3,11 @@
     <van-nav-bar title="发布帖子" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <van-form @submit="onSubmit">
-      <van-field v-model="addressInfo.realname" name="标题" label="标题" placeholder="请输入标题" :rules="[{ required: true, message: '请填写收件人' }]" />
-      <van-field v-model="addressInfo.realname" name="企业名称" label="企业名称" placeholder="请输入您所在的企业" :rules="[{ required: true, message: '请填写收件人' }]" />
-      <van-field v-model="addressInfo.realname" name="上报人" label="上报人" placeholder="请输入上报人" :rules="[{ required: true, message: '请填写收件人' }]" />
-      <van-field v-model="addressInfo.phone" name="联系方式" label="联系方式" placeholder="请输入手机号码"  />
-      <van-field v-model="addressInfo.realname" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
+      <van-field v-model="addressInfo.TITLE" name="标题" label="标题" placeholder="请输入标题" :rules="[{ required: true, message: '请输入标题' }]"  />
+      <!-- <van-field v-model="addressInfo.ORG_ID_" name="企业名称" label="企业名称" placeholder="请输入您所在的企业"  /> -->
+      <van-field v-model="addressInfo.USER_ID" name="上报人" label="上报人" placeholder="请输入上报人"  readonly />
+      <!-- <van-field v-model="addressInfo.PHONE" name="联系方式" label="联系方式" placeholder="请输入联系方式"  /> -->
+      <van-field v-model="addressInfo.CONTENT" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" :rules="[{ required: true, message: '请填写描述' }]" />
       <van-uploader v-model="fileList" :max-size="50000 * 1024" multiple :max-count="5" :after-read="onRead" :before-delete="onDelete" @oversize="onOversize">
         <div class="upload">
           <img src="../../assets/personal/矩形 846 拷贝.png" alt="">
@@ -36,6 +36,11 @@ import { Toast } from "vant";
 import { mapGetters } from "vuex";
 import areaList from "@/utils/area.js";
 import axios from "axios";
+const config = require('../../utils/config')
+import {
+  getPostMap,
+  postSave
+} from "@/api/personal";
 export default {
   name: "Confirmorder",
   components: {},
@@ -52,20 +57,17 @@ export default {
       areaList,
       hotcities: [],
       addressInfo: {
-        realname: "",
-        phone: "",
-        address: "",
-        provinceID: "",
-        cityID: "",
-        areaID: "",
-        utype: "kuhu",
+        TITLE: "",
+        USER_ID:'',
+        CONTENT:'',
+        ATTACHS:'',
       },
       columns: ["杭州", "宁波", "温州", "绍兴", "湖州", "嘉兴", "金华", "衢州"],
       fileList: [
-        { url: "https://img01.yzcdn.cn/vant/leaf.jpg" },
-        // Uploader 根据文件后缀来判断是否为图片文件
-        // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
-        { url: "https://cloud-image", isImage: true },
+        // { url: "https://img01.yzcdn.cn/vant/leaf.jpg" },
+        // // Uploader 根据文件后缀来判断是否为图片文件
+        // // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
+        // { url: "https://cloud-image", isImage: true },
       ],
       uploadImages: [],
 
@@ -86,11 +88,34 @@ export default {
     },
   },
   mounted() {
-    this.ShoppingAddress();
+    // this.ShoppingAddress();
     // this.GetHotCities();
     // this.GetDefaultAreaInfo();
+    this.getPostMap()
   },
   methods: {
+    getPostMap() {
+      this.addressInfo.USER_ID = this.userInfo.ID;
+      // getPostMap({
+      //   ID:this.$route.query.id
+      // }).then(res=>{
+      //   let {code,data} = res;
+      //     if(code==0) {
+      //       const url = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/saveFile'
+      //       this.addressInfo = data.map;
+      //       this.addressInfo.ATTACHS = data.map.attachList.map(item=>item.ID).join(",")+","
+      //       this.fileList = data.map.attachList.map(item=>{
+      //         return {
+      //           // url:config[process.env.NODE_ENV].mockUrl+'/wjyql/'+item.REAL_PATH
+      //           url:config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='+item.ID
+      //         }
+      //       })
+      //           console.log(this.fileList)
+      //       console.log(this.addressInfo)
+      //     }
+      // }).catch(error=>console.log(error))
+
+    },
     // 校检手机号码
     checkMobile(value) {
       const reg = /^1[3456789]\d{9}$/;
@@ -150,15 +175,18 @@ export default {
       // this.GetCity(value[0].code);
     },
     onRead(file) {
+      console.log(file)
       var formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
       formData.append("file", file.file); //接口需要传的参数
       let _this = this;
       var xhr = new XMLHttpRequest();
-      xhr.open("post", "http://cj.pydoton.com/?s=App.Examples_Upload.GoFtp");
+      const url = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/saveFile'
+      xhr.open("post", url);
       xhr.send(formData);
       xhr.onload = function () {
         if (xhr.status === 200) {
           let { data } = JSON.parse(xhr.response);
+          _this.addressInfo.ATTACHS = _this.addressInfo.ATTACHS+data.att_map.ID+',';
           _this.uploadImages.push(data.url);
           console.log(_this.fileList, _this.uploadImages);
         }
@@ -176,48 +204,36 @@ export default {
       // Toast("文件大小不能超过 500kb");
     },
     onSubmit(values) {
-      // &utype=kuhu&provinceID=110000&cityID=&areaID=&address=%E5%A4%A7V%E5%8F%91%E5%9C%B0%E5%9D%80&realname=%E5%91%B5%E5%91%B5%E5%91%B5&phone=13611366910
-      let params = {
-        uid: this.userInfo.id,
-        token: this.userInfo.token,
-        provinceID: this.area1[0],
-        cityID: this.area1[1],
-        areaID: this.area1[2],
-        address: this.addressInfo.address,
-        realname: this.addressInfo.realname,
-        phone: this.addressInfo.phone,
-        utype: "kuhu",
-      };
-      let paramsstr = "";
-      for (const key in params) {
-        if (Object.hasOwnProperty.call(params, key)) {
-          paramsstr += `&${key}=${params[key]}`;
-        }
-      }
-      console.log("submit", values);
-
-      axios
-        .get(
-          `http://cj.pydoton.com/?s=App.Shop_ShoppingAddress.Save${paramsstr}`
-        )
-        .then((res) => {
-          // axios({
-          //   method: "post",
-          //   url: "http://cj.pydoton.com/?s=App.Shop_ShoppingAddress.Save",
-          //   data: params,
-          //   withCredentials: true,
-          // })
-          //   .then((res) => {
-          let { msg } = res.data;
-          if (msg == "保存成功!") {
-            this.$router.push({
-              name: "Confirmorder",
-              query: { ...this.$route.query },
-            });
-          }
-          console.log(msg);
+      let params = {...this.addressInfo}
+      params.ID = ""
+      postSave({...params}).then(res=>{
+        this.$router.push({
+          name:'Mypost'
         })
-        .catch((error) => console.log(error));
+
+      }).catch(error=>console.log(error))
+      // axios
+      //   .get(
+      //     `http://cj.pydoton.com/?s=App.Shop_ShoppingAddress.Save${paramsstr}`
+      //   )
+      //   .then((res) => {
+      //     // axios({
+      //     //   method: "post",
+      //     //   url: "http://cj.pydoton.com/?s=App.Shop_ShoppingAddress.Save",
+      //     //   data: params,
+      //     //   withCredentials: true,
+      //     // })
+      //     //   .then((res) => {
+      //     let { msg } = res.data;
+      //     if (msg == "保存成功!") {
+      //       this.$router.push({
+      //         name: "Confirmorder",
+      //         query: { ...this.$route.query },
+      //       });
+      //     }
+      //     console.log(msg);
+      //   })
+      //   .catch((error) => console.log(error));
     },
     seeOrder() {
       this.$router.push({

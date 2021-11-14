@@ -161,6 +161,14 @@ export function getPostList(data) {
         data
     })
 }
+//获取我的帖子列表
+export function getMyPostList(data) {
+    return request({
+        url: `/wjyql/mobile/getMyPostList`,
+        method: 'post',
+        data
+    })
+}
 //获取帖子详情
 export function getPostMap(data) {
     return request({
@@ -191,6 +199,50 @@ export function getNoticeList(data) {
 export function messagegetProblemMap(data) {
     return request({
         url: `/wjyql/mobile/getProblemMap`,
+        method: 'post',
+        data
+    })
+}
+
+
+//	首页
+export function getHomeList(data) {
+    return request({
+        url: `/wjyql/mobile/getHomeList`,
+        method: 'post',
+        data
+    })
+}
+
+//	注册
+export function doRegister(data) {
+    return request({
+        url: `/wjyql/mobile/doRegister`,
+        method: 'post',
+        data
+    })
+}
+
+//	5、	获取账号属性
+export function getCombox(data) {
+    return request({
+        url: `/wjyql/sys/getCombox?table=t_sys_data&where=pid=ISFR&orderby=sorder asc`,
+        method: 'post',
+        data
+    })
+}
+//	5、	获取账号属性
+export function getgridCombox(data) {
+    return request({
+        url: `/wjyql/sys/getCombox?table=t_sys_grid&where=delete_mark=1&orderby=createtime asc`,
+        method: 'post',
+        data
+    })
+}
+//	5、	修改
+export function doUpdate(data) {
+    return request({
+        url: `/wjyql/mobile/doUpdate`,
         method: 'post',
         data
     })

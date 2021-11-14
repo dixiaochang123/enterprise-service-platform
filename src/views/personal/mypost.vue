@@ -6,7 +6,7 @@
       <van-search v-model="value1" shape="round" background="#ffffff" input-align="center" placeholder="请输入搜索关键词" />
       <div @click="handleclickgetinto(item)" v-for="item in list" :key="item.ID" class="box-main">
         <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>{{item.TITLE}}</p>
-        <p class="p1"><span class="s-1">{{item.CONTENT}}</span></p>
+        <p class="p1"><span class="s-1"><span v-if="item.STATE==1" style="color:red">●</span>&nbsp;&nbsp; {{item.CONTENT}}</span></p>
         <van-icon class="edit" name="edit" />
       </div>
       
@@ -17,7 +17,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { getPostList } from "@/api/personal";
+import { getMyPostList } from "@/api/personal";
 export default {
   //   name: "Userinfo",
   components: {},
@@ -30,14 +30,21 @@ export default {
   computed: {
     ...mapGetters(["userInfo"]),
   },
+  watch:{
+    value1(val) {
+      this.getMyPostList(val)
+      
+    }
+  },
   mounted() {
-    this.getPostList();
+    this.getMyPostList();
   },
   methods: {
-    getPostList() {
+    getMyPostList(val) {
 
-      getPostList({
-        SEARCH:'测试'
+      getMyPostList({
+        USER_ID:this.userInfo.ID,
+        SEARCH:val || '测试'
       }).then((res) => {
           let {code,data} = res;
         if(code==0) {
@@ -48,6 +55,7 @@ export default {
         .catch((error) => console.log(error));
     },
     handleclickgetinto(data){
+      if(data.STATE!==1)return;
       this.$router.push({
         name:"Viewpost",
         query:{

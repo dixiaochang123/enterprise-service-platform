@@ -15,18 +15,19 @@
         </van-cell>
 
       </div>
-      <div class="box-main">
-        <p class="p1"><span class="s-1">寻求口罩机零配件供应商</span><span class="s-2">2020.03.18</span></p>
-        <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>虹新技术有限公司</p>
+      <div class="box-main" v-for="item in list" :key="item.ID">
+        <p class="p1"><span class="s-1">{{item.TITLE}}</span><span class="s-2">{{item.CREATETIME}}</span></p>
+        <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>{{item.ORG_ID_}}</p>
         <div class="img">
-          <van-image height="260" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
+          <van-image  fit="cover" :src="item.url" />
+          <!-- <img :src="item.url" alt="" srcset=""> -->
         </div>
       </div>
       <div style="height:20px;"></div>
-      <div class="box-main">
+      <!-- <div class="box-main">
         <p class="p1"><span class="s-1">寻求口罩机零配件供应商</span><span class="s-2">2020.03.18</span></p>
         <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>虹新技术有限公司</p>
-      </div>
+      </div> -->
 
     </div>
   </div>
@@ -34,21 +35,53 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { getPostList } from "@/api/personal";
+const config = require('../../utils/config')
 export default {
   //   name: "Userinfo",
   components: {},
   data() {
     return {
-      value1: 0,
+      value1: '',
+      list:[]
     };
   },
   computed: {
     ...mapGetters(["userInfo"]),
   },
+  watch:{
+    value1(val) {
+      this.getPostList(val)
+      
+    }
+  },
   mounted() {
-    // this.GetUserInfo();
+    this.getPostList();
   },
   methods: {
+    getPostList(val) {
+
+      getPostList({
+        SEARCH:val || '测试'
+      }).then((res) => {
+          let {code,data} = res;
+        if(code==0) {
+          console.log(data)
+          if(!!data.list) {
+            data.list.map((item,index)=>{
+              item['url'] = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='+item.FIRST_ATTACH;
+              this.$set(this.list,index,item)
+            })
+          } else {
+            this.list = []
+          }
+          // this.list = data.list;
+          // this.$set()
+          console.log(this.list )
+        }
+        })
+        .catch((error) => console.log(error));
+    },
     loginout() {
       this.$router.push({
         name: "Login",
@@ -122,6 +155,7 @@ export default {
   font-size: 28px;
   font-family: PingFang SC;
   font-weight: 500;
+  margin-bottom: 30px;
   color: #000000;
   p {
     line-height: 50px;

@@ -1,13 +1,13 @@
 <template>
   <div class="shopdetails">
-    <van-nav-bar title="身份认证" left-text="" left-arrow fixed @click-left="onClickLeft" />
+    <van-nav-bar title="身份认证" left-text="" input-align="right" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <van-form @submit="onSubmit">
-      <van-field v-model="addressInfo.realname" readonly="readonly"   label="我是" right-icon="arrow" @click="showname = true" />
-      <van-field v-model="addressInfo.realname" readonly="readonly"   label="所属板块" right-icon="arrow" @click="showname = true" />
-      <van-field v-model="addressInfo.realname" name="企业名称" label="企业名称" placeholder="请输入您所在的企业" :rules="[{ required: true, message: '请填写收件人' }]" />
-      <van-field v-model="addressInfo.realname" name="姓名" label="姓名" placeholder="请输入真实姓名" :rules="[{ required: true, message: '请填写收件人' }]" />
-      <van-field class="mobile" v-model="addressInfo.phone" maxlength="11" type="number" name="联系方式" label="联系方式" placeholder="请输入手机号码" :rules="[
+      <van-field v-model="addressInfo.ISFR" readonly="readonly" label="我是" right-icon="arrow" @click="showname = true" />
+      <van-field v-model="addressInfo.REAL_NAME" readonly="readonly" label="所属板块" right-icon="arrow" @click="showname1 = true" />
+      <van-field v-model="addressInfo.ORG_ID" name="企业名称" label="企业名称" placeholder="请输入您所在的企业" :rules="[{ required: true, message: '请填写收件人' }]" />
+      <van-field v-model="addressInfo.REAL_NAME" name="姓名" label="姓名" placeholder="请输入真实姓名" :rules="[{ required: true, message: '请填写收件人' }]" />
+      <van-field class="mobile" v-model="addressInfo.PHONE" maxlength="11" type="number" name="联系方式" label="联系方式" placeholder="请输入手机号码" :rules="[
           {
             validator: checkMobile,
             required: true,
@@ -25,14 +25,10 @@
       <van-area title="请选择所在地区" :area-list="areaList" @confirm="onConfirm" @change="change" @cancel="showArea = false" />
     </van-popup> -->
     <van-popup v-model="showname" position="bottom">
-      <van-picker
-        title=""
-        show-toolbar
-        :columns="columns"
-        @confirm="onConfirm1"
-         @cancel="showname = false"
-        @change="onChange"
-      />
+      <van-picker title="" show-toolbar :columns="columns" @confirm="onConfirm1" @cancel="showname = false" @change="onChange" />
+    </van-popup>
+    <van-popup v-model="showname1" position="bottom">
+      <van-picker title="" show-toolbar :columns="columns1" @confirm="onConfirm1" @cancel="showname1 = false" @change="onChange" />
     </van-popup>
     <!-- <van-button class="see" round type="info" @click="seeOrder"
       >保存并使用</van-button
@@ -41,10 +37,11 @@
 </template>
 
 <script>
-import { Toast } from 'vant';
+import { Toast } from "vant";
 import { mapGetters } from "vuex";
 import areaList from "@/utils/area.js";
 import axios from "axios";
+import { doRegister, getCombox, getgridCombox, getOrganList } from "@/api/personal";
 export default {
   name: "Confirmorder",
   components: {},
@@ -56,19 +53,22 @@ export default {
       area1: [],
       address: "",
       showArea: false,
-      showname:false,
+      showname: false,
+      showname1:false,
       areaList,
       hotcities: [],
-      addressInfo:{
-        realname:'',
-        phone: '',
+      addressInfo: {
+        ISFR:'',
+        REAL_NAME: "",
+        PHONE: "",
         address: "",
-        provinceID: '',
-        cityID: '',
-        areaID: '',
-        utype:"kuhu"
+        provinceID: "",
+        cityID: "",
+        areaID: "",
+        utype: "kuhu",
       },
-      columns: ['杭州', '宁波', '温州', '绍兴', '湖州', '嘉兴', '金华', '衢州'],
+      columns: [],
+      columns1: [],
 
       // uid: 999845591,
       // utype: kuhu,
@@ -76,7 +76,7 @@ export default {
       // cityID: ,
       // areaID: ,
       // address: 大V发地址,
-      // realname: 呵呵呵,
+      // REAL_NAME: 呵呵呵,
       // mobile: 13611366910,
     };
   },
@@ -87,43 +87,69 @@ export default {
     },
   },
   mounted() {
-    this.ShoppingAddress()
+    // this.ShoppingAddress()
     // this.GetHotCities();
     // this.GetDefaultAreaInfo();
+    this.getCombox();
+    this.getgridCombox();
   },
   methods: {
+    getCombox() {
+      getCombox({})
+        .then((res) => {
+          this.columns = res.map((item) => {
+            return {
+              text: item.NAME,
+              value: item.ID,
+            };
+          });
+        })
+        .catch((error) => console.log(error));
+    },
+    getgridCombox() {
+      getgridCombox({})
+        .then((res) => {
+          this.columns1 = res.map((item) => {
+            return {
+              text: item.NAME,
+              value: item.ID,
+            };
+          });
+        })
+        .catch((error) => console.log(error));
+    },
+    doRegister() {
+      doRegister({
+        ISFR: 1,
+        ORG_ID: 1,
+        REAL_NAME: 1,
+        PHONE: 1,
+        PASSWORD: 1,
+      })
+        .then((res) => {})
+        .catch((error) => console.log(error));
+    },
     // 校检手机号码
     checkMobile(value) {
       const reg = /^1[3456789]\d{9}$/;
       return reg.test(value);
     },
-    ShoppingAddress() {
-      axios.get(`http://cj.pydoton.com/?s=App.Shop_ShoppingAddress.Find&uid=${this.userInfo.id}&utype=kuhu`).then(res=>{
-      let {code,info} = res.data.data;
-      if(!!info) {
-        this.addressInfo = info || null;
-        this.area1 = [this.addressInfo.province,this.addressInfo.city,this.addressInfo.area]
-        this.area = this.areaList.province_list[this.addressInfo.province]+'/'+this.areaList.city_list[this.addressInfo.city]+'/'+this.areaList.county_list[this.addressInfo.area] ;
 
-      }
-      // this.addressInfo.phone = !!this.addressInfo &&  !!this.addressInfo.phone ? this.mobileNumberChange(this.addressInfo.phone):null;
-      }).catch(error=>console.log(error))
-    },
     onClickLeft() {
-      this.$router.push({
-        name: "Shopdetails",
-        query:{...this.$route.query}
-      });
+      this.$router.go(-1); //返回上一层
     },
     onConfirm1(value, index) {
-      Toast(`当前值：${value}, 当前索引：${index}`);
-      this.showname = false
+      // Toast(`当前值：${value.value}, 当前索引：${index}`);
+      console.log(value, index)
+      this.addressInfo.ISFR = value.text
+      this.showname = false;
+      this.showname1 = false;
     },
     onChange(picker, value, index) {
-      Toast(`当前值：${value}, 当前索引：${index}`);
+      // Toast(`当前值：${value}, 当前索引：${index}`);
     },
     onCancel() {
-      Toast('取消');
+      Toast("取消");
     },
     onConfirm(values) {
       console.log(values);
@@ -133,54 +159,15 @@ export default {
         .filter((item) => !!item)
         .map((item) => item.name)
         .join("/");
-        console.log(this.area)
+      console.log(this.area);
       this.showArea = false;
     },
     change(picker, value, index) {
       // console.log('索引',picker, value, index)
       // this.GetCity(value[0].code);
     },
-    onSubmit(values) {
-      // &utype=kuhu&provinceID=110000&cityID=&areaID=&address=%E5%A4%A7V%E5%8F%91%E5%9C%B0%E5%9D%80&realname=%E5%91%B5%E5%91%B5%E5%91%B5&phone=13611366910
-      let params = {
-        uid: this.userInfo.id,
-        token: this.userInfo.token,
-        provinceID: this.area1[0],
-        cityID: this.area1[1],
-        areaID: this.area1[2],
-        address: this.addressInfo.address,
-        realname: this.addressInfo.realname,
-        phone: this.addressInfo.phone,
-        utype:"kuhu"
-      };
-      let paramsstr = "";
-      for (const key in params) {
-          if (Object.hasOwnProperty.call(params, key)) {
-              paramsstr+=`&${key}=${params[key]}`
-              
-          }
-      }
-      console.log("submit", values);
+    onSubmit() {
 
-      axios.get(`http://cj.pydoton.com/?s=App.Shop_ShoppingAddress.Save${paramsstr}`).then(res=>{
-      // axios({
-      //   method: "post",
-      //   url: "http://cj.pydoton.com/?s=App.Shop_ShoppingAddress.Save",
-      //   data: params,
-      //   withCredentials: true,
-      // })
-      //   .then((res) => {
-          let { msg } = res.data;
-          if(msg=="保存成功!") {
-
-            this.$router.push({
-              name: "Confirmorder",
-              query:{...this.$route.query}
-            });
-          }
-          console.log(msg)
-        })
-        .catch((error) => console.log(error));
     },
     seeOrder() {
       this.$router.push({
@@ -210,6 +197,9 @@ export default {
   ::v-deep .van-field__label {
     width: 4.2em;
   }
+  ::v-deep .van-field__control {
+    text-align: right;
+  }
   ::v-deep .van-field--error .van-field__control::placeholder {
     color: #969799 !important;
     -webkit-text-fill-color: currentColor !important;
@@ -225,9 +215,10 @@ export default {
       //   color: "646566";
       // }
     }
-    ::v-deep .van-field--error .van-field__control,::v-deep .van-field--error .van-field__control::placeholder {
-        color: #323233;
-        -webkit-text-fill-color: currentColor;
+    ::v-deep .van-field--error .van-field__control,
+    ::v-deep .van-field--error .van-field__control::placeholder {
+      color: #323233;
+      -webkit-text-fill-color: currentColor;
     }
   }
 }
