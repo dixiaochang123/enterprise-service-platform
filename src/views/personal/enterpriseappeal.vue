@@ -3,8 +3,8 @@
     <van-nav-bar title="企业诉求" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <van-form @submit="onSubmit">
-      <van-field v-model="addressInfo.realname" name="企业名称" label="企业名称" placeholder="请输入您所在的企业" :rules="[{ required: true, message: '请填写收件人' }]" />
-      <van-field v-model="addressInfo.realname" name="上报人" label="上报人" placeholder="请输入上报人" :rules="[{ required: true, message: '请填写收件人' }]" />
+      <van-field v-model="addressInfo.realname" name="企业名称" label="企业名称" placeholder="请输入您所在的企业" :rules="[{ required: true, message: '请填写企业名称' }]" />
+      <van-field v-model="addressInfo.realname" name="上报人" label="上报人" placeholder="请输入上报人" :rules="[{ required: true, message: '请填写上报人' }]" />
       <van-field class="mobile" v-model="addressInfo.phone" maxlength="11" type="number" name="联系方式" label="联系方式" placeholder="请输入手机号码" :rules="[
           {
             validator: checkMobile,
@@ -12,7 +12,7 @@
             message: '请输入正确的手机号码!',
           },
         ]" />
-      <van-field v-model="addressInfo.realname" name="诉求目的" label="诉求目的" placeholder="请输入诉求目的" :rules="[{ required: true, message: '请填写收件人' }]" />
+      <van-field v-model="addressInfo.realname" name="诉求目的" label="诉求目的" placeholder="请输入诉求目的" :rules="[{ required: true, message: '请填写诉求目的' }]" />
       <van-field v-model="addressInfo.realname" readonly="readonly"   label="服务类型" right-icon="arrow" @click="showname = true" />
      <van-field v-model="addressInfo.realname" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
       <van-uploader v-model="fileList" :max-size="50000 * 1024" multiple :max-count="5" :after-read="onRead" :before-delete="onDelete" @oversize="onOversize">

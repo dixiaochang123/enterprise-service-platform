@@ -11,7 +11,7 @@ const { mockUrl,mockUrl_new } = config[process.env.NODE_ENV]
 console.log('mockUrl',mockUrl)
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
-  publicPath: '/',
+  publicPath: './',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',

@@ -5,24 +5,25 @@ Vue.use(VueRouter)
 
 const routes = [
   // 首页
-  // {
-  //   path: '*',
-  //   name: 'Home',
-  //   component: () => import(/* webpackPreload: true */ '@/views/home'),
-  //   meta: {
-  //     title: '首页',
-  //     showTab: true,
-  //     keepAlive: true
-  //   }
-  // },
   {
-    path: '*',
+    path: '/index',
     name: 'Index',
-    // 路由懒加载：https://router.vuejs.org/zh/guide/advanced/lazy-loading.html
-    // webpackPreload：https://www.jianshu.com/p/bbdcfeee7fbc
     component: () => import(/* webpackPreload: true */ '@/views/index'),
     meta: {
       title: '首页',
+      showTab: true,
+      keepAlive: true
+    }
+  },
+  {
+    path: '*',
+    name: 'LoginPhone',
+    // 路由懒加载：https://router.vuejs.org/zh/guide/advanced/lazy-loading.html
+    // webpackPreload：https://www.jianshu.com/p/bbdcfeee7fbc
+    // component: () => import(/* webpackPreload: true */ '@/views/index'),
+    component: () => import(/* webpackPreload: true */ '@/views/auth/loginphone'),
+    meta: {
+      title: '密码登录',
       showTab: true,
       keepAlive: true
     }
@@ -331,6 +332,16 @@ const routes = [
     path: '/viewpost',
     name: 'Viewpost',
     component: () => import('@/views/personal/viewpost'),
+    meta: {
+      title: '查看帖子',
+      showTab: false
+    }
+  },
+  // 查看帖子 交流园地
+  {
+    path: '/viewpost1',
+    name: 'Viewpost1',
+    component: () => import('@/views/personal/viewpost1'),
     meta: {
       title: '查看帖子',
       showTab: false

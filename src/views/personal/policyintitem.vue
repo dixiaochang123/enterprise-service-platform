@@ -4,7 +4,7 @@
     <div style="height: 46px"></div>
     <div class="box">
       <div class="box-main">
-        <p class="p1"><span></span><span style="visibility: hidden;"></span>{{content.NAME}}</p>
+        <p class="p1"><span style="visibility: hidden;"></span>{{content.NAME}}</p>
         <p class="p2">{{content.TITLE}}</p>
         <p class="p3"><span></span> 责任部门</p>
         <p class="p4">{{content.ORG_ID_}}</p>

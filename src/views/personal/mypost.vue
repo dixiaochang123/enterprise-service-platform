@@ -5,11 +5,16 @@
     <div class="box">
       <van-search v-model="value1" shape="round" background="#ffffff" input-align="center" placeholder="请输入搜索关键词" />
       <div @click="handleclickgetinto(item)" v-for="item in list" :key="item.ID" class="box-main">
-        <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>{{item.TITLE}}</p>
-        <p class="p1"><span class="s-1"><span v-if="item.STATE==1" style="color:red">●</span>&nbsp;&nbsp; {{item.CONTENT}}</span></p>
-        <van-icon class="edit" name="edit" />
+        <p class="p2">
+          <span v-if="item.STATE==2" style="color:#1fc480">●</span>
+          <span v-if="item.STATE==1" style="color:#f80d18">●</span>
+          <span v-if="item.STATE==0" style="color:#ffd400">●</span>
+          &nbsp;&nbsp; {{item.TITLE}}
+        </p>
+        <p class="p1"><span class="s-1">{{item.CONTENT}}</span></p>
+        <van-icon v-if="item.STATE==1" class="edit" name="edit" />
       </div>
-      
+      <!-- 0 待审核  1驳回  2通过-->
 
     </div>
   </div>
@@ -23,45 +28,52 @@ export default {
   components: {},
   data() {
     return {
-      value1: '',
-      list:[]
+      value1: "",
+      list: [],
     };
   },
   computed: {
     ...mapGetters(["userInfo"]),
   },
-  watch:{
+  watch: {
     value1(val) {
-      this.getMyPostList(val)
-      
-    }
+      this.getMyPostList(val);
+    },
   },
   mounted() {
     this.getMyPostList();
   },
   methods: {
     getMyPostList(val) {
-
       getMyPostList({
-        USER_ID:this.userInfo.ID,
-        SEARCH:val || '测试'
-      }).then((res) => {
-          let {code,data} = res;
-        if(code==0) {
-          console.log(data)
-          this.list = data.list;
-        }
+        USER_ID: this.userInfo.ID,
+        SEARCH: val || "测试",
+      })
+        .then((res) => {
+          let { code, data } = res;
+          if (code == 0) {
+            console.log(data);
+            this.list = data.list;
+          }
         })
         .catch((error) => console.log(error));
     },
-    handleclickgetinto(data){
-      if(data.STATE!==1)return;
+    handleclickgetinto(data) {
+      if(data.STATE!==1) {
+         this.$router.push({
+        name: "Viewpost1",
+        query: {
+          id: data.ID
+        },
+      });
+      return;
+      }
       this.$router.push({
-        name:"Viewpost",
-        query:{
-          id:data.ID
-        }
-      })
+        name: "Viewpost",
+        query: {
+          id: data.ID
+        },
+      });
     },
     onClickLeft() {
       this.$router.go(-1); //返回上一层
@@ -129,16 +141,16 @@ export default {
     }
   }
   .img {
-      height: 260px;
-      border-radius: 20px;
-      overflow: hidden;
+    height: 260px;
+    border-radius: 20px;
+    overflow: hidden;
   }
   .edit {
     position: absolute;
     right: 27px;
     top: 50%;
     bottom: 50%;
-    margin:auto;
+    margin: auto;
   }
 }
 </style>

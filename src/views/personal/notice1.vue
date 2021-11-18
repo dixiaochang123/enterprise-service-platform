@@ -4,7 +4,7 @@
     <div style="height: 46px"></div>
     <div class="box">
       <div class="box-main">
-        <p class="p1" style="text-align: center;"><span></span><span style="visibility: hidden;"></span>{{content.TITLE}}</p>
+        <p class="p1" style="text-align: center;"><span style="visibility: hidden;"></span>{{content.TITLE}}</p>
         <p class="p2" v-html="content.ANSWER"></p>
         <p class="p3">{{content.ORG_ID_}}</p>
       </div>

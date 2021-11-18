@@ -1,34 +1,35 @@
 <template>
   <div class="shopdetails">
-    <van-nav-bar title="发布帖子" left-text="" left-arrow fixed @click-left="onClickLeft" />
+    <van-nav-bar title="查看" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
-    <van-form @submit="onSubmit">
-      <van-field v-model="addressInfo.TITLE" name="标题" label="标题" placeholder="请输入标题" :rules="[{ required: true, message: '请输入标题' }]"  />
-      <!-- <van-field v-model="addressInfo.ORG_ID_" name="企业名称" label="企业名称" placeholder="请输入您所在的企业"  /> -->
-      <!-- <van-field v-model="addressInfo.USER_ID" name="上报人" label="上报人" placeholder="请输入上报人"  readonly /> -->
-      <van-field v-model="addressInfo.REAL_NAME" name="上报人" label="上报人" placeholder="请输入上报人"  readonly />
-      <!-- <van-field v-model="addressInfo.PHONE" name="联系方式" label="联系方式" placeholder="请输入联系方式"  /> -->
-      <van-field v-model="addressInfo.CONTENT" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" :rules="[{ required: true, message: '请填写描述' }]" />
-      <van-uploader v-model="fileList" :max-size="50000 * 1024" multiple :max-count="5" :after-read="onRead" :before-delete="onDelete" @oversize="onOversize">
-        <div class="upload">
-          <img src="../../assets/personal/矩形 846 拷贝.png" alt="">
-        </div>
-      </van-uploader>
-      <div style="margin: 16px">
-        <van-button class="see" round block type="info" native-type="submit">提交</van-button>
-      </div>
-    </van-form>
-    
+    <!-- <van-form @submit="onSubmit">
+      <van-field v-model="addressInfo.TITLE" readonly name="标题" label="标题"  />
+      <van-field v-model="addressInfo.ORG_ID_" name="企业名称" readonly label="企业名称"  />
+      <van-field v-model="addressInfo.USER_ID_" name="上报人" readonly label="上报人"  />
+      <van-field v-model="addressInfo.PHONE" name="联系方式" readonly label="联系方式"  />
+      <van-field v-model="addressInfo.APPR_CONTENT" name="驳回原因" readonly label="驳回原因"  />
+      <van-field v-model="addressInfo.CONTENT" readonly class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
+      <div class="imgbox">
 
-    <!-- <van-popup v-model="showArea" position="bottom">
-      <van-area title="请选择所在地区" :area-list="areaList" @confirm="onConfirm" @change="change" @cancel="showArea = false" />
-    </van-popup> -->
-    <van-popup v-model="showname" position="bottom">
-      <van-picker title="" show-toolbar :columns="columns" @confirm="onConfirm1" @cancel="showname = false" @change="onChange" />
-    </van-popup>
-    <!-- <van-button class="see" round type="info" @click="seeOrder"
-      >保存并使用</van-button
-    > -->
+      <img v-for="(item,index) in fileList" :key="index" :src="item.url" alt="" srcset="">
+      </div>
+    </van-form> -->
+    <div class="box">
+      <div class="box-main">
+        <p class="p1" >{{addressInfo.TITLE}}</p>
+        <p class="" style="font-size:12px;">{{addressInfo.CREATETIME}} {{addressInfo.ORG_ID_}}</p>
+        <p class="" style="visibility: hidden;">{{addressInfo.CREATETIME}} {{addressInfo.ORG_ID_}}</p>
+        <p class="p2" >{{addressInfo.CONTENT}}</p>
+        <p class="p3">{{content.ORG_ID_}}</p>
+        <div class="imgbox">
+
+            <img v-for="(item,index) in fileList" :key="index" :src="item.url" alt="" srcset="">
+        </div>
+      </div>
+      <div style="height:20px;"></div>
+
+    </div>
+
   </div>
 </template>
 
@@ -47,6 +48,7 @@ export default {
   components: {},
   data() {
     return {
+      content:{},
         value:3,
       name: "",
       mobile: "",
@@ -59,17 +61,19 @@ export default {
       hotcities: [],
       addressInfo: {
         TITLE: "",
-        USER_ID:'',
+        ORG_ID_:'',
+        USER_ID_:'',
+        PHONE: "",
         CONTENT:'',
         ATTACHS:'',
-        REAL_NAME:''
-        
+        APPR_CONTENT:''
+
       },
       columns: ["杭州", "宁波", "温州", "绍兴", "湖州", "嘉兴", "金华", "衢州"],
       fileList: [
         // { url: "https://img01.yzcdn.cn/vant/leaf.jpg" },
-        // // Uploader 根据文件后缀来判断是否为图片文件
-        // // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
+        // Uploader 根据文件后缀来判断是否为图片文件
+        // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
         // { url: "https://cloud-image", isImage: true },
       ],
       uploadImages: [],
@@ -80,7 +84,7 @@ export default {
       // cityID: ,
       // areaID: ,
       // address: 大V发地址,
-      // realname: 呵呵呵,
+      // TITLE: 呵呵呵,
       // mobile: 13611366910,
     };
   },
@@ -98,26 +102,26 @@ export default {
   },
   methods: {
     getPostMap() {
-      this.addressInfo.USER_ID = this.userInfo.ID;
-      this.addressInfo.REAL_NAME = this.userInfo.REAL_NAME;
-      // getPostMap({
-      //   ID:this.$route.query.id
-      // }).then(res=>{
-      //   let {code,data} = res;
-      //     if(code==0) {
-      //       const url = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/saveFile'
-      //       this.addressInfo = data.map;
-      //       this.addressInfo.ATTACHS = data.map.attachList.map(item=>item.ID).join(",")+","
-      //       this.fileList = data.map.attachList.map(item=>{
-      //         return {
-      //           // url:config[process.env.NODE_ENV].mockUrl+'/wjyql/'+item.REAL_PATH
-      //           url:config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='+item.ID
-      //         }
-      //       })
-      //           console.log(this.fileList)
-      //       console.log(this.addressInfo)
-      //     }
-      // }).catch(error=>console.log(error))
+      getPostMap({
+        ID:this.$route.query.id
+      }).then(res=>{
+        let {code,data} = res;
+          if(code==0) {
+            const url = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/saveFile'
+            this.addressInfo = data.map;
+            this.addressInfo.ATTACHS = !!data.map.attachList && data.map.attachList.map(item=>item.ID).join(",")+","
+            this.addressInfo.APPR_CONTENT = data.map.apprList[0].APPR_CONTENT;
+            console.log(this.addressInfo)
+            this.fileList = data.map.attachList.map(item=>{
+              return {
+                // url:config[process.env.NODE_ENV].mockUrl+'/wjyql/'+item.REAL_PATH
+                url:config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='+item.ID
+              }
+            })
+                console.log(this.fileList)
+            console.log(this.addressInfo)
+          }
+      }).catch(error=>console.log(error))
 
     },
     // 校检手机号码
@@ -146,7 +150,7 @@ export default {
               "/" +
               this.areaList.county_list[this.addressInfo.area];
           }
-          // this.addressInfo.phone = !!this.addressInfo &&  !!this.addressInfo.phone ? this.mobileNumberChange(this.addressInfo.phone):null;
+          // this.addressInfo.PHONE = !!this.addressInfo &&  !!this.addressInfo.PHONE ? this.mobileNumberChange(this.addressInfo.PHONE):null;
         })
         .catch((error) => console.log(error));
     },
@@ -179,7 +183,6 @@ export default {
       // this.GetCity(value[0].code);
     },
     onRead(file) {
-      console.log(file)
       var formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
       formData.append("file", file.file); //接口需要传的参数
       let _this = this;
@@ -190,9 +193,10 @@ export default {
       xhr.onload = function () {
         if (xhr.status === 200) {
           let { data } = JSON.parse(xhr.response);
+          console.log(data)
           _this.addressInfo.ATTACHS = _this.addressInfo.ATTACHS+data.att_map.ID+',';
-          _this.uploadImages.push(data.url);
-          console.log(_this.fileList, _this.uploadImages);
+          _this.uploadImages.push(data.att_map.REAL_PATH);
+          console.log(_this.fileList, _this.uploadImages,_this.addressInfo.ATTACHS);
         }
       };
       // console.log(file);
@@ -208,26 +212,15 @@ export default {
       // Toast("文件大小不能超过 500kb");
     },
     onSubmit(values) {
-      let params = {...this.addressInfo}
-      params.ID = ""
-      postSave({...params}).then(res=>{
-        this.$router.push({
-          name:'Mypost'
-        })
+      postSave({...this.addressInfo}).then(res=>{
 
       }).catch(error=>console.log(error))
+
       // axios
       //   .get(
       //     `http://cj.pydoton.com/?s=App.Shop_ShoppingAddress.Save${paramsstr}`
       //   )
       //   .then((res) => {
-      //     // axios({
-      //     //   method: "post",
-      //     //   url: "http://cj.pydoton.com/?s=App.Shop_ShoppingAddress.Save",
-      //     //   data: params,
-      //     //   withCredentials: true,
-      //     // })
-      //     //   .then((res) => {
       //     let { msg } = res.data;
       //     if (msg == "保存成功!") {
       //       this.$router.push({
@@ -307,20 +300,32 @@ export default {
     width: 52px;
   }
 }
-
-.see {
-  width: 80%;
-  height: 80px;
-  padding: 0px 200px;
-  font-size: 28px;
-  color: #fff;
-  background: rgba(86, 131, 255, 1);
-  border: none;
+.btns {
+  display: flex;
+  justify-content: space-around;
   position: fixed;
   bottom: 100px;
   left: 0;
   right: 0;
   margin: auto;
+}
+.see {
+  width: 40%;
+  height: 80px;
+  // padding: 0px 200px;
+  font-size: 28px;
+  color: #fff;
+  background: rgba(86, 131, 255, 1);
+  border: none;
+  box-sizing: border-box;
+  // position: fixed;
+  // bottom: 100px;
+  // left: 0;
+  // right: 0;
+  // margin: auto;
+}
+.see1 {
+  background-color: #FF8686;
 }
 ::v-deep .van-field__control {
   text-align: right;
@@ -328,6 +333,62 @@ export default {
 .hhhhh {
   ::v-deep .van-field__control {
     text-align: left;
+  }
+}
+.imgbox {
+    display: flex;
+    justify-content: flex-start;
+    img {
+        width: 40%;
+        margin:0 20px;
+    }
+}
+.box {
+  width: 100%;
+  padding: 0 20px;
+  padding-top: 20px;
+  box-sizing: border-box;
+}
+.box-main {
+  width: 100%;
+  padding: 20px;
+  background-color: #f3f4f7;
+  border-radius: 20px;
+  box-sizing: border-box;
+  font-size: 28px;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #000000;
+  p {
+    line-height: 50px;
+  }
+  .p1 {
+    font-size: 32px;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #000000;
+    span {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background: rgba(86, 131, 255, 0);
+      border: 3px solid #5683ff;
+    }
+  }
+  .p2 {
+      text-indent: 2em;
+      font-size: 28px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #333333;
+        line-height: 41px;
+  }
+  .p3 {
+    font-size: 32px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #000000;
+    text-align: right;
   }
 }
 </style>

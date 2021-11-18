@@ -7,7 +7,8 @@
         <div class="header">
           <div class="admin-info">
             <!-- <van-image v-if="userInfo.REAL_NAME" @click="login" round width="5rem" height="5rem" :src="photo" /> -->
-            <img @click="gotogrzx" v-if="userInfo.REAL_NAME" class="photo" :src="photo" alt="">
+            <img v-if="userInfo.REAL_NAME && !!userInfo.PHOTO" @click="gotogrzx"  class="photo" :src="photo" alt="">
+            <img v-if="userInfo.REAL_NAME && !userInfo.PHOTO" @click="gotogrzx"  class="photo" src="../../assets/yiqilai/index/未登录头像.png" alt="">
             <van-image v-if="!userInfo.REAL_NAME" @click="login" round width="5rem" height="5rem" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
             <div v-if="userInfo.REAL_NAME" class="admin-info-text">
               <div class="t-1">
@@ -48,7 +49,7 @@
               </div>
             </div>
             <div class="right-top">
-              <div><img width="4rem" height="4rem" src="../../assets/yiqilai/index/搜索@3x.png" alt=""></div>
+              <!-- <div><img width="4rem" height="4rem" src="../../assets/yiqilai/index/搜索@3x.png" alt=""></div> -->
               <div @click="handletomessage"><img width="4rem" height="4rem" src="../../assets/yiqilai/index/系统消息@3x.png" alt=""></div>
 
             </div>
@@ -71,7 +72,7 @@
                     <!-- <img class="vsiimg" v-if="item.ATTACHS" :src="url+item.ATTACHS" alt=""> -->
                     <!-- <img class="vsiimg" src="https://img01.yzcdn.cn/vant/cat.jpeg" alt=""> -->
                     <div class="vsi-1">
-                      <p class="p1" style="vertical-align: bottom;"><span></span><span style="visibility: hidden;"></span> 政策类别</p>
+                      <p class="p1" style="vertical-align: bottom;"> 政策类别</p>
                       <p class="p2">{{item.NAME}}</p>
                       <p class="p3"></p>
                       <p class="p3" style="visibility: hidden;"></p>
@@ -87,18 +88,18 @@
           </div>
           <div class="zcsd">
             <div class="hd">
-              <p>交流园地</p>
+              <p>交流园地  <span @click="handleclickgoto" style="float:right;font-size:16px;font-weight:400;">更多</span></p>
               <p class="p2" style="visibility: hidden;"></p>
               <p class="p2" style="visibility: hidden;"></p>
               <p class="p2"></p>
             </div>
-            <div class="myswipe myswipe10" @click="handleclickcommunication">
+            <div class="myswipe myswipe10">
               <van-swipe :loop="false" height="100%">
-                <van-swipe-item :class="'vanswipeitem1'+index" v-for="(item,index) in indexData.postList" :key="item.ID">
+                <van-swipe-item @click="handleclickcommunication(item)" :class="'vanswipeitem1'+index" v-for="(item,index) in indexData.postList" :key="item.ID">
                   <div class="vsi">
                     <!-- <img class="vsiimg" src="https://img01.yzcdn.cn/vant/cat.jpeg" alt=""> -->
                     <div class="vsi-1">
-                      <p class="p1" style="vertical-align: bottom;"><span></span><span style="visibility: hidden;"></span> {{item.TITLE}}&nbsp;&nbsp;&nbsp;&nbsp;{{item.CREATETIME}}</p>
+                      <p class="p1" style="vertical-align: bottom;"> {{item.TITLE}}&nbsp;&nbsp;&nbsp;&nbsp;{{item.CREATETIME}}</p>
                       <p class="p2">{{item.CONTENT}}</p>
                       <!-- <p class="p3"></p>
                       <p class="p3" style="visibility: hidden;"></p>
@@ -124,30 +125,30 @@
 
                   <div class="vsi vsi-1-1">
                     <div class="vsi-1">
-                      <p class="p1" style="vertical-align: bottom;"><span></span></p>
+                      <p class="p1" style="vertical-align: bottom;"></p>
                       <p class="p2">审批服务</p>
                       <p class="p3"></p>
                       <p class="p3" style="visibility: hidden;"></p>
                     </div>
-                    <van-button class="vsi-2" round type="info">更多</van-button>
+                    <van-button class="vsi-2" round type="info" @click="handlegettozcsh(7)">更多</van-button>
                   </div>
                   <div class="vsi vsi2 vsi-1-2">
                     <div class="vsi-1">
-                      <p class="p1" style="vertical-align: bottom;"><span></span></p>
+                      <p class="p1" style="vertical-align: bottom;"></p>
                       <p class="p2">人才申报</p>
                       <p class="p3"></p>
                       <p class="p3" style="visibility: hidden;"></p>
                     </div>
-                    <van-button class="vsi-2" round type="info">更多</van-button>
+                    <van-button class="vsi-2" round type="info" @click="handlegettozcsh(6)">更多</van-button>
                   </div>
                   <div class="vsi vsi-1-3">
                     <div class="vsi-1 ">
-                      <p class="p1" style="vertical-align: bottom;"><span></span></p>
+                      <p class="p1" style="vertical-align: bottom;"></p>
                       <p class="p2">金融服务</p>
                       <p class="p3"></p>
                       <p class="p3" style="visibility: hidden;"></p>
                     </div>
-                    <van-button class="vsi-2" round type="info">更多</van-button>
+                    <van-button class="vsi-2" round type="info" @click="handlegettozcsh(3)">更多</van-button>
                   </div>
               </div>
 
@@ -226,6 +227,14 @@ export default {
         }
       })
     },
+    handlegettozcsh(data) {
+      this.$router.push({
+          name:'Policyintitem',
+          query:{
+            id:data
+          }
+        })
+    },
     onRefresh() {
       if (!this.loading) {
         this.refreshing = true;
@@ -246,9 +255,18 @@ export default {
         name:'Message'
       })
     },
-    handleclickcommunication() {
-      this.$router.push({
+    handleclickgoto() {
+    this.$router.push({
         name:'Communication'
+      })
+    },
+    handleclickcommunication(item) {
+      this.$router.push({
+        name:'Viewpost1',
+        query:{
+
+          id:item.ID
+        }
       })
     }
   },
@@ -343,7 +361,7 @@ export default {
   }
   .right-top {
     position: absolute;
-    right: 0;
+    right: 20px;
     top: -50px;
     display: flex;
     justify-content: flex-end;
@@ -511,7 +529,7 @@ export default {
   background: url('../../assets/index/11/9.png') no-repeat center center;
   background-size: 95% 100%;
 }
-.vanswipeitem10,.vanswipeitem1undefined {
+.vanswipeitem10,.vanswipeitem11,.vanswipeitem12,.vanswipeitem13,.vanswipeitem1undefined {
   background: url('../../assets/index/11/6.png') no-repeat center center;
   background-size: 100% 100%;
   width: 100%;

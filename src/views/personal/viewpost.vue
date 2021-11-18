@@ -7,6 +7,7 @@
       <van-field v-model="addressInfo.ORG_ID_" name="企业名称" label="企业名称"  />
       <van-field v-model="addressInfo.USER_ID_" name="上报人" label="上报人"  />
       <van-field v-model="addressInfo.PHONE" name="联系方式" label="联系方式"  />
+      <van-field v-model="addressInfo.APPR_CONTENT" name="驳回原因" label="驳回原因"  />
       <van-field v-model="addressInfo.CONTENT" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
       <van-uploader v-model="fileList" :max-size="50000 * 1024" multiple :max-count="5" :after-read="onRead" :before-delete="onDelete" @oversize="onOversize">
         <div class="upload">
@@ -65,6 +66,7 @@ export default {
         PHONE: "",
         CONTENT:'',
         ATTACHS:'',
+        APPR_CONTENT:''
 
       },
       columns: ["杭州", "宁波", "温州", "绍兴", "湖州", "嘉兴", "金华", "衢州"],
@@ -107,7 +109,9 @@ export default {
           if(code==0) {
             const url = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/saveFile'
             this.addressInfo = data.map;
-            this.addressInfo.ATTACHS = data.map.attachList.map(item=>item.ID).join(",")+","
+            this.addressInfo.ATTACHS = !!data.map.attachList && data.map.attachList.map(item=>item.ID).join(",")+","
+            this.addressInfo.APPR_CONTENT = data.map.apprList[0].APPR_CONTENT;
+            console.log(this.addressInfo)
             this.fileList = data.map.attachList.map(item=>{
               return {
                 // url:config[process.env.NODE_ENV].mockUrl+'/wjyql/'+item.REAL_PATH

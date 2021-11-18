@@ -11,7 +11,8 @@
             height="40"
             :src="info.avatar_thumb"
           /> -->
-          <img class="photo" :src="photo" alt="">
+          <img v-if="!!userInfo.REAL_NAME && !!userInfo.PHOTO" class="photo" :src="photo"  alt="">
+          <img v-else class="photo" src="../../assets/yiqilai/index/未登录头像.png" alt="">
           <input class="uploaderinput" type="file" name="" accept="image/gif,image/jpeg,image/jpg,image/png" @change="fileChange">
           <!-- <van-icon style="font-size: 16px;color: #969799;" name="arrow" /> -->
         </template>

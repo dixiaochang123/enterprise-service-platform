@@ -31,7 +31,7 @@
       :show-error="false"
       @submit="onSubmit"
     >
-    <p class="p1">手机快捷登录</p>
+    <p class="p1">快捷登录</p>
     <p class="p2" style="visibility: hidden;"></p>
     <p class="p2"></p>
       <van-field
@@ -45,7 +45,6 @@
         placeholder="请输入您的账号"
         :rules="[
           {
-            validator: checkEmail,
             required: true,
             message: '请输入正确的您的账号!',
           },
@@ -70,6 +69,7 @@
         center
         clearable
         label=""
+        type="password"
         placeholder="请输入您的密码"
         :rules="[{ required: true, message: '请输入您的密码！' }]"
       >
@@ -77,6 +77,7 @@
           <van-button size="small" :disabled="safety.state" type="primary" @click="GetCode">{{safety.text}}</van-button>
         </template> -->
       </van-field>
+      <van-button style="float: right;" to="/orderinfo" size="small" type="primary">注册</van-button>
 
       <div style="margin: 30px">
         <van-button
@@ -102,8 +103,10 @@ export default {
   data() {
     return {
       form: {
-        mobile: '18862631752',
-        code:'123456'
+        // mobile: '18862631752',
+        // code:'123456'
+        mobile: '',
+        code:''
       },
       // 验证码
       safety: {
@@ -119,7 +122,7 @@ export default {
     $route: {
       handler(route) {
         console.log('route:', route)
-        this.redirect = (route.query && route.query.redirect) || '/'
+        // this.redirect = (route.query && route.query.redirect) || '/'
       },
       immediate: true
     }
@@ -193,10 +196,13 @@ export default {
           this.$notify({
             type: 'success',
             message: '登录成功',
-            duration: 2000,
+            duration: 1500,
             onOpened: () => {
               this.loading = false
-              location.href = this.redirect
+              // location.href = this.redirect
+              this.$router.push({
+                path:'/index'
+              })
             }
           })
         })

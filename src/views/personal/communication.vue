@@ -6,18 +6,18 @@
       <van-search v-model="value1" shape="round" background="#ffffff" input-align="center" placeholder="请输入搜索关键词" />
       <div class="tbs">
         <van-cell to="/releasepost">
-          <img src="" alt="">
+          <img src="../../assets/yiqilai/index/edit.png" alt="">
           <p>发布帖子</p>
         </van-cell>
         <van-cell to="/mypost">
-          <img src="" alt="">
+          <img src="../../assets/yiqilai/index/xl.png" alt="">
           <p>我的帖子</p>
         </van-cell>
 
       </div>
-      <div class="box-main" v-for="item in list" :key="item.ID">
+      <div class="box-main" @click="gotoviewpost1(item)" v-for="item in list" :key="item.ID">
         <p class="p1"><span class="s-1">{{item.TITLE}}</span><span class="s-2">{{item.CREATETIME}}</span></p>
-        <p class="p2"><span class="s-1"></span><span class="s-1" style="visibility: hidden;"></span>{{item.ORG_ID_}}</p>
+        <p class="p2"><span class="s-1" style="visibility: hidden;"></span>{{item.ORG_ID_}}</p>
         <div class="img">
           <van-image  fit="cover" :src="item.url" />
           <!-- <img :src="item.url" alt="" srcset=""> -->
@@ -59,6 +59,14 @@ export default {
     this.getPostList();
   },
   methods: {
+    gotoviewpost1(val) {
+      this.$router.push({
+        name:"Viewpost1",
+        query:{
+          id:val.ID
+        }
+      })
+    },
     getPostList(val) {
 
       getPostList({
@@ -70,6 +78,7 @@ export default {
           if(!!data.list) {
             data.list.map((item,index)=>{
               item['url'] = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='+item.FIRST_ATTACH;
+              item.CREATETIME = item.CREATETIME.substring(0,10)
               this.$set(this.list,index,item)
             })
           } else {
@@ -188,7 +197,7 @@ export default {
     }
   }
   .img {
-      height: 260px;
+      // height: 260px;
       border-radius: 20px;
       overflow: hidden;
   }

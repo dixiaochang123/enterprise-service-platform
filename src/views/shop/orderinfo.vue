@@ -3,10 +3,11 @@
     <van-nav-bar title="身份认证" left-text="" input-align="right" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <van-form @submit="onSubmit">
-      <van-field v-model="addressInfo.ISFR" readonly="readonly" label="我是" right-icon="arrow" @click="showname = true" />
-      <van-field v-model="addressInfo.REAL_NAME" readonly="readonly" label="所属板块" right-icon="arrow" @click="showname1 = true" />
-      <van-field v-model="addressInfo.ORG_ID" name="企业名称" label="企业名称" placeholder="请输入您所在的企业" :rules="[{ required: true, message: '请填写收件人' }]" />
-      <van-field v-model="addressInfo.REAL_NAME" name="姓名" label="姓名" placeholder="请输入真实姓名" :rules="[{ required: true, message: '请填写收件人' }]" />
+      <van-field v-model="addressInfo.ISFR_" readonly="readonly" label="我的身份" right-icon="arrow" @click="showname = true" />
+      <van-field v-model="addressInfo.ORG_PLATE_" readonly="readonly" label="所属板块" right-icon="arrow" @click="showname1 = true" />
+      <van-field v-model="addressInfo.ORG_ID_" readonly name="企业名称" label="企业名称" right-icon="arrow"  @click="showname2 = true"  />
+      <van-field v-model="addressInfo.REAL_NAME" name="姓名" label="姓名" placeholder="请输入真实姓名" :rules="[{ required: true, message: '请填写真实姓名' }]" />
+      <van-field v-model="addressInfo.PASSWORD" type="password" name="密码" label="密码" placeholder="请输入密码" :rules="[{ required: true, message: '请填写密码' }]" />
       <van-field class="mobile" v-model="addressInfo.PHONE" maxlength="11" type="number" name="联系方式" label="联系方式" placeholder="请输入手机号码" :rules="[
           {
             validator: checkMobile,
@@ -28,7 +29,10 @@
       <van-picker title="" show-toolbar :columns="columns" @confirm="onConfirm1" @cancel="showname = false" @change="onChange" />
     </van-popup>
     <van-popup v-model="showname1" position="bottom">
-      <van-picker title="" show-toolbar :columns="columns1" @confirm="onConfirm1" @cancel="showname1 = false" @change="onChange" />
+      <van-picker title="" show-toolbar :columns="columns1" @confirm="onConfirm2" @cancel="showname1 = false" @change="onChange1" />
+    </van-popup>
+    <van-popup v-model="showname2" position="bottom">
+      <van-picker title="" show-toolbar :columns="columns2" @confirm="onConfirm3" @cancel="showname2 = false"  @change="onChange2" />
     </van-popup>
     <!-- <van-button class="see" round type="info" @click="seeOrder"
       >保存并使用</van-button
@@ -55,20 +59,20 @@ export default {
       showArea: false,
       showname: false,
       showname1:false,
+      showname2:false,
       areaList,
       hotcities: [],
       addressInfo: {
         ISFR:'',
         REAL_NAME: "",
         PHONE: "",
-        address: "",
-        provinceID: "",
-        cityID: "",
-        areaID: "",
-        utype: "kuhu",
+        ORG_PLATE_:'',
+        ORG_PLATE:'',
+        PASSWORD:''
       },
       columns: [],
       columns1: [],
+      columns2: [],
 
       // uid: 999845591,
       // utype: kuhu,
@@ -82,9 +86,6 @@ export default {
   },
   computed: {
     ...mapGetters(["userInfo"]),
-    key() {
-      return this.$route.fullPath;
-    },
   },
   mounted() {
     // this.ShoppingAddress()
@@ -92,6 +93,7 @@ export default {
     // this.GetDefaultAreaInfo();
     this.getCombox();
     this.getgridCombox();
+    // this.getOrganList();
   },
   methods: {
     getCombox() {
@@ -100,7 +102,7 @@ export default {
           this.columns = res.map((item) => {
             return {
               text: item.NAME,
-              value: item.ID,
+              value: item.VALUE,
             };
           });
         })
@@ -118,15 +120,34 @@ export default {
         })
         .catch((error) => console.log(error));
     },
+    getOrganList(data) {
+      getOrganList({
+        ORG_TYPE:'2',
+        ORG_PLATE:data==1?'':data,
+        SEARCH:'',
+      }).then(res=>{
+        let {list} = res.data;
+        console.log(list)
+        this.columns2 = list.map(item=>{
+           return {
+              text: item.ORG_NAME,
+              value: item.ID,
+            };
+        })
+      }).catch(error=>console.log(error))
+    },
     doRegister() {
       doRegister({
         ISFR: 1,
         ORG_ID: 1,
+        ORG_ID_: 1,
         REAL_NAME: 1,
         PHONE: 1,
         PASSWORD: 1,
       })
-        .then((res) => {})
+        .then((res) => {
+          
+        })
         .catch((error) => console.log(error));
     },
     // 校检手机号码
@@ -141,12 +162,33 @@ export default {
     onConfirm1(value, index) {
       // Toast(`当前值：${value.value}, 当前索引：${index}`);
       console.log(value, index)
-      this.addressInfo.ISFR = value.text
+      this.addressInfo.ISFR = value.value
+      this.addressInfo.ISFR_ = value.text
       this.showname = false;
       this.showname1 = false;
     },
+    onConfirm2(value, index) {
+      // Toast(`当前值：${value.value}, 当前索引：${index}`);
+      console.log(value, index)
+      this.addressInfo.ORG_PLATE_ = value.text
+      this.addressInfo.ORG_PLATE = value.value
+      this.getOrganList(value.value);
+      this.showname = false;
+      this.showname1 = false;
+    },
+    onConfirm3(value, index) {
+      this.addressInfo.ORG_ID_ = value.text
+      this.addressInfo.ORG_ID = value.value
+      this.showname2 = false;
+    },
     onChange(picker, value, index) {
       // Toast(`当前值：${value}, 当前索引：${index}`);
+    },
+    onChange1() {
+
+    },
+    onChange2() {
+
     },
     onCancel() {
       Toast("取消");
@@ -167,12 +209,20 @@ export default {
       // this.GetCity(value[0].code);
     },
     onSubmit() {
-
+      delete this.addressInfo.ORG_ID_
+      delete this.addressInfo.ORG_PLATE_
+      delete this.addressInfo.ISFR_
+      doRegister({
+        ...this.addressInfo
+      }).then(res=>{
+        console.log(res)
+        this.$router.push({
+            path:'/loginphone'
+          })
+      }).catch(error=>console.log(error))
     },
     seeOrder() {
-      this.$router.push({
-        name: "Confirmorder",
-      });
+     
     },
   },
 };
