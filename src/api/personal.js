@@ -247,4 +247,37 @@ export function doUpdate(data) {
         data
     })
 }
+//	诉求表单提交
+export function appealSave(data) {
+    return request({
+        url: `/wjyql/mobile/appealSave`,
+        method: 'post',
+        data
+    })
+}
+// 获取服务类型
+export function getsysCombox(data) {
+    return request({
+        url: `/wjyql/sys/getCombox?table=t_sys_data&where=pid=SER_TYPE&orderby=sorder asc`,
+        method: 'post',
+        data
+    })
+}
+// 23、	获取我的诉求列表
+export function getMyAppealList(data) {
+    return request({
+        url: `/wjyql/mobile/getMyAppealList`,
+        method: 'post',
+        data
+    })
+}
+
+// 23、	诉求详情
+export function getAppealMap(data) {
+    return request({
+        url: `/wjyql/mobile/getAppealMap`,
+        method: 'post',
+        data
+    })
+}
 

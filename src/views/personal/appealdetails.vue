@@ -54,6 +54,7 @@
 import { Toast } from "vant";
 import { mapGetters } from "vuex";
 import areaList from "@/utils/area.js";
+import { getAppealMap } from "@/api/personal";
 import axios from "axios";
 export default {
   name: "Confirmorder",
@@ -105,11 +106,19 @@ export default {
     },
   },
   mounted() {
-    this.ShoppingAddress();
+    // this.ShoppingAddress();
     // this.GetHotCities();
     // this.GetDefaultAreaInfo();
+    this.getAppealMap()
   },
   methods: {
+    getAppealMap() {
+      getAppealMap({
+        ID:this.$route.query.id
+      }).then(res=>{
+
+      }).catch(error=>console.log(error))
+    },
     // 校检手机号码
     checkMobile(value) {
       const reg = /^1[3456789]\d{9}$/;
@@ -141,10 +150,7 @@ export default {
         .catch((error) => console.log(error));
     },
     onClickLeft() {
-      this.$router.push({
-        name: "Shopdetails",
-        query: { ...this.$route.query },
-      });
+      this.$router.go(-1); //返回上一层
     },
     onConfirm1(value, index) {
       Toast(`当前值：${value}, 当前索引：${index}`);

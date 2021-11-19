@@ -3,18 +3,18 @@
     <van-nav-bar title="企业诉求" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <van-form @submit="onSubmit">
-      <van-field v-model="addressInfo.realname" name="企业名称" label="企业名称" placeholder="请输入您所在的企业" :rules="[{ required: true, message: '请填写企业名称' }]" />
-      <van-field v-model="addressInfo.realname" name="上报人" label="上报人" placeholder="请输入上报人" :rules="[{ required: true, message: '请填写上报人' }]" />
-      <van-field class="mobile" v-model="addressInfo.phone" maxlength="11" type="number" name="联系方式" label="联系方式" placeholder="请输入手机号码" :rules="[
+      <van-field v-model="userInfo.ORG_ID_"  readonly label="企业名称" placeholder="请输入您所在的企业" :rules="[{ required: true, message: '请填写企业名称' }]" />
+      <van-field v-model="userInfo.REAL_NAME"  readonly label="上报人" placeholder="请输入上报人" :rules="[{ required: true, message: '请填写上报人' }]" />
+      <van-field class="mobile" v-model="userInfo.PHONE" readonly maxlength="11" type="number" label="联系方式" placeholder="请输入手机号码" :rules="[
           {
             validator: checkMobile,
             required: true,
             message: '请输入正确的手机号码!',
           },
         ]" />
-      <van-field v-model="addressInfo.realname" name="诉求目的" label="诉求目的" placeholder="请输入诉求目的" :rules="[{ required: true, message: '请填写诉求目的' }]" />
-      <van-field v-model="addressInfo.realname" readonly="readonly"   label="服务类型" right-icon="arrow" @click="showname = true" />
-     <van-field v-model="addressInfo.realname" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
+      <van-field v-model="addressInfo.NAME" name="NAME" label="诉求目的" placeholder="请输入诉求目的" :rules="[{ required: true, message: '请填写诉求目的' }]" />
+      <van-field v-model="addressInfo.SER_TYPE_" name="SER_TYPE" readonly :rules="[{ required: true, message: '请选择服务类型' }]"  label="服务类型" right-icon="arrow" @click="showname = true" />
+     <van-field v-model="addressInfo.CONTENT" name="CONTENT" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
       <van-uploader v-model="fileList" :max-size="50000 * 1024" multiple :max-count="5" :after-read="onRead" :before-delete="onDelete" @oversize="onOversize">
         <div class="upload">
           <img src="../../assets/personal/矩形 846 拷贝.png" alt="">
@@ -47,8 +47,9 @@
 <script>
 import { Toast } from 'vant';
 import { mapGetters } from "vuex";
-import areaList from "@/utils/area.js";
 import axios from "axios";
+import { appealSave,getsysCombox } from "@/api/personal";
+const config = require('../../utils/config')
 export default {
   name: "Confirmorder",
   components: {},
@@ -61,18 +62,25 @@ export default {
       address: "",
       showArea: false,
       showname:false,
-      areaList,
+      // areaList,
       hotcities: [],
       addressInfo:{
-        realname:'',
-        phone: '',
-        address: "",
-        provinceID: '',
-        cityID: '',
-        areaID: '',
-        utype:"kuhu"
+        NAME:'',
+        CONTENT:'',
+        SER_TYPE:'',
+        SER_TYPE_:'',
+        ATTACHS:'',
+        USER_ID:'',
+        ID:'',
+        // phone: '',
+        // address: "",
+        // provinceID: '',
+        // cityID: '',
+        // areaID: '',
+        // utype:"kuhu"
       },
       columns: ['杭州', '宁波', '温州', '绍兴', '湖州', '嘉兴', '金华', '衢州'],
+      sysCombox:[],
       fileList: [],
       uploadImages:[]
 
@@ -82,7 +90,7 @@ export default {
       // cityID: ,
       // areaID: ,
       // address: 大V发地址,
-      // realname: 呵呵呵,
+      // NAME: 呵呵呵,
       // mobile: 13611366910,
     };
   },
@@ -93,51 +101,38 @@ export default {
     },
   },
   mounted() {
-    this.ShoppingAddress()
-    // this.GetHotCities();
-    // this.GetDefaultAreaInfo();
+    this.addressInfo.USER_ID = this.userInfo.ID
+    this.getsysCombox()
   },
   methods: {
+    getsysCombox() {
+        getsysCombox().then(res=>{
+          console.log(res)
+          this.sysCombox = res;
+          this.columns = res.map(item=>item.NAME)
+
+        }).catch(error=>console.log(error))
+
+    },
     // 校检手机号码
     checkMobile(value) {
       const reg = /^1[3456789]\d{9}$/;
       return reg.test(value);
     },
-    ShoppingAddress() {
-      axios.get(`http://cj.pydoton.com/?s=App.Shop_ShoppingAddress.Find&uid=${this.userInfo.id}&utype=kuhu`).then(res=>{
-      let {code,info} = res.data.data;
-      if(!!info) {
-        this.addressInfo = info || null;
-        this.area1 = [this.addressInfo.province,this.addressInfo.city,this.addressInfo.area]
-        this.area = this.areaList.province_list[this.addressInfo.province]+'/'+this.areaList.city_list[this.addressInfo.city]+'/'+this.areaList.county_list[this.addressInfo.area] ;
-
-      }
-      // this.addressInfo.phone = !!this.addressInfo &&  !!this.addressInfo.phone ? this.mobileNumberChange(this.addressInfo.phone):null;
-      }).catch(error=>console.log(error))
-    },
     onClickLeft() {
       this.$router.go(-1); //返回上一层
     },
     onConfirm1(value, index) {
-      Toast(`当前值：${value}, 当前索引：${index}`);
+
+      this.addressInfo.SER_TYPE_ = value
+      this.addressInfo.SER_TYPE = this.sysCombox[index].VALUE
       this.showname = false
     },
     onChange(picker, value, index) {
-      Toast(`当前值：${value}, 当前索引：${index}`);
+
     },
     onCancel() {
-      Toast('取消');
-    },
-    onConfirm(values) {
-      console.log(values);
-      this.area1 = values.map((item) => item.code);
-      // this.area1 = values.map(item=>item.name)
-      this.area = values
-        .filter((item) => !!item)
-        .map((item) => item.name)
-        .join("/");
-        console.log(this.area)
-      this.showArea = false;
+      // Toast('取消');
     },
     change(picker, value, index) {
       // console.log('索引',picker, value, index)
@@ -148,13 +143,22 @@ export default {
   　　formData.append('file', file.file); //接口需要传的参数
       let _this = this
       var xhr = new XMLHttpRequest()
-      xhr.open('post', 'http://cj.pydoton.com/?s=App.Examples_Upload.GoFtp')
+      xhr.open('post', 'http://www.czssqw.net/zhzf_ly/api/Common/Uploader/annexpic')
       xhr.send(formData) 
       xhr.onload = function () {
         if (xhr.status === 200) {
           let {data} = JSON.parse(xhr.response)
-          _this.uploadImages.push(data.url)
-          console.log(_this.fileList,_this.uploadImages)
+          // data.url = config[process.env.NODE_ENV].mockUrl+data.url
+          data.url = 'http://www.czssqw.net/zhzf_ly'+data.url
+          _this.uploadImages.push({
+            url:data.url
+          })
+          _this.addressInfo.ATTACHS = _this.uploadImages
+          // _this.fileList = data
+          // _this.addressInfo.ATTACHS = data.map(item=>{
+          //   item.url = url+item.ur
+          // })
+          console.log(data,_this.uploadImages,_this.addressInfo.ATTACHS)
           
         }
       }
@@ -172,7 +176,14 @@ export default {
       // Toast("文件大小不能超过 500kb");
     },
     onSubmit(values) {
-      // &utype=kuhu&provinceID=110000&cityID=&areaID=&address=%E5%A4%A7V%E5%8F%91%E5%9C%B0%E5%9D%80&realname=%E5%91%B5%E5%91%B5%E5%91%B5&phone=13611366910
+      console.log(values)
+      let {NAME,CONTENT,SER_TYPE,ATTACHS,USER_ID,ID} = this.addressInfo;
+      let params1 = { NAME,CONTENT,SER_TYPE,ATTACHS,USER_ID,ID }
+      appealSave(params1).then(res=>{
+        
+      }).catch(error)
+        return
+      // &utype=kuhu&provinceID=110000&cityID=&areaID=&address=%E5%A4%A7V%E5%8F%91%E5%9C%B0%E5%9D%80&NAME=%E5%91%B5%E5%91%B5%E5%91%B5&phone=13611366910
       let params = {
         uid: this.userInfo.id,
         token: this.userInfo.token,
@@ -180,7 +191,7 @@ export default {
         cityID: this.area1[1],
         areaID: this.area1[2],
         address: this.addressInfo.address,
-        realname: this.addressInfo.realname,
+        NAME: this.addressInfo.NAME,
         phone: this.addressInfo.phone,
         utype:"kuhu"
       };
