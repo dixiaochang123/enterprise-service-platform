@@ -4,12 +4,12 @@
     <div style="height: 46px"></div>
     <van-form @submit="onSubmit">
       <van-field v-model="addressInfo.realname" name="诉求目的" label="诉求目的" placeholder="请输入诉求目的" :rules="[{ required: true, message: '请填写收件人' }]" />
-      <van-field v-model="addressInfo.realname" name="企业名称" label="企业名称" placeholder="请输入您所在的企业" :rules="[{ required: true, message: '请填写收件人' }]" />
-      <van-field v-model="addressInfo.realname" name="上报人" label="上报人" placeholder="请输入上报人" :rules="[{ required: true, message: '请填写收件人' }]" />
-      <van-field v-model="addressInfo.realname" readonly="readonly" label="服务类型" right-icon="arrow" @click="showname = true" />
-      <van-field v-model="addressInfo.realname" name="上报时间" label="上报时间" placeholder="请输入上报时间" :rules="[{ required: true, message: '请填写收件人' }]" />
-      <van-field v-model="addressInfo.realname" name="诉求内筒" label="诉求内筒" readonly />
-      <van-field v-model="addressInfo.realname" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
+      <van-field v-model="userInfo.ORG_ID_" name="企业名称" label="企业名称" placeholder="请输入您所在的企业" readonly />
+      <van-field v-model="userInfo.REAL_NAME" name="上报人" label="上报人" placeholder="请输入上报人" readonly />
+      <van-field v-model="addressInfo.SER_TYPE_" readonly label="服务类型" right-icon="arrow" @click="showname = true" />
+      <van-field v-model="addressInfo.CREATETIME" name="上报时间" label="上报时间" placeholder="请输入上报时间" :rules="[{ required: true, message: '请填写收件人' }]" />
+      <van-field name="诉求内容" label="诉求内容" readonly />
+      <van-field v-model="addressInfo.CONTENT" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
       <van-uploader v-model="fileList" :max-size="50000 * 1024" multiple :max-count="5" :after-read="onRead" :before-delete="onDelete" @oversize="onOversize">
         <div class="upload">
           <img src="../../assets/personal/矩形 846 拷贝.png" alt="">
@@ -54,7 +54,7 @@
 import { Toast } from "vant";
 import { mapGetters } from "vuex";
 import areaList from "@/utils/area.js";
-import { getAppealMap } from "@/api/personal";
+import { getAppealMap,appealAssess } from "@/api/personal";
 import axios from "axios";
 export default {
   name: "Confirmorder",
@@ -110,11 +110,44 @@ export default {
     // this.GetHotCities();
     // this.GetDefaultAreaInfo();
     this.getAppealMap()
+    // this.appealAssess()
   },
   methods: {
     getAppealMap() {
       getAppealMap({
         ID:this.$route.query.id
+      }).then(res=>{
+        let {code,data} = res;
+        // ATTACHS: "[{\"url\":\"http://www.czssqw.net/zhzf_ly/api/Common/Image/annex/20211119_911307443621154816.png\"},{\"url\":\"http://www.czssqw.net/zhzf_ly/api/Common/Image/annex/20211119_911307458427047936.png\"}]"
+        // CONTENT: "dxc1"
+        // CREATETIME: "2021-11-19 17:30:33"
+        // DELETE_MARK: 1
+        // ID: 7
+        // NAME: "dxc1"
+        // OGR_PLATE_: "湖塘园区网格一"
+        // ORG_ID: 31
+        // ORG_ID_: "新博科技"
+        // ORG_PLATE: "1459069427428487169"
+        // PHONE: "18862631752"
+        // PROGRESS: "0"
+        // PROGRESS_: "未处理"
+        // SER_TYPE: "1459074496181956610"
+        // SER_TYPE_: "排查劳资纠纷"
+        // STATE: 0
+        // STATE_: "待审核"
+        // USER_ID: 440
+        // USER_ID_: "刘大圣"
+        console.log(code,data)
+        this.addressInfo = data.map;
+        this.fileList = data.map.attachList
+      }).catch(error=>console.log(error))
+    },
+    appealAssess() {
+      appealAssess({
+        ISSHOW:"1", //是否公开
+        SCORE:"5",//评分
+        ID:"7"// 诉求ID
+
       }).then(res=>{
 
       }).catch(error=>console.log(error))

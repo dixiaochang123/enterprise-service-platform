@@ -281,3 +281,12 @@ export function getAppealMap(data) {
     })
 }
 
+// 23、评价
+export function appealAssess(data) {
+    return request({
+        url: `/wjyql/mobile/appealAssess`,
+        method: 'post',
+        data
+    })
+}
+
