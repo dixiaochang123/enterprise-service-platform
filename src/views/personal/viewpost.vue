@@ -13,13 +13,10 @@
         <div class="upload">
           <img src="../../assets/personal/矩形 846 拷贝.png" alt="">
         </div>
-        <div class="upload">
-          <img src="../../assets/personal/矩形 846 拷贝.png" alt="">
-        </div>
       </van-uploader>
       <div style="margin: 16px" class="btns">
         <van-button class="see" size="normal" round block type="info" native-type="submit">编辑</van-button>
-        <van-button class="see see1" size="normal" round block type="info" native-type="submit">删除</van-button>
+        <van-button class="see see1" size="normal" round block  @click="deleted">删除</van-button>
       </div>
       <!-- <img src="http://182.92.2.167:8200/wjyql/uploadFile/downloadFile?attachId=12053" alt="" srcset=""> -->
     </van-form>
@@ -44,8 +41,10 @@ import axios from "axios";
 const config = require('../../utils/config')
 import {
   getPostMap,
-  postSave
+  postSave,
+  doDelete
 } from "@/api/personal";
+import { Dialog } from 'vant';
 export default {
   name: "Confirmorder",
   components: {},
@@ -214,8 +213,31 @@ export default {
       // console.log(file);
       // Toast("文件大小不能超过 500kb");
     },
+    deleted(e) {
+      e.preventDefault();
+      console.log('deleted')
+       Dialog.confirm({
+        title: '提示',
+        message: '确定要删除吗？',
+      })
+        .then(() => {
+          doDelete({
+            id:this.$route.query.id,
+            table:'t_post_post',
+            delete_mark: 'update' 
+          }).then(res=>{
+            this.$router.push({
+              name:'Mypost'
+            })
+          }).catch(error=>console.log(error))
+        })
+        .catch((error) => console.log(error));
+    },
     onSubmit(values) {
       postSave({...this.addressInfo}).then(res=>{
+        this.$router.push({
+          name:'Mypost'
+        })
 
       }).catch(error=>console.log(error))
 

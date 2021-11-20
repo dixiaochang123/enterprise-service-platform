@@ -297,4 +297,12 @@ export function getUserInfo(data) {
         data
     })
 }
+// 23、删除帖子
+export function doDelete(data) {
+    return request({
+        url: `/wjyql/sys/doDelete`,
+        method: 'post',
+        data
+    })
+}
 
