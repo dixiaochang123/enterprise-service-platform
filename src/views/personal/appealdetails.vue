@@ -52,6 +52,7 @@
 
 <script>
 import { Toast } from "vant";
+import { Dialog } from 'vant';
 import { mapGetters } from "vuex";
 import { getAppealMap,appealAssess,getsysCombox,appealSave } from "@/api/personal";
 import axios from "axios";
@@ -161,6 +162,14 @@ export default {
         ID:this.$route.query.id// 诉求ID
 
       }).then(res=>{
+        Dialog.alert({
+          title: '提示',
+          message: '保存成功',
+        }).then(() => {
+          this.$router.push({
+            name:'Myappeal'
+          })
+        });
 
       }).catch(error=>console.log(error))
     },
@@ -275,6 +284,14 @@ export default {
     if(state==1) {
 
       appealSave(params1).then(res=>{
+         Dialog.alert({
+          title: '提示',
+          message: '保存成功',
+        }).then(() => {
+          this.$router.push({
+            name:'Myappeal'
+          })
+        });
         
       }).catch(error=>console.log(error))
     }

@@ -338,6 +338,7 @@ export default {
 .imgbox {
     display: flex;
     justify-content: flex-start;
+    flex-wrap: wrap;
     img {
         width: 40%;
         margin:0 20px;

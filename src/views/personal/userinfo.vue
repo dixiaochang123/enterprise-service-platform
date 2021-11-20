@@ -33,6 +33,7 @@ import { Toast } from 'vant';
 import { mapGetters,mapActions } from "vuex";
 import {doUpdate,getUserInfo} from "@/api/personal";
 const config = require('../../utils/config')
+import { Dialog } from 'vant';
 export default {
   name: "Userinfo",
   components: {},
@@ -83,7 +84,12 @@ export default {
         let {code,data} = res;
         this.$store
         .dispatch('user/setuserinfo', data.userMap)
-        // this.setuserinfo(data.userMap)
+        Dialog.alert({
+          title: '提示',
+          message: '保存成功',
+        }).then(() => {
+          // on close
+        });
         
 
       }).catch(error=>console.log(error))

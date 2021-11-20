@@ -1,6 +1,6 @@
 <template>
   <div class="personal">
-    <van-nav-bar title="我的帖子" left-text="" left-arrow fixed @click-left="onClickLeft" />
+    <van-nav-bar title="我的问题分享" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <div class="box">
       <van-search v-model="value1" shape="round" background="#ffffff" input-align="center" placeholder="请输入搜索关键词" />
@@ -41,13 +41,13 @@ export default {
     },
   },
   mounted() {
-    this.getMyPostList();
+    this.getMyPostList('');
   },
   methods: {
     getMyPostList(val) {
       getMyPostList({
         USER_ID: this.userInfo.ID,
-        SEARCH: '',
+        SEARCH: val,
       })
         .then((res) => {
           let { code, data } = res;

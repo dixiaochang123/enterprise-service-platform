@@ -3,12 +3,21 @@
     <van-nav-bar title="查看" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <van-form @submit="onSubmit">
-      <van-field v-model="addressInfo.TITLE" name="标题" label="标题"  />
-      <van-field v-model="addressInfo.ORG_ID_" name="企业名称" label="企业名称"  />
-      <van-field v-model="addressInfo.USER_ID_" name="上报人" label="上报人"  />
-      <van-field v-model="addressInfo.PHONE" name="联系方式" label="联系方式"  />
-      <van-field v-model="addressInfo.APPR_CONTENT" name="驳回原因" label="驳回原因"  />
+      <van-field v-model="addressInfo.TITLE" name="标题" label="标题" />
+      <van-field v-model="addressInfo.ORG_ID_" readonly name="企业名称" label="企业名称" />
+      <van-field v-model="addressInfo.USER_ID_" readonly name="上报人" label="上报人" />
+      <van-field v-model="addressInfo.PHONE" readonly name="联系方式" label="联系方式" />
+      <van-field v-model="addressInfo.APPR_CONTENT" name="驳回原因" label="驳回原因" />
       <van-field v-model="addressInfo.CONTENT" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
+      <div class="van-uploader__wrapper">
+        <div class="van-uploader__preview" v-for="(item,index) in uploadImages" :key="index">
+          <div class="van-image van-uploader__preview-image">
+            <img :src="item.url" class="van-image__img" style="object-fit: cover;"></div>
+          <div data-v-ad6b89ec="" class="van-uploader__preview-delete" @click="onDelete1(index)">
+            <i class="van-icon van-icon-cross van-uploader__preview-delete-icon"></i>
+          </div>
+        </div>
+      </div>
       <van-uploader v-model="fileList" :max-size="50000 * 1024" multiple :max-count="5" :after-read="onRead" :before-delete="onDelete" @oversize="onOversize">
         <div class="upload">
           <img src="../../assets/personal/矩形 846 拷贝.png" alt="">
@@ -16,7 +25,7 @@
       </van-uploader>
       <div style="margin: 16px" class="btns">
         <van-button class="see" size="normal" round block type="info" native-type="submit">编辑</van-button>
-        <van-button class="see see1" size="normal" round block  @click="deleted">删除</van-button>
+        <van-button class="see see1" size="normal" round block @click="deleted">删除</van-button>
       </div>
       <!-- <img src="http://182.92.2.167:8200/wjyql/uploadFile/downloadFile?attachId=12053" alt="" srcset=""> -->
     </van-form>
@@ -25,6 +34,7 @@
       <van-area title="请选择所在地区" :area-list="areaList" @confirm="onConfirm" @change="change" @cancel="showArea = false" />
     </van-popup> -->
     <van-popup v-model="showname" position="bottom">
+      <van-picker style="visibility: hidden;" title="" show-toolbar :columns="columns" @confirm="onConfirm1" @cancel="showname = false" @change="onChange" />
       <van-picker title="" show-toolbar :columns="columns" @confirm="onConfirm1" @cancel="showname = false" @change="onChange" />
     </van-popup>
     <!-- <van-button class="see" round type="info" @click="seeOrder"
@@ -38,20 +48,16 @@ import { Toast } from "vant";
 import { mapGetters } from "vuex";
 import areaList from "@/utils/area.js";
 import axios from "axios";
-const config = require('../../utils/config')
-import {
-  getPostMap,
-  postSave,
-  doDelete
-} from "@/api/personal";
-import { Dialog } from 'vant';
+const config = require("../../utils/config");
+import { getPostMap, postSave, doDelete } from "@/api/personal";
+import { Dialog } from "vant";
 export default {
   name: "Confirmorder",
   components: {},
   data() {
     return {
-      content:{},
-        value:3,
+      content: {},
+      value: 3,
       name: "",
       mobile: "",
       area: "",
@@ -63,13 +69,12 @@ export default {
       hotcities: [],
       addressInfo: {
         TITLE: "",
-        ORG_ID_:'',
-        USER_ID_:'',
+        ORG_ID_: "",
+        USER_ID_: "",
         PHONE: "",
-        CONTENT:'',
-        ATTACHS:'',
-        APPR_CONTENT:''
-
+        CONTENT: "",
+        ATTACHS: "",
+        APPR_CONTENT: "",
       },
       columns: ["杭州", "宁波", "温州", "绍兴", "湖州", "嘉兴", "金华", "衢州"],
       fileList: [
@@ -100,31 +105,38 @@ export default {
     // this.ShoppingAddress();
     // this.GetHotCities();
     // this.GetDefaultAreaInfo();
-    this.getPostMap()
+    this.getPostMap();
   },
   methods: {
     getPostMap() {
       getPostMap({
-        ID:this.$route.query.id
-      }).then(res=>{
-        let {code,data} = res;
-          if(code==0) {
-            const url = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/saveFile'
+        ID: this.$route.query.id,
+      })
+        .then((res) => {
+          let { code, data } = res;
+          if (code == 0) {
+            const url =
+              config[process.env.NODE_ENV].mockUrl +
+              "/wjyql/uploadFile/saveFile";
             this.addressInfo = data.map;
-            this.addressInfo.ATTACHS = !!data.map.attachList && data.map.attachList.map(item=>item.ID).join(",")+","
-            this.addressInfo.APPR_CONTENT = data.map.apprList[0].APPR_CONTENT;
-            console.log(this.addressInfo)
-            this.fileList = data.map.attachList.map(item=>{
+            this.addressInfo.ATTACHS =data.map.ATTACHS;
+            console.log(this.addressInfo);
+            this.uploadImages = data.map.attachList.map((item) => {
               return {
                 // url:config[process.env.NODE_ENV].mockUrl+'/wjyql/'+item.REAL_PATH
-                url:config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='+item.ID
-              }
-            })
-                console.log(this.fileList)
-            console.log(this.addressInfo)
+                url:
+                  config[process.env.NODE_ENV].mockUrl +
+                  "/wjyql/uploadFile/downloadFile?attachId=" +
+                  item.ID,
+                  id:item.ID
+              };
+            });
+            // this.uploadImages = this.fileList
+            console.log(this.fileList);
+            console.log(this.addressInfo);
           }
-      }).catch(error=>console.log(error))
-
+        })
+        .catch((error) => console.log(error));
     },
     // 校检手机号码
     checkMobile(value) {
@@ -189,16 +201,26 @@ export default {
       formData.append("file", file.file); //接口需要传的参数
       let _this = this;
       var xhr = new XMLHttpRequest();
-      const url = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/saveFile'
+      const url =
+        config[process.env.NODE_ENV].mockUrl + "/wjyql/uploadFile/saveFile";
       xhr.open("post", url);
       xhr.send(formData);
       xhr.onload = function () {
         if (xhr.status === 200) {
           let { data } = JSON.parse(xhr.response);
-          console.log(data)
-          _this.addressInfo.ATTACHS = _this.addressInfo.ATTACHS+data.att_map.ID+',';
-          _this.uploadImages.push(data.att_map.REAL_PATH);
-          console.log(_this.fileList, _this.uploadImages,_this.addressInfo.ATTACHS);
+          console.log(data);
+          _this.addressInfo.ATTACHS =
+            _this.addressInfo.ATTACHS + data.att_map.ID + ",";
+            let url = config[process.env.NODE_ENV].mockUrl + "/wjyql/uploadFile/downloadFile?attachId="
+          _this.uploadImages.push({
+            url:url+data.att_map.ID,
+            id:data.att_map.ID
+          });
+          console.log(
+            _this.fileList,
+            _this.uploadImages,
+            _this.addressInfo.ATTACHS
+          );
         }
       };
       // console.log(file);
@@ -208,6 +230,11 @@ export default {
       console.log(this.fileList, this.uploadImages);
       return true;
     },
+    onDelete1(index) {
+      this.uploadImages.splice(index, 1);
+      // console.log(this.fileList, this.uploadImages);
+      return true;
+    },
     onOversize(file) {
       // Toast("正在上传");
       // console.log(file);
@@ -215,31 +242,40 @@ export default {
     },
     deleted(e) {
       e.preventDefault();
-      console.log('deleted')
-       Dialog.confirm({
-        title: '提示',
-        message: '确定要删除吗？',
+      console.log("deleted");
+      Dialog.confirm({
+        title: "提示",
+        message: "确定要删除吗？",
       })
         .then(() => {
           doDelete({
-            id:this.$route.query.id,
-            table:'t_post_post',
-            delete_mark: 'update' 
-          }).then(res=>{
-            this.$router.push({
-              name:'Mypost'
+            id: this.$route.query.id,
+            table: "t_post_post",
+            delete_mark: "update",
+          })
+            .then((res) => {
+              this.$router.push({
+                name: "Mypost",
+              });
             })
-          }).catch(error=>console.log(error))
+            .catch((error) => console.log(error));
         })
         .catch((error) => console.log(error));
     },
     onSubmit(values) {
-      postSave({...this.addressInfo}).then(res=>{
-        this.$router.push({
-          name:'Mypost'
+      this.addressInfo.ATTACHS = this.uploadImages.map(item=>item.id).toString()+','
+      postSave({ ...this.addressInfo })
+        .then((res) => {
+          Dialog.alert({
+            title: "提示",
+            message: "保存成功",
+          }).then(() => {
+            this.$router.push({
+              name: "Mypost",
+            });
+          });
         })
-
-      }).catch(error=>console.log(error))
+        .catch((error) => console.log(error));
 
       // axios
       //   .get(
@@ -328,10 +364,10 @@ export default {
 .btns {
   display: flex;
   justify-content: space-around;
-  position: fixed;
-  bottom: 100px;
-  left: 0;
-  right: 0;
+  // position: fixed;
+  // bottom: 100px;
+  // left: 0;
+  // right: 0;
   margin: auto;
 }
 .see {
@@ -350,7 +386,7 @@ export default {
   // margin: auto;
 }
 .see1 {
-  background-color: #FF8686;
+  background-color: #ff8686;
 }
 ::v-deep .van-field__control {
   text-align: right;
@@ -358,6 +394,68 @@ export default {
 .hhhhh {
   ::v-deep .van-field__control {
     text-align: left;
+  }
+}
+// ----------------
+.van-uploader__wrapper {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+.van-uploader__preview {
+    position: relative;
+    margin: 0 8px 8px 0;
+    cursor: pointer;
+}
+.van-uploader__preview-image {
+    display: block;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    position: relative;
+}
+.van-image__img, .van-image__error, .van-image__loading {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.van-uploader__preview-delete {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 14px;
+    height: 14px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 0 0 0 12px;
+}
+.van-uploader__preview-delete-icon {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    color: #fff;
+    font-size: 16px;
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+}
+.van-icon {
+    position: relative;
+    display: inline-block;
+    font: normal normal normal 14px/1 'vant-icon';
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+.van-icon-cross::before {
+    content: '\F042';
+}
+.van-icon::before {
+    display: inline-block;
+}
+::v-deep .van-uploader {
+  .van-uploader__preview {
+    display: none;
   }
 }
 </style>

@@ -77,7 +77,7 @@
           <van-button size="small" :disabled="safety.state" type="primary" @click="GetCode">{{safety.text}}</van-button>
         </template> -->
       </van-field>
-      <van-button style="float: right;" to="/orderinfo" size="small" type="primary">注册</van-button>
+      <!-- <van-button style="float: right;" to="/orderinfo" size="small" type="primary">注册</van-button> -->
 
       <div style="margin: 30px">
         <van-button

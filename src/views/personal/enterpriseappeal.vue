@@ -50,6 +50,7 @@ import { mapGetters } from "vuex";
 import axios from "axios";
 import { appealSave,getsysCombox } from "@/api/personal";
 const config = require('../../utils/config')
+import { Dialog } from "vant";
 export default {
   name: "Confirmorder",
   components: {},
@@ -180,6 +181,14 @@ export default {
       let {NAME,CONTENT,SER_TYPE,ATTACHS,USER_ID,ID} = this.addressInfo;
       let params1 = { NAME,CONTENT,SER_TYPE,ATTACHS,USER_ID,ID }
       appealSave(params1).then(res=>{
+        Dialog.alert({
+            title: "提示",
+            message: "保存成功",
+          }).then(() => {
+            this.$router.push({
+              name: "Myappeal",
+            });
+          });
         
       }).catch(error=>console.log(error))
         return

@@ -1,6 +1,6 @@
 <template>
   <div class="shopdetails">
-    <van-nav-bar title="发布帖子" left-text="" left-arrow fixed @click-left="onClickLeft" />
+    <van-nav-bar title="发布问题分享" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <van-form @submit="onSubmit">
       <van-field v-model="addressInfo.TITLE" name="标题" label="标题" placeholder="请输入标题" :rules="[{ required: true, message: '请输入标题' }]"  />
