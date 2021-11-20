@@ -47,7 +47,7 @@ export default {
     getMyPostList(val) {
       getMyPostList({
         USER_ID: this.userInfo.ID,
-        SEARCH: val || "测试",
+        SEARCH: '',
       })
         .then((res) => {
           let { code, data } = res;

@@ -4,9 +4,9 @@
     <div style="height: 46px"></div>
     <div class="box">
       <div class="box-main">
-        <p class="p1" style="text-align: center;"><span style="visibility: hidden;"></span>{{content.TITLE}}</p>
-        <p class="p2" v-html="content.ANSWER"></p>
-        <p class="p3">{{content.ORG_ID_}}</p>
+        <p class="p1" style="text-align: left;">{{content.TITLE}}</p>
+        <p class="p3">{{content.ORG_ID_}} {{content.CREATETIME}}</p>
+        <p class="p2" >{{content.CONTENT}}</p>
       </div>
       <div style="height:20px;"></div>
       <div class="box-main box-main1" v-for="item in content.attachList" :key="item.ID" @click="uploadFile(item)">
@@ -130,14 +130,15 @@ export default {
         line-height: 41px;
   }
   .p3 {
-    font-size: 32px;
+    font-size: 16px;
     font-family: PingFang SC;
     font-weight: 500;
     color: #000000;
-    text-align: right;
+    text-align: left;
   }
 }
 .box-main1 {
   margin-bottom: 30px;
 }
+
 </style>

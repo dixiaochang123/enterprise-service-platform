@@ -37,8 +37,14 @@ export default {
   computed: {
     ...mapGetters(["userInfo"]),
   },
+  watch:{
+    value(val) {
+      this.getProblemList(val)
+      
+    }
+  },
   mounted() {
-    this.getProblemList()
+    this.getProblemList('')
   },
   methods: {
     loginout() {
@@ -46,10 +52,10 @@ export default {
             name: "Login"
           });
     },
-    getProblemList() {
+    getProblemList(val) {
       
       getProblemList({
-        SEARCH:''
+        SEARCH:val
       }).then(res=>{
         let {code,data} = res;
         if(code==0) {

@@ -19,7 +19,7 @@
               </div>
               <div class="t-2">
                 <p>{{userInfo.ORG_PLATE}}</p>
-                <p class="t-2-2">常州新区大港街道XXX网格</p>
+                <p class="t-2-2">{{userInfo.ORG_PLATE_}}</p>
               </div>
             </div>
             <div v-else class="admin-info-text">
@@ -163,8 +163,8 @@
 </template>
 
 <script>
-import { getHomeList } from "@/api/personal";
-import { mapGetters } from "vuex";
+import { getHomeList,getUserInfo } from "@/api/personal";
+import { mapGetters,mapActions } from "vuex";
 const config = require('../../utils/config')
 export default {
   name: "Index",
@@ -182,11 +182,45 @@ export default {
   computed: {
     ...mapGetters(["userInfo"]),
   },
+  watch:{
+    '$route': {
+      handler(route) {
+        console.log('route:', this.userInfo)
+        this.getUserInfo()
+      },
+      immediate: true,
+       deep: true
+    },
+    // 'userInfo': {
+    //   handler(newName) {
+    //     this.getUserInfo()
+    //   },
+    //   immediate: true,
+    //   deep: true
+    // }
+  },
+  created() {
+    this.getUserInfo()
+  },
   mounted() {
-    this.photo +=''+this.userInfo.PHOTO ||12067;
+    this.photo =config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='+this.userInfo.PHOTO ||12067;
     this.getHomeList()
   },
   methods: {
+    ...mapActions(['setuserinfo']),
+    getUserInfo() {
+      getUserInfo({
+        USER_ID:this.userInfo.ID
+      }).then(res=>{
+        let {code,data} = res;
+        this.$store
+        .dispatch('user/setuserinfo', data.userMap)
+        this.photo =config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='+this.userInfo.PHOTO ||12067;
+        // this.setuserinfo(data.userMap)
+        
+
+      }).catch(error=>console.log(error))
+    },
     gotogrzx() {
 
     this.$router.push({

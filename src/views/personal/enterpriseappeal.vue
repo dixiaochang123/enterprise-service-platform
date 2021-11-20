@@ -181,7 +181,7 @@ export default {
       let params1 = { NAME,CONTENT,SER_TYPE,ATTACHS,USER_ID,ID }
       appealSave(params1).then(res=>{
         
-      }).catch(error)
+      }).catch(error=>console.log(error))
         return
       // &utype=kuhu&provinceID=110000&cityID=&areaID=&address=%E5%A4%A7V%E5%8F%91%E5%9C%B0%E5%9D%80&NAME=%E5%91%B5%E5%91%B5%E5%91%B5&phone=13611366910
       let params = {

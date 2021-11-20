@@ -198,7 +198,7 @@ export function getNoticeList(data) {
 //	获取通知列表
 export function messagegetProblemMap(data) {
     return request({
-        url: `/wjyql/mobile/getProblemMap`,
+        url: `/wjyql/mobile/getNoticeMap`,
         method: 'post',
         data
     })
@@ -285,6 +285,14 @@ export function getAppealMap(data) {
 export function appealAssess(data) {
     return request({
         url: `/wjyql/mobile/appealAssess`,
+        method: 'post',
+        data
+    })
+}
+// 23、获取个人信息
+export function getUserInfo(data) {
+    return request({
+        url: `/wjyql/mobile/getUserInfo`,
         method: 'post',
         data
     })

@@ -9,8 +9,8 @@
           <p class="p1">{{item.CREATETIME}}</p>
         </template>
         <template #right-icon>
-            <van-button  color="#FF8686" type="primary" size="mini">{{item.PROGRESS_}}</van-button>
-            <van-button  color="#FF8686" type="primary" size="mini">{{item.STATE_}}</van-button>
+            <van-button v-if="item.STATE==2" color="#FF8686" type="primary" size="mini">{{item.PROGRESS_}}</van-button>
+            <van-button v-else color="#FF8686" type="primary" size="mini">{{item.STATE_}}</van-button>
             <!-- <van-button  color="#FF8686" type="primary" size="mini">办理中</van-button>
             <van-button  color="#5683FF" type="primary" size="mini">已办理</van-button>
             <van-button  color="#5683FF" type="primary" size="mini">已评价</van-button>

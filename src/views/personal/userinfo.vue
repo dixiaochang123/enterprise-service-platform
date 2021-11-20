@@ -1,6 +1,6 @@
 <template>
   <div class="personal">
-    <van-nav-bar title="个人信息" left-text="" left-arrow fixed @click-left="onClickLeft" />
+    <van-nav-bar title="个人信息" left-text="" right-text="保存" left-arrow fixed @click-left="onClickLeft" @click-right="onClickRight" />
     <div style="height: 46px"></div>
     <div class="box">
       <van-cell style="display: flex;align-items: center;" class="hhh" title="头像" is-link>
@@ -17,7 +17,7 @@
           <!-- <van-icon style="font-size: 16px;color: #969799;" name="arrow" /> -->
         </template>
       </van-cell>
-      <van-field right-icon="edit" v-model="userInfo.USER_NAME" readonly label="姓名" />
+      <van-field right-icon="edit" v-model="userInfo.REAL_NAME" readonly label="姓名" />
       <van-field v-model="userInfo.ORG_ID_" readonly="readonly"   label="企业" right-icon="arrow" />
       <van-field v-model="userInfo.PHONE" maxlength="11" type="number"  label="手机号码" right-icon="arrow" readonly  />
       <van-field @blur="update" v-model="userInfo.PASSWORD" maxlength="11" type="password"  label="密码" right-icon="arrow"  />
@@ -31,7 +31,7 @@
 <script>
 import { Toast } from 'vant';
 import { mapGetters,mapActions } from "vuex";
-import {doUpdate} from "@/api/personal";
+import {doUpdate,getUserInfo} from "@/api/personal";
 const config = require('../../utils/config')
 export default {
   name: "Userinfo",
@@ -64,11 +64,30 @@ export default {
     },
   },
   mounted() {
-    this.photo +=''+this.userInfo.PHOTO ||12067;
+    if(!!this.userInfo.PHOTO) {
+
+      this.photo +=''+this.userInfo.PHOTO;
+    } else {
+      this.photo += this.PHOTOID;
+
+    }
     console.log(this.photo,this.userInfo)
     // this.doUpdate()
   },
   methods: {
+    ...mapActions(['setuserinfo']),
+    getUserInfo() {
+      getUserInfo({
+        USER_ID:this.userInfo.ID
+      }).then(res=>{
+        let {code,data} = res;
+        this.$store
+        .dispatch('user/setuserinfo', data.userMap)
+        // this.setuserinfo(data.userMap)
+        
+
+      }).catch(error=>console.log(error))
+    },
     loginout() {
        this.$store.dispatch('user/logout')
         this.$router.push({
@@ -103,7 +122,9 @@ export default {
           let { data } = JSON.parse(xhr.response);
           // _this.addressInfo.ATTACHS = _this.addressInfo.ATTACHS+data.att_map.ID+',';
           // _this.uploadImages.push(data.url);
+          _this.photo = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='
           _this.PHOTOID = data.att_map.ID;
+          _this.photo =_this.photo+_this.PHOTOID;
           console.log(data);
         }
       };
@@ -111,6 +132,9 @@ export default {
     },
     onClickLeft() {
       this.$router.go(-1); //返回上一层
+    },
+    onClickRight() {
+      this.update()
     },
     update() {
       doUpdate({
@@ -120,6 +144,7 @@ export default {
       }).then(res=>{
         let {code} = res;
         console.log(code)
+        this.getUserInfo()
       })
     }
     
@@ -197,5 +222,8 @@ export default {
                 box-shadow: none;
             }
   }
+}
+::v-deep .van-nav-bar__right .van-nav-bar__text {
+  color: #ffffff !important;
 }
 </style>

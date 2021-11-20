@@ -125,6 +125,11 @@ const actions = {
         })
     })
   },
+  setuserinfo({ commit },data) {
+    commit('SET_USER_INFO', data)
+    // setToken(token)
+    Cookies.set('userInfo', data, { expires: 15 })
+  },
 
   // 重置token
   resetToken({ commit }) {

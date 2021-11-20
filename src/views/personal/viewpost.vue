@@ -13,6 +13,9 @@
         <div class="upload">
           <img src="../../assets/personal/矩形 846 拷贝.png" alt="">
         </div>
+        <div class="upload">
+          <img src="../../assets/personal/矩形 846 拷贝.png" alt="">
+        </div>
       </van-uploader>
       <div style="margin: 16px" class="btns">
         <van-button class="see" size="normal" round block type="info" native-type="submit">编辑</van-button>
