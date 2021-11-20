@@ -59,17 +59,12 @@ export default {
       console.log(item.STATE,item.PROGRESS)
       // 当 state 为 1的时候，可以修改
       // 当 progress 为 2的时候，可以评价
-      // let name = 'Enterpriseinfo'
-      // if(item.STATE==1) {
-      //   name = 'Enterpriseinfo'
-      // }
-      // if(item.PROGRESS=='2') {
-      //   name = 'Enterpriseinfo'
-      // }
       this.$router.push({
         name: "Appealdetails",
         query: {
-          id:item.ID
+          id:item.ID,
+          state:item.STATE,
+          progress:item.PROGRESS
         }
       });
     },

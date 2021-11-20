@@ -3,39 +3,36 @@
     <van-nav-bar title="诉求详情" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <van-form @submit="onSubmit">
-      <van-field v-model="addressInfo.realname" name="诉求目的" label="诉求目的" placeholder="请输入诉求目的" :rules="[{ required: true, message: '请填写收件人' }]" />
+      <van-field :disabled="disabled" v-model="addressInfo.NAME" name="诉求目的" label="诉求目的" placeholder="请输入诉求目的" :rules="[{ required: true, message: '请填写收件人' }]" />
       <van-field v-model="userInfo.ORG_ID_" name="企业名称" label="企业名称" placeholder="请输入您所在的企业" readonly />
       <van-field v-model="userInfo.REAL_NAME" name="上报人" label="上报人" placeholder="请输入上报人" readonly />
-      <van-field v-model="addressInfo.SER_TYPE_" readonly label="服务类型" right-icon="arrow" @click="showname = true" />
-      <van-field v-model="addressInfo.CREATETIME" name="上报时间" label="上报时间" placeholder="请输入上报时间" :rules="[{ required: true, message: '请填写收件人' }]" />
+      <van-field :disabled="disabled" readonly v-model="addressInfo.SER_TYPE_" label="服务类型" right-icon="arrow" @click="showname = true" />
+      <van-field v-model="addressInfo.CREATETIME" readonly name="上报时间" label="上报时间" placeholder="请输入上报时间" :rules="[{ required: true, message: '请填写收件人' }]" />
+      <van-field v-if="isprogress" v-model="ISSHOW" readonly label="是否公开" right-icon="arrow" @click="showname1 = true" />
       <van-field name="诉求内容" label="诉求内容" readonly />
-      <van-field v-model="addressInfo.CONTENT" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
-      <van-uploader v-model="fileList" :max-size="50000 * 1024" multiple :max-count="5" :after-read="onRead" :before-delete="onDelete" @oversize="onOversize">
+      <van-field :disabled="disabled" v-model="addressInfo.CONTENT" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
+      <van-uploader :disabled="disabled" v-model="fileList" :max-size="50000 * 1024" multiple :max-count="5" :after-read="onRead" :before-delete="onDelete" @oversize="onOversize">
         <div class="upload">
           <img src="../../assets/personal/矩形 846 拷贝.png" alt="">
         </div>
       </van-uploader>
       <van-field v-model="addressInfo.realname" name="处理流程" label="处理流程" readonly />
       <van-steps direction="vertical" :active="0">
-        <van-step>
-          <h3>【城市】物流状态1</h3>
-          <p>2016-07-12 12:40</p>
-        </van-step>
-        <van-step>
-          <h3>【城市】物流状态2</h3>
-          <p>2016-07-11 10:00</p>
-        </van-step>
-        <van-step>
-          <h3>快件已发货</h3>
-          <p>2016-07-10 09:30</p>
+        <van-step v-for="(item,index) in addressInfo.progressList" :key="index" >
+          <h3>{{item.typecn}}</h3>
+          <p>{{item.clbmcn}} {{item.clsj}}</p>
+          <p>{{item.clyj}}</p>
         </van-step>
       </van-steps>
       <!-- 评价<van-rate v-model="value" /> -->
-      <van-field name="rate" label="评价">
+      <van-field v-if="isprogress" name="rate" label="评价">
         <template #input>
             <van-rate v-model="value" />
         </template>
         </van-field>
+        <div style="margin: 16px">
+      </div>
+      <van-button v-if="disabled==false || isprogress==true" class="see" round block type="info" native-type="submit">提交</van-button>
     </van-form>
 
     <!-- <van-popup v-model="showArea" position="bottom">
@@ -43,6 +40,9 @@
     </van-popup> -->
     <van-popup v-model="showname" position="bottom">
       <van-picker title="" show-toolbar :columns="columns" @confirm="onConfirm1" @cancel="showname = false" @change="onChange" />
+    </van-popup>
+    <van-popup v-model="showname1" position="bottom">
+      <van-picker title="" show-toolbar :columns="columns1" @confirm="onConfirm11" @cancel="showname1 = false" @change="onChange1" />
     </van-popup>
     <!-- <van-button class="see" round type="info" @click="seeOrder"
       >保存并使用</van-button
@@ -53,15 +53,17 @@
 <script>
 import { Toast } from "vant";
 import { mapGetters } from "vuex";
-import areaList from "@/utils/area.js";
-import { getAppealMap,appealAssess } from "@/api/personal";
+import { getAppealMap,appealAssess,getsysCombox,appealSave } from "@/api/personal";
 import axios from "axios";
 export default {
   name: "Confirmorder",
   components: {},
   data() {
     return {
-        value:3,
+      value:0,
+      disabled:true,
+      isprogress:false,
+      isstate:false,
       name: "",
       mobile: "",
       area: "",
@@ -69,24 +71,15 @@ export default {
       address: "",
       showArea: false,
       showname: false,
-      areaList,
+      showname1: false,
+      ISSHOW: '是',
       hotcities: [],
       addressInfo: {
-        realname: "",
-        phone: "",
-        address: "",
-        provinceID: "",
-        cityID: "",
-        areaID: "",
-        utype: "kuhu",
+        
       },
       columns: ["杭州", "宁波", "温州", "绍兴", "湖州", "嘉兴", "金华", "衢州"],
-      fileList: [
-        { url: "https://img01.yzcdn.cn/vant/leaf.jpg" },
-        // Uploader 根据文件后缀来判断是否为图片文件
-        // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
-        { url: "https://cloud-image", isImage: true },
-      ],
+      columns1: ["是", "否"],
+      fileList: [],
       uploadImages: [],
 
       // uid: 999845591,
@@ -106,13 +99,31 @@ export default {
     },
   },
   mounted() {
-    // this.ShoppingAddress();
-    // this.GetHotCities();
-    // this.GetDefaultAreaInfo();
+    // 当 state 为 1的时候，可以修改
+    // 当 progress 为 2的时候，可以评价
+    let {state,progress} = this.$route.query;
+    console.log(state,progress)
+    if(state==1) {
+      this.disabled = false
+    }
+    if(progress==2) {
+      this.isprogress = true
+    }
+
     this.getAppealMap()
     // this.appealAssess()
+    this.getsysCombox()
   },
   methods: {
+    getsysCombox() {
+        getsysCombox().then(res=>{
+          console.log(res)
+          this.sysCombox = res;
+          this.columns = res.map(item=>item.NAME)
+
+        }).catch(error=>console.log(error))
+
+    },
     getAppealMap() {
       getAppealMap({
         ID:this.$route.query.id
@@ -140,13 +151,14 @@ export default {
         console.log(code,data)
         this.addressInfo = data.map;
         this.fileList = data.map.attachList
+        this.uploadImages = data.map.attachList
       }).catch(error=>console.log(error))
     },
     appealAssess() {
       appealAssess({
-        ISSHOW:"1", //是否公开
-        SCORE:"5",//评分
-        ID:"7"// 诉求ID
+        ISSHOW:this.ISSHOW=="是"?0:1, //是否公开
+        SCORE:this.value,//评分
+        ID:this.$route.query.id// 诉求ID
 
       }).then(res=>{
 
@@ -157,43 +169,31 @@ export default {
       const reg = /^1[3456789]\d{9}$/;
       return reg.test(value);
     },
-    ShoppingAddress() {
-      axios
-        .get(
-          `http://cj.pydoton.com/?s=App.Shop_ShoppingAddress.Find&uid=${this.userInfo.id}&utype=kuhu`
-        )
-        .then((res) => {
-          let { code, info } = res.data.data;
-          if (!!info) {
-            this.addressInfo = info || null;
-            this.area1 = [
-              this.addressInfo.province,
-              this.addressInfo.city,
-              this.addressInfo.area,
-            ];
-            this.area =
-              this.areaList.province_list[this.addressInfo.province] +
-              "/" +
-              this.areaList.city_list[this.addressInfo.city] +
-              "/" +
-              this.areaList.county_list[this.addressInfo.area];
-          }
-          // this.addressInfo.phone = !!this.addressInfo &&  !!this.addressInfo.phone ? this.mobileNumberChange(this.addressInfo.phone):null;
-        })
-        .catch((error) => console.log(error));
-    },
+    
     onClickLeft() {
       this.$router.go(-1); //返回上一层
     },
     onConfirm1(value, index) {
-      Toast(`当前值：${value}, 当前索引：${index}`);
+      this.addressInfo.SER_TYPE_ = value
+      this.addressInfo.SER_TYPE = this.sysCombox[index].VALUE
+      this.showname = false
       this.showname = false;
     },
     onChange(picker, value, index) {
-      Toast(`当前值：${value}, 当前索引：${index}`);
+      // Toast(`当前值：${value}, 当前索引：${index}`);
     },
     onCancel() {
-      Toast("取消");
+      // Toast("取消");
+    },
+    onConfirm11(value, index) {
+      this.ISSHOW = value
+      this.showname1 = false
+    },
+    onChange1(picker, value, index) {
+      // Toast(`当前值：${value}, 当前索引：${index}`);
+    },
+    onCancel1() {
+      // Toast("取消");
     },
     onConfirm(values) {
       console.log(values);
@@ -212,22 +212,52 @@ export default {
     },
     onRead(file) {
       var formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
+  　　formData.append('file', file.file); //接口需要传的参数
+      let _this = this
+      var xhr = new XMLHttpRequest()
+      xhr.open('post', 'http://www.czssqw.net/zhzf_ly/api/Common/Uploader/annexpic')
+      xhr.send(formData) 
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          let {data} = JSON.parse(xhr.response)
+          // data.url = config[process.env.NODE_ENV].mockUrl+data.url
+          data.url = 'http://www.czssqw.net/zhzf_ly'+data.url
+          _this.uploadImages.push({
+            url:data.url
+          })
+          _this.addressInfo.ATTACHS = _this.uploadImages
+          // _this.fileList = data
+          // _this.addressInfo.ATTACHS = data.map(item=>{
+          //   item.url = url+item.ur
+          // })
+          console.log(data,_this.uploadImages,_this.addressInfo.ATTACHS)
+          
+        }
+      }
+      // console.log(file);
+    },
+    onRead(file) {
+      var formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
       formData.append("file", file.file); //接口需要传的参数
       let _this = this;
       var xhr = new XMLHttpRequest();
-      xhr.open("post", "http://cj.pydoton.com/?s=App.Examples_Upload.GoFtp");
+      xhr.open('post', 'http://www.czssqw.net/zhzf_ly/api/Common/Uploader/annexpic')
       xhr.send(formData);
       xhr.onload = function () {
         if (xhr.status === 200) {
           let { data } = JSON.parse(xhr.response);
-          _this.uploadImages.push(data.url);
-          console.log(_this.fileList, _this.uploadImages);
+           data.url = 'http://www.czssqw.net/zhzf_ly'+data.url
+           _this.uploadImages.push({
+            url:data.url
+          })
+           _this.addressInfo.ATTACHS = _this.uploadImages
         }
       };
       // console.log(file);
     },
     onDelete(file, { index }) {
       this.uploadImages.splice(index, 1);
+      this.addressInfo.ATTACHS = this.uploadImages
       console.log(this.fileList, this.uploadImages);
       return true;
     },
@@ -237,6 +267,21 @@ export default {
       // Toast("文件大小不能超过 500kb");
     },
     onSubmit(values) {
+       let {NAME,CONTENT,SER_TYPE,ATTACHS,USER_ID,ID} = this.addressInfo;
+      let params1 = { NAME,CONTENT,SER_TYPE,ATTACHS,USER_ID,ID }
+      // 当 state 为 1的时候，可以修改
+    // 当 progress 为 2的时候，可以评价
+    let {state,progress} = this.$route.query;
+    if(state==1) {
+
+      appealSave(params1).then(res=>{
+        
+      }).catch(error=>console.log(error))
+    }
+    if(progress==2) {
+      this.appealAssess()
+    }
+      return;
       // &utype=kuhu&provinceID=110000&cityID=&areaID=&address=%E5%A4%A7V%E5%8F%91%E5%9C%B0%E5%9D%80&realname=%E5%91%B5%E5%91%B5%E5%91%B5&phone=13611366910
       let params = {
         uid: this.userInfo.id,
@@ -335,17 +380,17 @@ export default {
   display: inline-block;
   padding: 20px;
 }
-.upload {
-  width: 146px;
-  height: 146px;
+::v-deep .upload {
+  width: 146px !important;
+  height: 146px !important;
   border: 1px solid #cccccc;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   img {
-    width: 53px;
-    width: 52px;
+    width: 53px !important;
+    width: 52px !important;
   }
 }
 
@@ -357,11 +402,13 @@ export default {
   color: #fff;
   background: rgba(86, 131, 255, 1);
   border: none;
-  position: fixed;
-  bottom: 100px;
-  left: 0;
-  right: 0;
-  margin: auto;
+  margin:0 auto;
+  margin-bottom: 50px;
+  // position: fixed;
+  // bottom: 100px;
+  // left: 0;
+  // right: 0;
+  // margin: auto;
 }
 ::v-deep .van-field__control {
   text-align: right;
@@ -370,5 +417,12 @@ export default {
   ::v-deep .van-field__control {
     text-align: left;
   }
+}
+::v-deep .van-field--disabled .van-field__label {
+  color: #646566;
+}
+::v-deep .van-field__control:disabled {
+  color: #646566;
+  -webkit-text-fill-color:#646566;
 }
 </style>
