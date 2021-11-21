@@ -242,7 +242,7 @@ export default {
     },
     deleted(e) {
       e.preventDefault();
-      console.log("deleted");
+      console.log("deleted",e);
       Dialog.confirm({
         title: "提示",
         message: "确定要删除吗？",

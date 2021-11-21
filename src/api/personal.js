@@ -301,8 +301,7 @@ export function getUserInfo(data) {
 export function doDelete(id) {
     return request({
         url: `/wjyql/sys/doDelete?id=${id}&table=t_post_post&delete_mark=update`,
-        method: 'post',
-        data
+        method: 'post'
     })
 }
 

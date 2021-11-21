@@ -109,12 +109,9 @@ export default {
           if(code==0) {
             const url = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/saveFile'
             this.addressInfo = data.map;
-            this.addressInfo.ATTACHS = !!data.map.attachList && data.map.attachList.map(item=>item.ID).join(",")+","
-            this.addressInfo.APPR_CONTENT = data.map.apprList[0].APPR_CONTENT;
-            console.log(this.addressInfo)
+            // this.addressInfo.APPR_CONTENT = data.map.apprList[0].APPR_CONTENT;
             this.fileList = data.map.attachList.map(item=>{
               return {
-                // url:config[process.env.NODE_ENV].mockUrl+'/wjyql/'+item.REAL_PATH
                 url:config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='+item.ID
               }
             })
