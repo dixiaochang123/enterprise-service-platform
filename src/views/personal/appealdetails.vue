@@ -151,8 +151,8 @@ export default {
         // USER_ID_: "刘大圣"
         console.log(code,data)
         this.addressInfo = data.map;
-        this.fileList = data.map.attachList
-        this.uploadImages = data.map.attachList
+        this.fileList = !!data.map.attachList ? data.map.attachList:[]
+        this.uploadImages = !!data.map.attachList ? data.map.attachList:[]
       }).catch(error=>console.log(error))
     },
     appealAssess() {
@@ -234,6 +234,7 @@ export default {
           _this.uploadImages.push({
             url:data.url
           })
+          _this.fileList = _this.uploadImages
           _this.addressInfo.ATTACHS = _this.uploadImages
           // _this.fileList = data
           // _this.addressInfo.ATTACHS = data.map(item=>{
@@ -255,7 +256,9 @@ export default {
       xhr.onload = function () {
         if (xhr.status === 200) {
           let { data } = JSON.parse(xhr.response);
+          console.log(data)
            data.url = 'http://www.czssqw.net/zhzf_ly'+data.url
+           console.log( _this,_this.uploadImages,data.url)
            _this.uploadImages.push({
             url:data.url
           })
@@ -278,6 +281,10 @@ export default {
     onSubmit(values) {
        let {NAME,CONTENT,SER_TYPE,ATTACHS,USER_ID,ID} = this.addressInfo;
       let params1 = { NAME,CONTENT,SER_TYPE,ATTACHS,USER_ID,ID }
+      console.log(ATTACHS,params1)
+      if(ATTACHS.length==0) {
+        ATTACHS = ''
+      }
       // 当 state 为 1的时候，可以修改
     // 当 progress 为 2的时候，可以评价
     let {state,progress} = this.$route.query;
