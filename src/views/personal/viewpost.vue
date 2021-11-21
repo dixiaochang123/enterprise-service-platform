@@ -263,7 +263,7 @@ export default {
         .catch((error) => console.log(error));
     },
     onSubmit(values) {
-      this.addressInfo.ATTACHS = this.uploadImages.length>1?this.uploadImages.map(item=>item.id).toString()+',':'';
+      this.addressInfo.ATTACHS = this.uploadImages.length!==0?this.uploadImages.map(item=>item.id).toString()+',':'';
       postSave({ ...this.addressInfo })
         .then((res) => {
           Dialog.alert({
