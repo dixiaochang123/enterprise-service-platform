@@ -300,7 +300,6 @@ export function getUserInfo(data) {
 // 23、删除帖子
 export function doDelete(id) {
     return request({
-        url: `/wjyql/sys/getCombox?table=t_sys_data&where=pid=SER_TYPE&orderby=sorder asc`,
         url: `/wjyql/sys/doDelete?id=${id}&table=t_post_post&delete_mark=update`,
         method: 'post',
         data
