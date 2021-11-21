@@ -37,6 +37,7 @@ import { Toast } from "vant";
 import { mapGetters } from "vuex";
 import areaList from "@/utils/area.js";
 import axios from "axios";
+import { Dialog } from "vant";
 const config = require('../../utils/config')
 import {
   getPostMap,
@@ -211,9 +212,14 @@ export default {
       let params = {...this.addressInfo}
       params.ID = ""
       postSave({...params}).then(res=>{
-        this.$router.push({
-          name:'Mypost'
-        })
+        Dialog.alert({
+            title: "提示",
+            message: "保存成功",
+          }).then(() => {
+            this.$router.push({
+              name: "Mypost",
+            });
+          });
 
       }).catch(error=>console.log(error))
       // axios

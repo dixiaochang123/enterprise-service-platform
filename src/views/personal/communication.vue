@@ -56,7 +56,7 @@ export default {
     }
   },
   mounted() {
-    this.getPostList();
+    this.getPostList('');
   },
   methods: {
     gotoviewpost1(val) {
@@ -70,7 +70,7 @@ export default {
     getPostList(val) {
 
       getPostList({
-        SEARCH:val || '测试'
+        SEARCH:val
       }).then((res) => {
           let {code,data} = res;
         if(code==0) {
@@ -79,8 +79,9 @@ export default {
             data.list.map((item,index)=>{
               item['url'] = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='+item.FIRST_ATTACH;
               item.CREATETIME = item.CREATETIME.substring(0,10)
-              this.$set(this.list,index,item)
+              // this.$set(this.list,index,item)
             })
+            this.list = data.list;
           } else {
             this.list = []
           }

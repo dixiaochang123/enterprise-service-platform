@@ -248,11 +248,7 @@ export default {
         message: "确定要删除吗？",
       })
         .then(() => {
-          doDelete({
-            id: this.$route.query.id,
-            table: "t_post_post",
-            delete_mark: "update",
-          })
+          doDelete(this.$route.query.id)
             .then((res) => {
               this.$router.push({
                 name: "Mypost",
