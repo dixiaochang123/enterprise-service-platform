@@ -1,19 +1,9 @@
 <template>
   <div class="personal">
-    <van-nav-bar title="我的需求分享" left-text="" left-arrow fixed @click-left="onClickLeft" />
+    <van-nav-bar title="一网办理" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <div class="box">
-      <van-search v-model="value1" shape="round" background="#ffffff" input-align="center" placeholder="请输入搜索关键词" />
-      <div @click="handleclickgetinto(item)" v-for="item in list" :key="item.ID" class="box-main">
-        <p class="p2">
-          <span v-if="item.STATE==2" style="color:#1fc480">●</span>
-          <span v-if="item.STATE==1" style="color:#f80d18">●</span>
-          <span v-if="item.STATE==0" style="color:#ffd400">●</span>
-          &nbsp;&nbsp; {{item.TITLE}}
-        </p>
-        <p class="p1"><span class="s-1">{{item.CONTENT}}</span></p>
-        <van-icon v-if="item.STATE==1" class="edit" name="edit" />
-      </div>
+     <van-empty image="network" description="该模块暂未开通" />
       <!-- 0 待审核  1驳回  2通过-->
 
     </div>
@@ -22,26 +12,27 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { getMyPostList } from "@/api/personal";
+import { Empty } from 'vant';
+// import { getMyPostList } from "@/api/personal";
 export default {
   //   name: "Userinfo",
   components: {},
   data() {
     return {
-      value1: "",
-      list: [],
+    //   value1: "",
+    //   list: [],
     };
   },
   computed: {
     ...mapGetters(["userInfo"]),
   },
   watch: {
-    value1(val) {
-      this.getMyPostList(val);
-    },
+    // value1(val) {
+    //   this.getMyPostList(val);
+    // },
   },
   mounted() {
-    this.getMyPostList('');
+    // this.getMyPostList('');
   },
   methods: {
     getMyPostList(val) {

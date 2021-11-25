@@ -263,6 +263,10 @@ export default {
     },
     handlegettozcsh(data) {
       this.$router.push({
+          name:'Networkhandling',
+        })
+        return;
+      this.$router.push({
           name:'Policyintitem',
           query:{
             id:data

@@ -417,6 +417,16 @@ const routes = [
       showTab: false
     }
   },
+  // 一网办理
+  {
+    path: '/networkhandling',
+    name: 'Networkhandling',
+    component: () => import('@/views/personal/networkhandling'),
+    meta: {
+      title: '一网办理',
+      showTab: false
+    }
+  },
   // 账号与绑定
   {
     path: '/binding',
