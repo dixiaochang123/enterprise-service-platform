@@ -305,3 +305,12 @@ export function doDelete(id) {
     })
 }
 
+// 23、评论
+export function pasteSave(data) {
+    return request({
+        url: `/wjyql/mobile/pasteSave`,
+        method: 'post',
+        data
+    })
+}
+

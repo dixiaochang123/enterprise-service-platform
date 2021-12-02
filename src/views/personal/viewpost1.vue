@@ -16,17 +16,43 @@
     </van-form> -->
     <div class="box">
       <div class="box-main">
-        <p class="p1" >{{addressInfo.TITLE}}</p>
+        <p class="p1">{{addressInfo.TITLE}}</p>
         <p class="" style="font-size:12px;">{{addressInfo.CREATETIME}} {{addressInfo.ORG_ID_}}</p>
         <p class="" style="visibility: hidden;">{{addressInfo.CREATETIME}} {{addressInfo.ORG_ID_}}</p>
-        <p class="p2" >{{addressInfo.CONTENT}}</p>
+        <p class="p2">{{addressInfo.CONTENT}}</p>
         <p class="p3">{{content.ORG_ID_}}</p>
         <div class="imgbox">
 
-            <img v-for="(item,index) in fileList" :key="index" :src="item.url" alt="" srcset="">
+          <img v-for="(item,index) in fileList" :key="index" :src="item.url" alt="" srcset="">
         </div>
+        <div style="height:20px;"></div>
+        <van-field name="处理流程" label="处理流程" readonly />
+        <van-steps direction="vertical" :active="0">
+          <van-step v-for="(item,index) in addressInfo.handleList" :key="index">
+            <h3>{{item.ORG_ID_}}</h3>
+            <p>{{item.SB_USER_ID_}} {{item.UPDATETIME}}</p>
+            <p>{{item.ORG_CONTENT}}</p>
+          </van-step>
+        </van-steps>
+        <div style="height:20px;"></div>
+        <div v-for="item in addressInfo.pasteList" :key="item.ID">
+          <p >{{item.ORG_ID_}} &nbsp;&nbsp;&nbsp; <span style="font-size:10px;"> &nbsp;&nbsp;&nbsp;{{item.CREATETIME}}</span> </p>
+          <p>{{item.CONTENT}}</p>
+        <hr>  
+        </div>
+
+        <div style="height:20px;"></div>
+        <div class="btnns">
+
+          <van-button style="visibility: hidden;" class="btn" size="small" type="info">评论</van-button>
+          <van-button class="btn" size="small" type="info" @click="show=true">评论</van-button>
+        </div>
+        <div style="height:20px;"></div>
+        <van-dialog v-model="show" title="评论" show-cancel-button @confirm="confirm111">
+          <van-field input-align="center" v-model="message" rows="3" autosize label="" type="textarea" placeholder="请输入评论">
+          </van-field>
+        </van-dialog>
       </div>
-      <div style="height:20px;"></div>
 
     </div>
 
@@ -38,18 +64,19 @@ import { Toast } from "vant";
 import { mapGetters } from "vuex";
 import areaList from "@/utils/area.js";
 import axios from "axios";
-const config = require('../../utils/config')
-import {
-  getPostMap,
-  postSave
-} from "@/api/personal";
+const config = require("../../utils/config");
+import { getPostMap, postSave, pasteSave, getUserInfo } from "@/api/personal";
+import { Dialog } from "vant";
 export default {
   name: "Confirmorder",
   components: {},
   data() {
     return {
-      content:{},
-        value:3,
+      show:false,
+      message: "",
+      active: 0,
+      content: {},
+      value: 3,
       name: "",
       mobile: "",
       area: "",
@@ -59,15 +86,15 @@ export default {
       showname: false,
       areaList,
       hotcities: [],
+      orgMap:{},
       addressInfo: {
         TITLE: "",
-        ORG_ID_:'',
-        USER_ID_:'',
+        ORG_ID_: "",
+        USER_ID_: "",
         PHONE: "",
-        CONTENT:'',
-        ATTACHS:'',
-        APPR_CONTENT:''
-
+        CONTENT: "",
+        ATTACHS: "",
+        APPR_CONTENT: "",
       },
       columns: ["杭州", "宁波", "温州", "绍兴", "湖州", "嘉兴", "金华", "衢州"],
       fileList: [
@@ -98,28 +125,51 @@ export default {
     // this.ShoppingAddress();
     // this.GetHotCities();
     // this.GetDefaultAreaInfo();
-    this.getPostMap()
+    this.getPostMap();
   },
   methods: {
-    getPostMap() {
-      getPostMap({
-        ID:this.$route.query.id
+    confirm111() {
+      if(!this.message)return;
+      this.pasteSave()
+    },
+    getUserInfo() {
+      getUserInfo({
+        USER_ID:this.userInfo.ID
       }).then(res=>{
         let {code,data} = res;
-          if(code==0) {
-            const url = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/saveFile'
+        console.log(code,data)
+        if(code==0) {
+          this.orgMap = data.orgMap
+        }
+        
+
+      }).catch(error=>console.log(error))
+    },
+    getPostMap() {
+      getPostMap({
+        ID: this.$route.query.id,
+      })
+        .then((res) => {
+          let { code, data } = res;
+          if (code == 0) {
+            const url =
+              config[process.env.NODE_ENV].mockUrl +
+              "/wjyql/uploadFile/saveFile";
             this.addressInfo = data.map;
             // this.addressInfo.APPR_CONTENT = data.map.apprList[0].APPR_CONTENT;
-            this.fileList = data.map.attachList.map(item=>{
+            this.fileList = data.map.attachList.map((item) => {
               return {
-                url:config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='+item.ID
-              }
-            })
-                console.log(this.fileList)
-            console.log(this.addressInfo)
+                url:
+                  config[process.env.NODE_ENV].mockUrl +
+                  "/wjyql/uploadFile/downloadFile?attachId=" +
+                  item.ID,
+              };
+            });
+            console.log(this.fileList);
+            console.log(this.addressInfo);
           }
-      }).catch(error=>console.log(error))
-
+        })
+        .catch((error) => console.log(error));
     },
     // 校检手机号码
     checkMobile(value) {
@@ -184,16 +234,22 @@ export default {
       formData.append("file", file.file); //接口需要传的参数
       let _this = this;
       var xhr = new XMLHttpRequest();
-      const url = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/saveFile'
+      const url =
+        config[process.env.NODE_ENV].mockUrl + "/wjyql/uploadFile/saveFile";
       xhr.open("post", url);
       xhr.send(formData);
       xhr.onload = function () {
         if (xhr.status === 200) {
           let { data } = JSON.parse(xhr.response);
-          console.log(data)
-          _this.addressInfo.ATTACHS = _this.addressInfo.ATTACHS+data.att_map.ID+',';
+          console.log(data);
+          _this.addressInfo.ATTACHS =
+            _this.addressInfo.ATTACHS + data.att_map.ID + ",";
           _this.uploadImages.push(data.att_map.REAL_PATH);
-          console.log(_this.fileList, _this.uploadImages,_this.addressInfo.ATTACHS);
+          console.log(
+            _this.fileList,
+            _this.uploadImages,
+            _this.addressInfo.ATTACHS
+          );
         }
       };
       // console.log(file);
@@ -208,10 +264,44 @@ export default {
       // console.log(file);
       // Toast("文件大小不能超过 500kb");
     },
-    onSubmit(values) {
-      postSave({...this.addressInfo}).then(res=>{
+    pasteSave() {
+      //    "PID":"40",                                            		帖子ID
+      // "CONTENT":"测试单位测试单位测试单位",						评论内容
+      // "ORG_ID":"63",								              企业ID
+      // "ID":""					        						评论ID（新增为空）
+      let params = {
+        PID: this.$route.query.id, //   		帖子ID
+        CONTENT: this.message, // 		评论内容
+        ORG_ID: this.addressInfo.ORG_ID, //   企业ID
+        ID: "", // 	评论ID（新增为空）
+      };
 
-      }).catch(error=>console.log(error))
+      pasteSave(params)
+        .then((res) => {
+          let {code,data,msg} = res;
+          if(code==0) {
+
+            Dialog.alert({
+              title: "提示",
+              message: "评论成功",
+            }).then(() => {
+              
+            });
+          } else {
+             Dialog.alert({
+              title: "提示",
+              message: msg,
+            }).then(() => {
+              
+            });
+          }
+        })
+        .catch((error) => console.log(error));
+    },
+    onSubmit(values) {
+      postSave({ ...this.addressInfo })
+        .then((res) => {})
+        .catch((error) => console.log(error));
 
       // axios
       //   .get(
@@ -322,10 +412,10 @@ export default {
   // margin: auto;
 }
 .see1 {
-  background-color: #FF8686;
+  background-color: #ff8686;
 }
 ::v-deep .van-field__control {
-  text-align: right;
+  text-align: left;
 }
 .hhhhh {
   ::v-deep .van-field__control {
@@ -333,13 +423,13 @@ export default {
   }
 }
 .imgbox {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    img {
-        width: 40%;
-        margin:0 20px;
-    }
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  img {
+    width: 40%;
+    margin: 0 20px;
+  }
 }
 .box {
   width: 100%;
@@ -349,6 +439,7 @@ export default {
 }
 .box-main {
   width: 100%;
+  height: auto;
   padding: 20px;
   background-color: #f3f4f7;
   border-radius: 20px;
@@ -374,12 +465,12 @@ export default {
     }
   }
   .p2 {
-      text-indent: 2em;
-      font-size: 28px;
-        font-family: PingFang SC;
-        font-weight: 500;
-        color: #333333;
-        line-height: 41px;
+    text-indent: 2em;
+    font-size: 28px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    line-height: 41px;
   }
   .p3 {
     font-size: 32px;
@@ -388,5 +479,12 @@ export default {
     color: #000000;
     text-align: right;
   }
+}
+.btnns {
+  display: flex;
+  justify-content: space-between;
+}
+.btn {
+  width: 100px;
 }
 </style>

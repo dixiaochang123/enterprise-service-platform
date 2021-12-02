@@ -11,6 +11,15 @@
       <van-field v-if="isprogress" v-model="ISSHOW" readonly label="是否公开" right-icon="arrow" @click="showname1 = true" />
       <van-field name="诉求内容" label="诉求内容" readonly />
       <van-field :disabled="disabled" v-model="addressInfo.CONTENT" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
+      <div class="van-uploader__wrapper">
+        <div class="van-uploader__preview" v-for="(item,index) in uploadImages" :key="index">
+          <div class="van-image van-uploader__preview-image">
+            <img :src="item.url" class="van-image__img" style="object-fit: cover;"></div>
+          <div data-v-ad6b89ec="" class="van-uploader__preview-delete" @click="onDelete1(index)">
+            <i class="van-icon van-icon-cross van-uploader__preview-delete-icon"></i>
+          </div>
+        </div>
+      </div>
       <van-uploader :disabled="disabled" v-model="fileList" :max-size="50000 * 1024" multiple :max-count="5" :after-read="onRead" :before-delete="onDelete" @oversize="onOversize">
         <div class="upload">
           <img src="../../assets/personal/矩形 846 拷贝.png" alt="">
@@ -273,6 +282,10 @@ export default {
       console.log(this.fileList, this.uploadImages);
       return true;
     },
+    onDelete1(index) {
+        this.uploadImages.splice(index, 1);
+        return true;
+    },
     onOversize(file) {
       // Toast("正在上传");
       // console.log(file);
@@ -448,5 +461,67 @@ export default {
 ::v-deep .van-field__control:disabled {
   color: #646566;
   -webkit-text-fill-color:#646566;
+}
+// ----------------
+.van-uploader__wrapper {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+.van-uploader__preview {
+    position: relative;
+    margin: 0 8px 8px 0;
+    cursor: pointer;
+}
+.van-uploader__preview-image {
+    display: block;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    position: relative;
+}
+.van-image__img, .van-image__error, .van-image__loading {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.van-uploader__preview-delete {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 14px;
+    height: 14px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 0 0 0 12px;
+}
+.van-uploader__preview-delete-icon {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    color: #fff;
+    font-size: 16px;
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+}
+.van-icon {
+    position: relative;
+    display: inline-block;
+    font: normal normal normal 14px/1 'vant-icon';
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+.van-icon-cross::before {
+    content: '\F042';
+}
+.van-icon::before {
+    display: inline-block;
+}
+::v-deep .van-uploader {
+  .van-uploader__preview {
+    display: none;
+  }
 }
 </style>

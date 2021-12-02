@@ -8,6 +8,8 @@
         <p class="p2">{{content.TITLE}}</p>
         <p class="p3"><span></span> 责任部门</p>
         <p class="p4">{{content.ORG_ID_}}</p>
+        <p class="p3"><span></span> 政策类型</p>
+        <p class="p4">{{content.TYPE_}}</p>
         <p class="p3"><span></span> 生效时间</p>
         <p class="p4">{{content.SX_TIME}}</p>
         <p class="p3"><span></span> 办事指南</p>

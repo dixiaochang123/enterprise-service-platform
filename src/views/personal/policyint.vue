@@ -9,7 +9,7 @@
       <van-cell @click="handleclickgetinto(item)" v-for="item in list" :key="item.ID" style="display: flex;align-items: center;" class="hhh" title="加大授企稳岗力度">
         <template #title>
           <span><span v-if="false" style="color:#5683FF">●</span> {{item.TITLE}}</span>
-          <p class="p1">{{item.ORG_ID_}}</p>
+          <p class="p1">{{item.ORG_ID_}} <span style="visibility: hidden;">呵呵</span> {{item.TYPE_}}</p>
         </template>
       </van-cell>
     </div>

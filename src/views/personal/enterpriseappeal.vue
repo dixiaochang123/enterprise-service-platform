@@ -5,7 +5,7 @@
     <van-form @submit="onSubmit">
       <van-field v-model="userInfo.ORG_ID_" readonly label="企业名称" placeholder="请输入您所在的企业" :rules="[{ required: true, message: '请填写企业名称' }]" />
       <van-field v-model="userInfo.REAL_NAME" readonly label="上报人" placeholder="请输入上报人" :rules="[{ required: true, message: '请填写上报人' }]" />
-      <van-field v-model="userInfo.REAL_NAME" readonly label="实际地址" placeholder="请输入上实际地址" :rules="[{ required: true, message: '请填写上实际地址' }]" />
+      <van-field v-model="addressInfo.ADDRESS" readonly label="实际地址" placeholder="请输入上实际地址" :rules="[{ required: true, message: '请填写上实际地址' }]" />
       <van-field class="mobile" v-model="userInfo.PHONE" readonly maxlength="11" type="number" label="联系方式" placeholder="请输入手机号码"  />
       <van-field v-model="addressInfo.NAME" name="NAME" label="诉求目的" placeholder="请输入诉求目的" :rules="[{ required: true, message: '请填写诉求目的' }]" />
       <van-field v-model="addressInfo.SER_TYPE_" name="SER_TYPE" readonly :rules="[{ required: true, message: '请选择服务类型' }]" label="服务类型" right-icon="arrow" @click="showname = true" />
@@ -36,7 +36,7 @@
 import { Toast } from "vant";
 import { mapGetters } from "vuex";
 import axios from "axios";
-import { appealSave, getsysCombox } from "@/api/personal";
+import { appealSave, getsysCombox,getUserInfo } from "@/api/personal";
 const config = require("../../utils/config");
 import { Dialog } from "vant";
 export default {
@@ -61,6 +61,7 @@ export default {
         ATTACHS: "",
         USER_ID: "",
         ID: "",
+        ADDRESS:''
         // phone: '',
         // address: "",
         // provinceID: '',
@@ -92,8 +93,22 @@ export default {
   mounted() {
     this.addressInfo.USER_ID = this.userInfo.ID;
     this.getsysCombox();
+    this.getUserInfo();
   },
   methods: {
+    getUserInfo() {
+      getUserInfo({
+        USER_ID:this.userInfo.ID
+      }).then(res=>{
+        let {code,data} = res;
+        console.log(code,data)
+        if(code==0) {
+          this.addressInfo.ADDRESS = data.orgMap.ORG_ADDRESS
+        }
+        
+
+      }).catch(error=>console.log(error))
+    },
     getsysCombox() {
       getsysCombox()
         .then((res) => {
@@ -125,32 +140,39 @@ export default {
       // this.GetCity(value[0].code);
     },
     onRead(file) {
+      console.log(file)
       var formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
       formData.append("file", file.file); //接口需要传的参数
       let _this = this;
       var xhr = new XMLHttpRequest();
-      xhr.open(
-        "post",
-        "http://www.czssqw.net/zhzf_ly/api/Common/Uploader/annexpic"
-      );
+      const url = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/saveFile'
+      xhr.open("post", url);
       xhr.send(formData);
       xhr.onload = function () {
         if (xhr.status === 200) {
           let { data } = JSON.parse(xhr.response);
-          // data.url = config[process.env.NODE_ENV].mockUrl+data.url
-          data.url = "http://www.czssqw.net/zhzf_ly" + data.url;
-          _this.uploadImages.push({
-            url: data.url,
-          });
-          _this.addressInfo.ATTACHS = _this.uploadImages;
-          // _this.fileList = data
-          // _this.addressInfo.ATTACHS = data.map(item=>{
-          //   item.url = url+item.ur
-          // })
+          _this.addressInfo.ATTACHS = _this.addressInfo.ATTACHS+data.att_map.ID+',';
+          _this.uploadImages.push(data.url);
+          console.log(_this.fileList, _this.uploadImages);
+        }
+      };
+    },
+    onRead(file) {
+      var formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
+      formData.append("file", file.file); //接口需要传的参数
+      let _this = this;
+      var xhr = new XMLHttpRequest();
+      const url = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/saveFile'
+      xhr.open("post",url);
+      xhr.send(formData);
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          let { data } = JSON.parse(xhr.response);
+          _this.addressInfo.ATTACHS = _this.addressInfo.ATTACHS+data.att_map.ID+',';
+          _this.uploadImages.push(data.url);
           console.log(data, _this.uploadImages, _this.addressInfo.ATTACHS);
         }
       };
-      // console.log(file);
     },
     onDelete(file, { index }) {
       this.uploadImages.splice(index, 1);
@@ -164,8 +186,8 @@ export default {
     },
     onSubmit(values) {
       console.log(values);
-      let { NAME, CONTENT, SER_TYPE, ATTACHS, USER_ID, ID } = this.addressInfo;
-      let params1 = { NAME, CONTENT, SER_TYPE, ATTACHS, USER_ID, ID };
+      let { NAME, CONTENT, SER_TYPE, ATTACHS, USER_ID, ID ,ADDRESS} = this.addressInfo;
+      let params1 = { NAME, CONTENT, SER_TYPE, ATTACHS, USER_ID, ID ,ADDRESS};
       appealSave(params1)
         .then((res) => {
           Dialog.alert({
