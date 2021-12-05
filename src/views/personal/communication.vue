@@ -7,11 +7,11 @@
       <div class="tbs">
         <van-cell to="/releasepost">
           <img src="../../assets/yiqilai/index/edit.png" alt="">
-          <p>发布分享</p>
+          <p>发布需求</p>
         </van-cell>
         <van-cell to="/mypost">
           <img src="../../assets/yiqilai/index/xl.png" alt="">
-          <p>我的分享</p>
+          <p>我的需求</p>
         </van-cell>
         <van-cell to="/comment">
           <img src="../../assets/yiqilai/index/评论.png" alt="">
