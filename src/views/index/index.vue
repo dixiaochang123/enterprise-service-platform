@@ -302,7 +302,7 @@ export default {
       this.$router.push({
         name:'Viewpost1',
         query:{
-
+          isp:1,
           id:item.ID
         }
       })
@@ -556,15 +556,15 @@ export default {
   background-size: 100% 100%;
 }
 .vanswipeitem0 {
-  background: url('../../assets/index/11/1@3x.png') no-repeat center center;
+  background: url('../../assets/index/11/1@3x.png') no-repeat left center;
   background-size: 95% 100%;
 }
 .vanswipeitem1 {
-  background: url('../../assets/index/11/2@3x.png') no-repeat center center;
+  background: url('../../assets/index/11/2@3x.png') no-repeat left center;
   background-size: 95% 100%;
 }
 .vanswipeitem2 {
-  background: url('../../assets/index/11/3@3x.png') no-repeat center center;
+  background: url('../../assets/index/11/3@3x.png') no-repeat left center;
   background-size: 95% 100%;
 }
 .vanswipeitem10 {
