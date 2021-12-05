@@ -26,8 +26,8 @@
           <img v-for="(item,index) in fileList" :key="index" :src="item.url" alt="" srcset="">
         </div>
         <div style="height:20px;"></div>
-        <van-field name="处理流程" label="处理流程" readonly />
-        <van-steps direction="vertical" :active="0">
+        <van-field v-if="isp" name="处理流程" label="处理流程" readonly />
+        <van-steps v-if="isp" direction="vertical" :active="0">
           <van-step v-for="(item,index) in addressInfo.handleList" :key="index">
             <h3>{{item.ORG_ID_}}</h3>
             <p>{{item.SB_USER_ID_}} {{item.UPDATETIME}}</p>
@@ -104,6 +104,7 @@ export default {
         // { url: "https://cloud-image", isImage: true },
       ],
       uploadImages: [],
+      isp:true
 
       // uid: 999845591,
       // utype: kuhu,
@@ -126,6 +127,11 @@ export default {
     // this.GetHotCities();
     // this.GetDefaultAreaInfo();
     this.getPostMap();
+    if(this.$route.query.isp) {
+      this.isp = false
+    } else {
+      this.isp = true
+    }
   },
   methods: {
     confirm111() {
@@ -274,6 +280,7 @@ export default {
         CONTENT: this.message, // 		评论内容
         ORG_ID: this.addressInfo.ORG_ID, //   企业ID
         ID: "", // 	评论ID（新增为空）
+        USER_ID:this.userInfo.ID
       };
 
       pasteSave(params)

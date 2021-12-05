@@ -17,10 +17,10 @@
           <!-- <van-icon style="font-size: 16px;color: #969799;" name="arrow" /> -->
         </template>
       </van-cell>
-      <van-field right-icon="edit" v-model="userInfo.REAL_NAME" readonly label="姓名" />
-      <van-field v-model="userInfo.ORG_ID_" readonly="readonly"   label="企业" right-icon="arrow" />
-      <van-field v-model="userInfo.PHONE" maxlength="11" type="number"  label="手机号码" right-icon="arrow" readonly  />
-      <van-field v-model="userInfo.PASSWORD" maxlength="11" type="password"  label="密码" right-icon="arrow"  />
+      <van-field v-model="userInfo.REAL_NAME" readonly label="姓名" />
+      <van-field v-model="userInfo.ORG_ID_" readonly="readonly"   label="企业"  />
+      <van-field v-model="userInfo.PHONE" maxlength="11" type="number"  label="手机号码"  readonly  />
+      <van-field v-model="userInfo.PASSWORD" maxlength="11" type="password"  label="密码" right-icon="edit"  />
     </div>
     <div style="margin: 16px">
         <van-button class="see" round block type="info" native-type="submit" @click="loginout">退出登录</van-button>

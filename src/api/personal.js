@@ -314,3 +314,13 @@ export function pasteSave(data) {
     })
 }
 
+
+// 评论列表
+export function getMyPasteList(data) {
+    return request({
+        url: `/wjyql/mobile/getMyPasteList`,
+        method: 'post',
+        data
+    })
+}
+

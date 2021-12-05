@@ -347,6 +347,26 @@ const routes = [
       showTab: false
     }
   },
+  // 我的评论
+  {
+    path: '/comment',
+    name: 'comment',
+    component: () => import('@/views/personal/comment'),
+    meta: {
+      title: '我的评论',
+      showTab: false
+    }
+  },
+  // 编辑评论
+  {
+    path: '/edit',
+    name: 'edit',
+    component: () => import('@/views/personal/edit'),
+    meta: {
+      title: '编辑评论',
+      showTab: false
+    }
+  },
   // 发布帖子 release
   {
     path: '/releasepost',

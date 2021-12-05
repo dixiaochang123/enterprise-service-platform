@@ -7,11 +7,15 @@
       <div class="tbs">
         <van-cell to="/releasepost">
           <img src="../../assets/yiqilai/index/edit.png" alt="">
-          <p>发布需求分享</p>
+          <p>发布分享</p>
         </van-cell>
         <van-cell to="/mypost">
           <img src="../../assets/yiqilai/index/xl.png" alt="">
-          <p>我的需求分享</p>
+          <p>我的分享</p>
+        </van-cell>
+        <van-cell to="/comment">
+          <img src="../../assets/yiqilai/index/评论.png" alt="">
+          <p>我的评论</p>
         </van-cell>
 
       </div>
@@ -63,7 +67,8 @@ export default {
       this.$router.push({
         name:"Viewpost1",
         query:{
-          id:val.ID
+          id:val.ID,
+          isp:1
         }
       })
     },
@@ -127,7 +132,7 @@ export default {
   flex-wrap: nowrap;
   padding: 30px 0;
   > div {
-    width: 320px;
+    width: 200px;
     height: 100px;
     background: linear-gradient(0deg, #557EFF, #91ACFF);
     border-radius: 20px;
@@ -135,7 +140,7 @@ export default {
     justify-content: flex-start;
     align-items: center;
     padding-left: 20px;
-    font-size: 32px;
+    font-size: 24px;
     font-family: PingFang SC;
     font-weight: bold;
     color: #FFFFFF;
@@ -147,12 +152,13 @@ export default {
     color: #FFFFFF;
     }
     img {
-      width: 55px;
-      height: 55px;
+      width: 35px;
+      height: 35px;
       // vertical-align: middle;
     }
     p {
       padding-left: 13px;
+      white-space: nowrap;
     }
   }
 }

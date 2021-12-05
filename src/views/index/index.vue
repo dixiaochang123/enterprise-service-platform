@@ -556,19 +556,29 @@ export default {
   background-size: 100% 100%;
 }
 .vanswipeitem0 {
-  background: url('../../assets/index/11/2.png') no-repeat center center;
+  background: url('../../assets/index/11/1@3x.png') no-repeat center center;
   background-size: 95% 100%;
 }
 .vanswipeitem1 {
-  background: url('../../assets/index/11/9.png') no-repeat center center;
+  background: url('../../assets/index/11/2@3x.png') no-repeat center center;
   background-size: 95% 100%;
 }
 .vanswipeitem2 {
-  background: url('../../assets/index/11/9.png') no-repeat center center;
+  background: url('../../assets/index/11/3@3x.png') no-repeat center center;
   background-size: 95% 100%;
 }
-.vanswipeitem10,.vanswipeitem11,.vanswipeitem12,.vanswipeitem13,.vanswipeitem1undefined {
-  background: url('../../assets/index/11/6.png') no-repeat center center;
+.vanswipeitem10 {
+  background: url('../../assets/yiqilai/index/1@3x.png') no-repeat center center;
+  background-size: 100% 100%;
+  width: 100%;
+}
+.vanswipeitem11 {
+  background: url('../../assets/yiqilai/index/2@3x.png') no-repeat center center;
+  background-size: 100% 100%;
+  width: 100%;
+}
+.vanswipeitem12,.vanswipeitem13,.vanswipeitem1undefined {
+  background: url('../../assets/yiqilai/index/3@3x.png') no-repeat center center;
   background-size: 100% 100%;
   width: 100%;
 }
