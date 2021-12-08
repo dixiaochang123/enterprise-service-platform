@@ -78,7 +78,7 @@
                       <p class="p3" style="visibility: hidden;"></p>
                       <p class="p1">{{item.ORG_ID_}}</p>
                     </div>
-                    <van-button class="vsi-2" round type="info" @click="zcsdhandleclick(item)">立即申请</van-button>
+                    <van-button class="vsi-2" round type="info" @click="zcsdhandleclick(item)">立即查看</van-button>
                   </div>
                 </van-swipe-item>
               </van-swipe>
@@ -130,7 +130,7 @@
                       <p class="p3"></p>
                       <p class="p3" style="visibility: hidden;"></p>
                     </div>
-                    <van-button class="vsi-2" round type="info" @click="handlegettozcsh(7)">更多</van-button>
+                    <van-button class="vsi-2" round type="info" @click="handlegettozcsh('审批服务')">更多</van-button>
                   </div>
                   <div class="vsi vsi2 vsi-1-2">
                     <div class="vsi-1">
@@ -139,7 +139,7 @@
                       <p class="p3"></p>
                       <p class="p3" style="visibility: hidden;"></p>
                     </div>
-                    <van-button class="vsi-2" round type="info" @click="handlegettozcsh(6)">更多</van-button>
+                    <van-button class="vsi-2" round type="info" @click="handlegettozcsh('人才申报')">更多</van-button>
                   </div>
                   <div class="vsi vsi-1-3">
                     <div class="vsi-1 ">
@@ -148,7 +148,7 @@
                       <p class="p3"></p>
                       <p class="p3" style="visibility: hidden;"></p>
                     </div>
-                    <van-button class="vsi-2" round type="info" @click="handlegettozcsh(3)">更多</van-button>
+                    <van-button class="vsi-2" round type="info" @click="handlegettozcsh('金融服务')">更多</van-button>
                   </div>
               </div>
 
@@ -264,6 +264,9 @@ export default {
     handlegettozcsh(data) {
       this.$router.push({
           name:'Networkhandling',
+          query:{
+            name:data
+          }
         })
         return;
       this.$router.push({
