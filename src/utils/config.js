@@ -9,10 +9,10 @@ module.exports = {
   },
   'development': {
     baseUrl: '/wjyql',
-    mockUrl: 'http://182.92.2.167:8200',
+    mockUrl: 'http://218.93.116.192:9000',
   },
   'production': {
-    baseUrl: 'http://182.92.2.167:8200',
-    mockUrl: 'http://182.92.2.167:8200'
+    baseUrl: 'http://218.93.116.192:9000',
+    mockUrl: 'http://218.93.116.192:9000'
   }
 }
