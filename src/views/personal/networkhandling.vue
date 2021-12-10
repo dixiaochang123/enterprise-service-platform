@@ -1,6 +1,6 @@
 <template>
   <div class="personal">
-    <van-nav-bar title="一网办理" left-text="" left-arrow fixed @click-left="onClickLeft" />
+    <van-nav-bar :title="title" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <div class="box">
      <van-empty image="network" description="该模块暂未开通" />
@@ -19,6 +19,7 @@ export default {
   components: {},
   data() {
     return {
+      title:''
     //   value1: "",
     //   list: [],
     };
@@ -33,6 +34,7 @@ export default {
   },
   mounted() {
     // this.getMyPostList('');
+    this.title = this.$route.query.name
   },
   methods: {
     getMyPostList(val) {
