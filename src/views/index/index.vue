@@ -36,7 +36,7 @@
                 <p>诉求提供</p>
               </div>
               <div class="flex-item" @click="handleclickgetinto('Myappeal')">
-                <img width="4rem" height="4rem" src="../../assets/yiqilai/index/政策解读@3x.png" alt="">
+                <img width="4rem" height="4rem" src="../../assets/yiqilai/index/zcjd.png" alt="">
                 <p>我的诉求</p>
               </div>
               <div class="flex-item" @click="handleclickgetinto('Policyint')">
@@ -44,7 +44,7 @@
                 <p>政策解读</p>
               </div>
               <div class="flex-item" @click="handleclickgetinto('Want')">
-                <img width="4rem" height="4rem" src="../../assets/yiqilai/index/猜您想问@3x.png" alt="">
+                <img width="4rem" height="4rem" src="../../assets/yiqilai/index/cnxw.png" alt="">
                 <p>猜您想问</p>
               </div>
             </div>

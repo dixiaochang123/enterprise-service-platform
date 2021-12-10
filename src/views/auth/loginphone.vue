@@ -21,7 +21,7 @@
       <h3 style="text-align: center;"><span style="color:#566BFF;">“一企来”</span>一起来~</h3>
       <p style="text-align: center;">“为企业开通一键直达的服务快速通道”</p>
       <div class="imags1">
-        <img  src="../../assets/yiqilai/login/插画@3x.png" alt="">
+        <img  src="../../assets/yiqilai/login/chahua.png" alt="">
       </div>
     </div>
 
