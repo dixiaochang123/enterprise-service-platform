@@ -8,7 +8,7 @@
           <div class="admin-info">
             <!-- <van-image v-if="userInfo.REAL_NAME" @click="login" round width="5rem" height="5rem" :src="photo" /> -->
             <img v-if="userInfo.REAL_NAME && !!userInfo.PHOTO" @click="gotogrzx"  class="photo" :src="photo" alt="">
-            <img v-if="userInfo.REAL_NAME && !userInfo.PHOTO" @click="gotogrzx"  class="photo" src="../../assets/yiqilai/index/未登录头像.png" alt="">
+            <img v-if="userInfo.REAL_NAME && !userInfo.PHOTO" @click="gotogrzx"  class="photo" src="../../assets/yiqilai/index/wdltx.png" alt="">
             <van-image v-if="!userInfo.REAL_NAME" @click="login" round width="5rem" height="5rem" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
             <div v-if="userInfo.REAL_NAME" class="admin-info-text">
               <div class="t-1">

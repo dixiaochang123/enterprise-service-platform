@@ -105,8 +105,8 @@ export default {
       form: {
         // mobile: '18862631752',
         // code:'123456'
-        mobile: '',
-        code:''
+        mobile: '11122211122',
+        code:'123123'
       },
       // 验证码
       safety: {
