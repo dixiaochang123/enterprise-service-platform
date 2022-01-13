@@ -100,6 +100,19 @@ export default {
     console.log(returnCitySN.cname)
     this.cname = returnCitySN.cname;
     this.addressInfo.ADDRESS = returnCitySN.cname || '';
+     //百度地图方法获取当前城市
+     /**
+      * var geolocation=new BMapGL.Geolocation();
+        geolocation.getCurrentPosition(function(r){
+            // var city=r.address.city//返回当前城市
+            // that.currCity = city;
+            console.log(r)
+        })
+      * 
+      * 
+      * 
+      */
+      
   },
   methods: {
     getUserInfo() {
