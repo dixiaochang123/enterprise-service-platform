@@ -3,6 +3,7 @@
     <van-nav-bar title="企业诉求" left-text="" left-arrow fixed @click-left="onClickLeft" />
     <div style="height: 46px"></div>
     <van-form @submit="onSubmit">
+      <!-- {{cname}} -->
       <van-field v-model="userInfo.ORG_ID_" readonly label="企业名称" placeholder="请输入您所在的企业" :rules="[{ required: true, message: '请填写企业名称' }]" />
       <van-field v-model="userInfo.REAL_NAME" readonly label="上报人" placeholder="请输入上报人" :rules="[{ required: true, message: '请填写上报人' }]" />
       <van-field v-model="addressInfo.ADDRESS" label="实际地址" placeholder="请输入上实际地址" :rules="[{ required: true, message: '请填写上实际地址' }]" />
@@ -39,6 +40,7 @@ import axios from "axios";
 import { appealSave, getsysCombox,getUserInfo } from "@/api/personal";
 const config = require("../../utils/config");
 import { Dialog } from "vant";
+// var returnCitySN = {"cip": "111.203.35.210", "cid": "110000", "cname": "北京市"};
 export default {
   name: "Confirmorder",
   components: {},
@@ -73,6 +75,7 @@ export default {
       sysCombox: [],
       fileList: [],
       uploadImages: [],
+      cname:'',
 
       // uid: 999845591,
       // utype: kuhu,
@@ -94,6 +97,9 @@ export default {
     this.addressInfo.USER_ID = this.userInfo.ID;
     this.getsysCombox();
     this.getUserInfo();
+    console.log(returnCitySN.cname)
+    this.cname = returnCitySN.cname;
+    this.addressInfo.ADDRESS = returnCitySN.cname || '';
   },
   methods: {
     getUserInfo() {
