@@ -5,7 +5,7 @@
     <van-form @submit="onSubmit">
       <van-field v-model="userInfo.ORG_ID_" readonly label="企业名称" placeholder="请输入您所在的企业" :rules="[{ required: true, message: '请填写企业名称' }]" />
       <van-field v-model="userInfo.REAL_NAME" readonly label="上报人" placeholder="请输入上报人" :rules="[{ required: true, message: '请填写上报人' }]" />
-      <van-field v-model="addressInfo.ADDRESS" readonly label="实际地址" placeholder="请输入上实际地址" :rules="[{ required: true, message: '请填写上实际地址' }]" />
+      <van-field v-model="addressInfo.ADDRESS" label="实际地址" placeholder="请输入上实际地址" :rules="[{ required: true, message: '请填写上实际地址' }]" />
       <van-field class="mobile" v-model="userInfo.PHONE" readonly maxlength="11" type="number" label="联系方式" placeholder="请输入手机号码"  />
       <van-field v-model="addressInfo.NAME" name="NAME" label="诉求目的" placeholder="请输入诉求目的" :rules="[{ required: true, message: '请填写诉求目的' }]" />
       <van-field v-model="addressInfo.SER_TYPE_" name="SER_TYPE" readonly :rules="[{ required: true, message: '请选择服务类型' }]" label="服务类型" right-icon="arrow" @click="showname = true" />
@@ -102,9 +102,9 @@ export default {
       }).then(res=>{
         let {code,data} = res;
         console.log(code,data)
-        if(code==0) {
-          this.addressInfo.ADDRESS = data.orgMap.ORG_ADDRESS
-        }
+        // if(code==0) {
+        //   this.addressInfo.ADDRESS = data.orgMap.ORG_ADDRESS
+        // }
         
 
       }).catch(error=>console.log(error))
