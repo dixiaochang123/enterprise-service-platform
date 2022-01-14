@@ -257,6 +257,16 @@ const routes = [
       showTab: false
     }
   },
+  //企业诉求
+  {
+    path: '/servicetype',
+    name: 'Servicetype',
+    component: () => import('@/views/personal/servicetype'),
+    meta: {
+      title: '服务类型',
+      showTab: false
+    }
+  },
   //诉求详情 Appeal details
   {
     path: '/appealdetails',

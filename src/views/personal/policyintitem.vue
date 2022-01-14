@@ -73,9 +73,15 @@ export default {
         const a = document.createElement('a')
         a.setAttribute('download', '微信图片_20210617095920')
         a.setAttribute('target', '_blank')
-        const url = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='+item.ID
+        const url = "https://view.officeapps.live.com/op/view.aspx?src="+config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='+item.ID+'.doc'
+        console.log(url)
+        // const url = "https://view.officeapps.live.com/op/view.aspx?src="+config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='+item.ID
+        // return
         a.setAttribute('href', url)
+        
         a.click()
+
+        // <a href="https://view.officeapps.live.com/op/view.aspx?src=https://需要打开得文件路径>预览</a>
     },
     onClickLeft() {
       this.$router.go(-1); //返回上一层
