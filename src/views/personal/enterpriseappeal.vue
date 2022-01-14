@@ -100,8 +100,8 @@ export default {
     console.log(returnCitySN.cname)
     this.cname = returnCitySN.cname;
     this.addressInfo.ADDRESS = returnCitySN.cname || '';
-    if(this.$route.query.id) {
-      this.addressInfo.SER_TYPE = this.$route.query.id;
+    if(this.$route.query.serveid) {
+      this.addressInfo.SER_TYPE = this.$route.query.serveid;
       this.addressInfo.SER_TYPE_ = this.$route.query.name;
     }
     if(this.$route.query.objective) {

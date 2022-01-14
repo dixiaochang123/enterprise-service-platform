@@ -94,15 +94,26 @@ export default {
       }).catch(error=>console.log(error))
     },
     handleclickgetinto(data){
-        
-      this.$router.push({
-        name:"Enterpriseappeal",
-        query:{
-            ...this.$route.query,
-          id:data.VALUE,
-          name:data.NAME,
-        }
-      })
+      if(this.$route.query.id) {
+        this.$router.push({
+          name:"Appealdetails",
+          query:{
+              ...this.$route.query,
+            serveid:data.VALUE,
+            name:data.NAME,
+          }
+        })
+      } else {
+
+        this.$router.push({
+          name:"Enterpriseappeal",
+          query:{
+              ...this.$route.query,
+            serveid:data.VALUE,
+            name:data.NAME,
+          }
+        })
+      }
     },
     onClickLeft() {
       this.$router.go(-1); //返回上一层
