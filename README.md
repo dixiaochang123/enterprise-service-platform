@@ -20,5 +20,22 @@ $ npm run dev
 18862631752/123456
 18006246117/111111
 ```
+## 获取用户所在城市--方式1
+```
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+let returnCitySN = {"cip": "111.203.35.210", "cid": "110000", "cname": "北京市"};
+
+```
+## 获取用户所在城市--方式2
+```
+<script type="text/javascript" src="//api.map.baidu.com/api?type=webgl&v=1.0&ak=unvIq48XGE1jR7NIf1RSwszH4PQT696I"></script>
+var geolocation=new BMapGL.Geolocation();
+    geolocation.getCurrentPosition(function(r){
+        // var city=r.address.city//返回当前城市
+        // that.currCity = city;
+        console.log(r)
+    })
+
+```
 
 
