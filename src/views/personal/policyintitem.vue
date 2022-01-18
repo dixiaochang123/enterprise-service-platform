@@ -73,7 +73,7 @@ export default {
         const a = document.createElement('a')
         a.setAttribute('download', '微信图片_20210617095920')
         a.setAttribute('target', '_blank')
-        const url = "https://view.officeapps.live.com/op/view.aspx?src="+config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='+item.ID+'.doc'
+        const url = config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='+item.ID
         console.log(url)
         // const url = "https://view.officeapps.live.com/op/view.aspx?src="+config[process.env.NODE_ENV].mockUrl+'/wjyql/uploadFile/downloadFile?attachId='+item.ID
         // return
