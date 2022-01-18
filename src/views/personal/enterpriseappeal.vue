@@ -10,7 +10,7 @@
       <van-field class="mobile" v-model="userInfo.PHONE" readonly maxlength="11" type="number" label="联系方式" placeholder="请输入手机号码"  />
       <van-field v-model="addressInfo.NAME" name="NAME" label="诉求目的" placeholder="请输入诉求目的" :rules="[{ required: true, message: '请填写诉求目的' }]" />
       <van-field v-model="addressInfo.SER_TYPE_" name="SER_TYPE" readonly :rules="[{ required: true, message: '请选择服务类型' }]" label="服务类型" right-icon="arrow" @click="gotoservicetype" />
-      <van-field v-model="addressInfo.CONTENT" name="CONTENT" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
+      <van-field v-model="addressInfo.CONTENT" name="CONTENT" class="hhhhh" rows="3" autosize type="textarea" show-word-limit placeholder="请详细描述您的问题" />
       <van-uploader v-model="fileList" :max-size="50000 * 1024" multiple :max-count="5" :after-read="onRead" :before-delete="onDelete" @oversize="onOversize">
         <div class="upload">
           <img src="../../assets/personal/矩形 846 拷贝.png" alt="">

@@ -10,7 +10,7 @@
       <van-field v-model="addressInfo.phone" name="联系方式" label="联系方式" readonly />
       <van-field v-model="addressInfo.phone" name="注册地址" label="注册地址" readonly />
       <van-field  name="生产服务内容" label="生产服务内容" readonly />
-      <van-field v-model="addressInfo.textarea" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
+      <van-field v-model="addressInfo.textarea" class="hhhhh" rows="3" autosize type="textarea" show-word-limit placeholder="请详细描述您的问题" />
       
     </van-form>
 

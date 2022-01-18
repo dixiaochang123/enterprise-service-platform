@@ -8,7 +8,7 @@
       <van-field v-model="addressInfo.USER_ID_" readonly name="上报人" label="上报人" />
       <van-field v-model="addressInfo.PHONE" readonly name="联系方式" label="联系方式" />
       <van-field v-model="addressInfo.APPR_CONTENT" name="驳回原因" label="驳回原因" />
-      <van-field v-model="addressInfo.CONTENT" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
+      <van-field v-model="addressInfo.CONTENT" class="hhhhh" rows="3" autosize type="textarea" show-word-limit placeholder="请详细描述您的问题" />
       <div class="van-uploader__wrapper">
         <div class="van-uploader__preview" v-for="(item,index) in uploadImages" :key="index">
           <div class="van-image van-uploader__preview-image">

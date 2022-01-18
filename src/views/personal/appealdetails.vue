@@ -10,7 +10,7 @@
       <van-field v-model="addressInfo.CREATETIME" readonly name="上报时间" label="上报时间" placeholder="请输入上报时间" :rules="[{ required: true, message: '请填写收件人' }]" />
       <van-field v-if="isprogress" v-model="ISSHOW" readonly label="是否公开" right-icon="arrow" @click="showname1 = true" />
       <van-field name="诉求内容" label="诉求内容" readonly />
-      <van-field :disabled="disabled" v-model="addressInfo.CONTENT" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
+      <van-field :disabled="disabled" v-model="addressInfo.CONTENT" class="hhhhh" rows="3" autosize type="textarea" show-word-limit placeholder="请详细描述您的问题" />
       <div class="van-uploader__wrapper">
         <div class="van-uploader__preview" v-for="(item,index) in uploadImages" :key="index">
           <div class="van-image van-uploader__preview-image">

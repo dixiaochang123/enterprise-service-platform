@@ -7,7 +7,7 @@
       <van-field v-model="addressInfo.realname" name="所用网络" label="所用网络" readonly />
       <van-field v-model="addressInfo.realname" name="网格长" label="网格长" readonly />
       <!-- <van-field  name="网络员" label="网络员" readonly /> -->
-      <van-field label="网络员" v-model="addressInfo.textarea" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" />
+      <van-field label="网络员" v-model="addressInfo.textarea" class="hhhhh" rows="3" autosize type="textarea" show-word-limit placeholder="请详细描述您的问题" />
       
     </van-form>
 

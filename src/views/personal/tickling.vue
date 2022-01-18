@@ -5,7 +5,7 @@
     <div class="box">
       <h3>问题描述<span>200字以内</span>
       </h3>
-      <van-field v-model="description" rows="3" autosize type="textarea" maxlength="200" show-word-limit placeholder="请详细描述您的问题" />
+      <van-field v-model="description" rows="3" autosize type="textarea" show-word-limit placeholder="请详细描述您的问题" />
       <h3>联系方式<span>方便我们与您联系，排查问题</span></h3>
       <van-field v-model="source" placeholder="手机/微信号/QQ" />
       <h3>上传问题截图<span>图片最多5张，每张不超过5M</span></h3>

@@ -8,7 +8,7 @@
       <!-- <van-field v-model="addressInfo.USER_ID" name="上报人" label="上报人" placeholder="请输入上报人"  readonly /> -->
       <van-field v-model="addressInfo.REAL_NAME" name="上报人" label="上报人" placeholder="请输入上报人"  readonly />
       <!-- <van-field v-model="addressInfo.PHONE" name="联系方式" label="联系方式" placeholder="请输入联系方式"  /> -->
-      <van-field v-model="addressInfo.CONTENT" class="hhhhh" rows="3" autosize type="textarea" maxlength="40" show-word-limit placeholder="请详细描述您的问题" :rules="[{ required: true, message: '请填写描述' }]" />
+      <van-field v-model="addressInfo.CONTENT" class="hhhhh" rows="3" autosize type="textarea" show-word-limit placeholder="请详细描述您的问题" :rules="[{ required: true, message: '请填写描述' }]" />
       <van-uploader v-model="fileList" :max-size="50000 * 1024" multiple :max-count="5" :after-read="onRead" :before-delete="onDelete" @oversize="onOversize">
         <div class="upload">
           <img src="../../assets/personal/矩形 846 拷贝.png" alt="">
