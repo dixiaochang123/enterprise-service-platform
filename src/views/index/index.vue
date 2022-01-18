@@ -233,14 +233,14 @@ export default {
       }).then(res=>{
  let {code,data} = res;
         if(code==0) {
-          data.policyList.map(item=>{
+          !!data.policyList && data.policyList.map(item=>{
             console.log(item.ATTACHS)
             if(item.ATTACHS) {
 
               item.ATTACHS = item.ATTACHS.split(",")[0]
             }
           })
-          data.postList.map(item=>{
+          !!data.postList && data.postList.map(item=>{
 
             if(item.ATTACHS) {
 
