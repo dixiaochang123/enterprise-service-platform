@@ -69,8 +69,6 @@
               <van-swipe :loop="false" height="100%" :width="320">
                 <van-swipe-item :class="'vanswipeitem'+index" v-for="(item,index) in indexData.policyList" :key="item.ID">
                   <div class="vsi">
-                    <!-- <img class="vsiimg" v-if="item.ATTACHS" :src="url+item.ATTACHS" alt=""> -->
-                    <!-- <img class="vsiimg" src="https://img01.yzcdn.cn/vant/cat.jpeg" alt=""> -->
                     <div class="vsi-1">
                       <p class="p1" style="vertical-align: bottom;"> 政策类别</p>
                       <p class="p2">{{item.NAME}}</p>
@@ -97,15 +95,19 @@
               <van-swipe :loop="false" height="100%">
                 <van-swipe-item @click="handleclickcommunication(item)" :class="'vanswipeitem1'+index" v-for="(item,index) in indexData.postList" :key="item.ID">
                   <div class="vsi">
-                    <!-- <img class="vsiimg" src="https://img01.yzcdn.cn/vant/cat.jpeg" alt=""> -->
                     <div class="vsi-1">
                       <p class="p1" style="vertical-align: bottom;"> {{item.TITLE}}&nbsp;&nbsp;&nbsp;&nbsp;{{item.CREATETIME}}</p>
                       <p class="p2">{{item.CONTENT}}</p>
-                      <!-- <p class="p3"></p>
-                      <p class="p3" style="visibility: hidden;"></p>
-                      <p class="p1">常州市财政部 拷贝</p> -->
                     </div>
-                    <!-- <van-button class="vsi-2" round type="info">立即申请</van-button> -->
+                  </div>
+                </van-swipe-item>
+                <van-swipe-item v-if="!indexData.postList" class="vanswipeitem100" >
+                  <div class="vsi">
+                    <div class="vsi-1">
+                      <p class="p1" style="vertical-align: bottom;"> 话题标题&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                      <p class="p2">暂无更多内容</p>
+                    </div>
+                    <van-button class="vsi-2" round type="info" @click="handleclickcommunication('not')">立即发帖</van-button>
                   </div>
                 </van-swipe-item>
               </van-swipe>
@@ -302,13 +304,22 @@ export default {
       })
     },
     handleclickcommunication(item) {
-      this.$router.push({
-        name:'Viewpost1',
-        query:{
-          isp:1,
-          id:item.ID
-        }
-      })
+      if(item=="not") {
+        this.$router.push({
+          name:'Releasepost'
+        })
+
+      } else {
+
+        this.$router.push({
+          name:'Viewpost1',
+          query:{
+            isp:1,
+            id:item.ID
+          }
+        })
+      }
+
     }
   },
 };
@@ -582,6 +593,11 @@ export default {
 }
 .vanswipeitem12,.vanswipeitem13,.vanswipeitem1undefined {
   background: url('../../assets/yiqilai/index/3@3x.png') no-repeat center center;
+  background-size: 100% 100%;
+  width: 100%;
+}
+.vanswipeitem100 {
+  background: url('../../assets/yiqilai/index/1.png') no-repeat center center;
   background-size: 100% 100%;
   width: 100%;
 }
