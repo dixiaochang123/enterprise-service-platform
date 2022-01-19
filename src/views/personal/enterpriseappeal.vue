@@ -99,7 +99,11 @@ export default {
     this.getUserInfo();
     console.log(returnCitySN.cname)
     this.cname = returnCitySN.cname;
-    this.addressInfo.ADDRESS = returnCitySN.cname || '';
+    if(this.$route.query.address) {
+      this.addressInfo.ADDRESS = this.$route.query.address || '';
+    }else {
+      this.addressInfo.ADDRESS = returnCitySN.cname || '';
+    }
     if(this.$route.query.serveid) {
       this.addressInfo.SER_TYPE = this.$route.query.serveid;
       this.addressInfo.SER_TYPE_ = this.$route.query.name;
@@ -128,12 +132,16 @@ export default {
         this.$router.push({
           name:"Servicetype",
           query:{
-            objective:objective
+            objective:objective,
+            address:this.addressInfo.ADDRESS
           }
         })
       }else {
         this.$router.push({
-          name:"Servicetype"
+          name:"Servicetype",
+          query:{
+            address:this.addressInfo.ADDRESS
+          }
         })
       }
     },
