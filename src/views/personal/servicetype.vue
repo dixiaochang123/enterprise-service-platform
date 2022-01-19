@@ -71,9 +71,7 @@ export default {
             })
     },
     getsysCombox(val) {
-      getsysCombox({
-        SEARCH:val
-      })
+      getsysCombox(val)
         .then((res) => {
           console.log(res);
           this.list = res;

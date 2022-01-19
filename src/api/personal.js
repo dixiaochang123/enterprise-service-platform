@@ -258,9 +258,9 @@ export function appealSave(data) {
 // 获取服务类型
 export function getsysCombox(data) {
     return request({
-        url: `/wjyql/sys/getCombox?table=t_sys_data&where=pid=SER_TYPE&orderby=sorder asc`,
+        url: `/wjyql/sys/getCombox?table=t_sys_data&where=pid=SER_TYPE&orderby=sorder asc&SEARCH=${data}`,
         method: 'post',
-        data
+        // data
     })
 }
 // 23、	获取我的诉求列表

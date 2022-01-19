@@ -106,7 +106,9 @@ export default {
         // mobile: '18862631752',
         // code:'123456'
         mobile: '11122211122',
-        code:'123123'
+        code:'123123',
+        // mobile: '15151515155',
+        // code:'151515',
       },
       // 验证码
       safety: {

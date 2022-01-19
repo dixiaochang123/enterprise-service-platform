@@ -6,6 +6,7 @@
       <van-field :disabled="disabled" v-model="addressInfo.NAME" name="诉求目的" label="诉求目的" placeholder="请输入诉求目的" :rules="[{ required: true, message: '请填写收件人' }]" />
       <van-field v-model="userInfo.ORG_ID_" name="企业名称" label="企业名称" placeholder="请输入您所在的企业" readonly />
       <van-field v-model="userInfo.REAL_NAME" name="上报人" label="上报人" placeholder="请输入上报人" readonly />
+      <van-field v-model="addressInfo.ADDRESS" name="上报地址" label="上报地址" placeholder="请输入上报地址" readonly />
       <van-field :disabled="disabled" readonly v-model="addressInfo.SER_TYPE_" label="服务类型" right-icon="arrow" @click="gotoservicetype" />
       <van-field v-model="addressInfo.CREATETIME" readonly name="上报时间" label="上报时间" placeholder="请输入上报时间" :rules="[{ required: true, message: '请填写收件人' }]" />
       <van-field v-if="isprogress" v-model="ISSHOW" readonly label="是否公开" right-icon="arrow" @click="showname1 = true" />
