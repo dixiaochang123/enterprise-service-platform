@@ -76,7 +76,7 @@
                       <p class="p3" style="visibility: hidden;"></p>
                       <p class="p1">{{item.ORG_ID_}}</p>
                     </div>
-                    <van-button class="vsi-2" round type="info" @click="zcsdhandleclick(item)">立即查看</van-button>
+                    <van-button class="vsi-2" round type="info" @click="zcsdhandleclick(item)">{{index?'立即查看':'立即申请'}}</van-button>
                   </div>
                 </van-swipe-item>
               </van-swipe>
@@ -242,6 +242,24 @@ export default {
               item.ATTACHS = item.ATTACHS.split(",")[0]
             }
           })
+          !!data.policyList && data.policyList.unshift({
+            ATTACHS: "12282",
+            CREATETIME: "2022-01-18 15:00:13",
+            DELETE_MARK: 1,
+            ID: 100000,
+            ISZD: 0,
+            NAME: "政策精准服务平台",
+            ORG_ID: 1,
+            ORG_ID_: "武进区",
+            STATE: 2,
+            STATE_: "通过",
+            SX_TIME: 1642489256000,
+            TITLE: "政策精准服务平台",
+            TYPE: "1",
+            TYPE_: "文化旅游法律服务",
+            USER_ID: 40,
+            USER_ID_: "管理员",
+          })
           !!data.postList && data.postList.map(item=>{
 
             if(item.ATTACHS) {
@@ -250,18 +268,24 @@ export default {
             }
           })
           this.indexData = data;
+          data.policyList
           console.log(this.indexData)
         }
 
       }).catch(error=>console.log(error))
     },
     zcsdhandleclick(data){
-      this.$router.push({
-        name:'Policyintitem',
-        query:{
-          id:data.ID
-        }
-      })
+      if(data.ID==100000) {
+        window.location.href = 'https://jzfw.wj.gov.cn/WJZQTH5/'
+      }else {
+
+        this.$router.push({
+          name:'Policyintitem',
+          query:{
+            id:data.ID
+          }
+        })
+      }
     },
     handlegettozcsh(data) {
       this.$router.push({
@@ -570,14 +594,18 @@ export default {
   background-size: 100% 100%;
 }
 .vanswipeitem0 {
-  background: url('../../assets/index/11/1@3x.png') no-repeat left center;
+  background: url('../../assets/index/11/0.png') no-repeat left center;
   background-size: 95% 100%;
 }
 .vanswipeitem1 {
-  background: url('../../assets/index/11/2@3x.png') no-repeat left center;
+  background: url('../../assets/index/11/1@3x.png') no-repeat left center;
   background-size: 95% 100%;
 }
 .vanswipeitem2 {
+  background: url('../../assets/index/11/2@3x.png') no-repeat left center;
+  background-size: 95% 100%;
+}
+.vanswipeitem3 {
   background: url('../../assets/index/11/3@3x.png') no-repeat left center;
   background-size: 95% 100%;
 }
