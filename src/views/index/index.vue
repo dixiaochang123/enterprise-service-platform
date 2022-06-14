@@ -268,7 +268,6 @@ export default {
             }
           })
           this.indexData = data;
-          data.policyList
           console.log(this.indexData)
         }
 
