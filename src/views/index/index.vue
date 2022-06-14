@@ -68,7 +68,7 @@
             <div class="myswipe">
               <van-swipe :loop="false" height="100%" :width="320">
                 <van-swipe-item :class="'vanswipeitem'+index" v-for="(item,index) in indexData.policyList" :key="item.ID">
-                  <div class="vsi">
+                  <div class="vsi" @click="zcsdhandleclick1(item)">
                     <div class="vsi-1">
                       <p class="p1" style="vertical-align: bottom;"> 政策类别</p>
                       <p class="p2">{{item.NAME}}</p>
@@ -272,6 +272,13 @@ export default {
         }
 
       }).catch(error=>console.log(error))
+    },
+    zcsdhandleclick1(data) {
+      if(data.ID==100000) {
+        window.location.href = 'https://jzfw.wj.gov.cn/WJZQTH5/'
+      } else {
+        return;
+      }
     },
     zcsdhandleclick(data){
       if(data.ID==100000) {
